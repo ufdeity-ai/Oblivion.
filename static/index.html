@@ -3,332 +3,465 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oblivion</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>VoidOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --void: #04000e; --core: #5b12d4; --pulse: #7c3aed;
   --flare: #a855f7; --pink: #e879f9; --white: #f0e8ff;
   --speed: #00f5c4; --danger: #f43f5e;
-  --glass: rgba(255,255,255,0.03);
-  --glass-border: rgba(168,85,247,0.15);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(168,85,247,0.18);
   --p1: 260; --p2: 290; --p3: 320;
-  --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px;
+  --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+  --bar-h: 54px;
 }
 
-/* ── THEMES ────────────────────────────────────────────── */
-body.t-normal {
-  --void:#04000e;--core:#5b12d4;--pulse:#7c3aed;--flare:#a855f7;
-  --pink:#e879f9;--white:#f0e8ff;--speed:#00f5c4;
-  --glass:rgba(255,255,255,0.03);--glass-border:rgba(168,85,247,0.15);
-  --p1:260;--p2:290;--p3:320;
-}
-body.t-dark {
-  --void:#0a0a0a;--core:#222;--pulse:#333;--flare:#ddd;
-  --pink:#fff;--white:#f0f0f0;--speed:#00f5c4;
-  --glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.1);
-  --p1:0;--p2:0;--p3:180;
-}
-body.t-sky {
-  --void:#020b18;--core:#0369a1;--pulse:#0284c7;--flare:#38bdf8;
-  --pink:#7dd3fc;--white:#e0f2fe;--speed:#00f5c4;
-  --glass:rgba(255,255,255,0.04);--glass-border:rgba(56,189,248,0.18);
-  --p1:200;--p2:210;--p3:185;
-}
-body.t-ember {
-  --void:#0e0500;--core:#b45309;--pulse:#d97706;--flare:#f59e0b;
-  --pink:#fcd34d;--white:#fef3c7;--speed:#ff6b35;
-  --glass:rgba(255,255,255,0.03);--glass-border:rgba(245,158,11,0.18);
-  --p1:30;--p2:40;--p3:20;
-}
-body.t-rose {
-  --void:#0e0008;--core:#9d174d;--pulse:#be185d;--flare:#ec4899;
-  --pink:#f9a8d4;--white:#fce7f3;--speed:#00f5c4;
-  --glass:rgba(255,255,255,0.03);--glass-border:rgba(236,72,153,0.18);
-  --p1:320;--p2:340;--p3:300;
-}
-body.t-forest {
-  --void:#020a04;--core:#166534;--pulse:#15803d;--flare:#22c55e;
-  --pink:#86efac;--white:#dcfce7;--speed:#00f5c4;
-  --glass:rgba(255,255,255,0.03);--glass-border:rgba(34,197,94,0.18);
-  --p1:130;--p2:145;--p3:115;
-}
-body.t-crimson {
-  --void:#0e0000;--core:#7f1d1d;--pulse:#991b1b;--flare:#ef4444;
-  --pink:#fca5a5;--white:#fee2e2;--speed:#ff9500;
-  --glass:rgba(255,255,255,0.03);--glass-border:rgba(239,68,68,0.18);
-  --p1:0;--p2:10;--p3:350;
-}
+/* ── THEMES ─────────────────────────────────────────────── */
+body.t-normal { --void:#04000e;--core:#5b12d4;--pulse:#7c3aed;--flare:#a855f7;--pink:#e879f9;--speed:#00f5c4;--white:#f0e8ff;--glass:rgba(255,255,255,0.04);--glass-border:rgba(168,85,247,0.18);--p1:260;--p2:290;--p3:320 }
+body.t-dark   { --void:#060606;--core:#1a1a2e;--pulse:#16213e;--flare:#e2e8f0;--pink:#94a3b8;--speed:#f8fafc;--white:#f8fafc;--glass:rgba(255,255,255,0.04);--glass-border:rgba(226,232,240,0.15);--p1:220;--p2:230;--p3:210 }
+body.t-sky    { --void:#020c1b;--core:#0369a1;--pulse:#0284c7;--flare:#38bdf8;--pink:#7dd3fc;--speed:#34d399;--white:#e0f7ff;--glass:rgba(56,189,248,0.05);--glass-border:rgba(56,189,248,0.2);--p1:195;--p2:210;--p3:170 }
+body.t-ember  { --void:#0d0400;--core:#c2410c;--pulse:#ea580c;--flare:#fb923c;--pink:#fbbf24;--speed:#fde68a;--white:#fff7ed;--glass:rgba(251,146,60,0.05);--glass-border:rgba(251,146,60,0.2);--p1:25;--p2:40;--p3:50 }
+body.t-rose   { --void:#0d0008;--core:#9d174d;--pulse:#be185d;--flare:#ec4899;--pink:#f9a8d4;--speed:#fb7185;--white:#fdf2f8;--glass:rgba(236,72,153,0.05);--glass-border:rgba(236,72,153,0.2);--p1:320;--p2:340;--p3:350 }
+body.t-forest { --void:#010c06;--core:#15803d;--pulse:#16a34a;--flare:#4ade80;--pink:#a3e635;--speed:#67e8f9;--white:#ecfdf5;--glass:rgba(74,222,128,0.05);--glass-border:rgba(74,222,128,0.2);--p1:140;--p2:120;--p3:165 }
+body.t-crimson{ --void:#0d0000;--core:#b91c1c;--pulse:#dc2626;--flare:#f87171;--pink:#fca5a5;--speed:#fb923c;--white:#fff5f5;--glass:rgba(248,113,113,0.05);--glass-border:rgba(248,113,113,0.2);--p1:0;--p2:10;--p3:350 }
+body.t-rainbow{ --void:#04000e;--core:#5b12d4;--pulse:#7c3aed;--flare:#a855f7;--pink:#e879f9;--speed:#00f5c4;--white:#f0e8ff;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.15);--p1:260;--p2:290;--p3:320 }
 
-/* ── BASE ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--void);font-family:'Syne',sans-serif;color:var(--white);overflow:hidden;transition:background 0.5s ease}
+html,body{
+  height:100%;width:100%;overflow:hidden;
+  background:var(--void);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  user-select:none;
+}
 
-/* ── BACKGROUND ────────────────────────────────────────── */
-.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(80px);transition:background 0.8s ease}
-.blob-1{width:700px;height:700px;background:radial-gradient(circle,var(--pulse) 0%,transparent 70%);top:-200px;left:-150px;opacity:0.5;animation:blob1 22s ease-in-out infinite}
-.blob-2{width:500px;height:500px;background:radial-gradient(circle,var(--flare) 0%,transparent 70%);bottom:-100px;right:-100px;opacity:0.35;animation:blob2 18s ease-in-out infinite}
-.blob-3{width:350px;height:350px;background:radial-gradient(circle,var(--pink) 0%,transparent 70%);top:40%;left:60%;opacity:0.22;animation:blob3 26s ease-in-out infinite}
-.blob-4{width:280px;height:280px;background:radial-gradient(circle,var(--speed) 0%,transparent 70%);top:20%;right:15%;opacity:0.14;animation:blob4 20s ease-in-out infinite}
-.blob-5{width:420px;height:420px;background:radial-gradient(circle,var(--core) 0%,transparent 70%);bottom:20%;left:30%;opacity:0.3;animation:blob5 30s ease-in-out infinite}
+/* ── BACKGROUND LAYER ───────────────────────────────────── */
+#bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--void);transition:background 0.5s}
+.blob{position:absolute;border-radius:50%;pointer-events:none}
+.blob-1{width:900px;height:900px;background:radial-gradient(circle,var(--pulse) 0%,color-mix(in srgb,var(--pulse) 35%,transparent) 45%,transparent 70%);top:-300px;left:-200px;opacity:0.4;animation:blob1 22s ease-in-out infinite;filter:blur(4px)}
+.blob-2{width:600px;height:600px;background:radial-gradient(circle,var(--flare) 0%,color-mix(in srgb,var(--flare) 30%,transparent) 50%,transparent 70%);bottom:-150px;right:-120px;opacity:0.32;animation:blob2 18s ease-in-out infinite;filter:blur(3px)}
+.blob-3{width:420px;height:420px;background:radial-gradient(circle,var(--pink) 0%,transparent 70%);top:40%;left:58%;opacity:0.22;animation:blob3 26s ease-in-out infinite;filter:blur(3px)}
+.blob-4{width:320px;height:320px;background:radial-gradient(circle,var(--speed) 0%,transparent 70%);top:18%;right:12%;opacity:0.14;animation:blob4 20s ease-in-out infinite;filter:blur(2px)}
+.blob-5{width:550px;height:550px;background:radial-gradient(circle,var(--core) 0%,transparent 70%);bottom:18%;left:28%;opacity:0.28;animation:blob5 30s ease-in-out infinite;filter:blur(4px)}
 @keyframes blob1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,80px) scale(1.08)}66%{transform:translate(-40px,40px) scale(0.95)}}
 @keyframes blob2{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(-80px,-60px) scale(1.1)}70%{transform:translate(30px,-30px) scale(0.92)}}
 @keyframes blob3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,80px) scale(1.15)}}
 @keyframes blob4{0%,100%{transform:translate(0,0) scale(1)}30%{transform:translate(-50px,40px) scale(1.2)}60%{transform:translate(40px,-20px) scale(0.85)}}
 @keyframes blob5{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-50px) scale(1.05)}75%{transform:translate(-40px,60px) scale(0.9)}}
-.grain{position:fixed;inset:-50%;width:200%;height:200%;z-index:2;pointer-events:none;opacity:0.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .4s steps(1) infinite}
-@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-2px,1px)}40%{transform:translate(2px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(1px,-2px)}}
-.vignette{position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.7) 100%)}
-#canvas{position:fixed;inset:0;z-index:4;pointer-events:none}
 
-/* ── APP SHELL ─────────────────────────────────────────── */
-.app{position:relative;z-index:10;display:flex;flex-direction:column;height:100vh;width:100vw}
+.grain{position:fixed;inset:-50%;z-index:1;pointer-events:none;width:200%;height:200%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.03;animation:grainMove 4s steps(1) infinite}
+@keyframes grainMove{0%{transform:translate(0,0)}10%{transform:translate(-1%,-2%)}20%{transform:translate(2%,1%)}30%{transform:translate(-2%,2%)}40%{transform:translate(1%,-1%)}50%{transform:translate(-1%,2%)}60%{transform:translate(2%,-2%)}70%{transform:translate(1%,1%)}80%{transform:translate(-2%,-1%)}90%{transform:translate(2%,2%)}100%{transform:translate(0,0)}}
+.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 85% 85% at 50% 50%,transparent 40%,rgba(0,0,0,0.5) 75%,rgba(0,0,0,0.85) 100%)}
+#canvas{position:fixed;inset:0;z-index:3;pointer-events:none}
 
-/* ── TOPBAR ────────────────────────────────────────────── */
-.topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,0,0,0.6);backdrop-filter:blur(24px);border-bottom:1px solid var(--glass-border);flex-shrink:0;position:relative;z-index:50;box-shadow:0 4px 40px rgba(0,0,0,0.3);transition:border-color 0.5s ease}
-.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:0.95rem;letter-spacing:0.22em;background:linear-gradient(110deg,var(--flare) 0%,var(--speed) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px var(--flare));animation:logoPulse 4s ease-in-out infinite;user-select:none;white-space:nowrap;flex-shrink:0;transition:filter 0.5s ease}
-@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 8px var(--flare))}50%{filter:drop-shadow(0 0 22px var(--flare)) drop-shadow(0 0 44px var(--core))}}
-.sep{width:1px;height:26px;background:var(--glass-border);flex-shrink:0;transition:background 0.5s ease}
-.nav-btns{display:flex;gap:3px;flex-shrink:0}
-.nav-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r-sm);cursor:pointer;font-size:0.9rem;color:var(--flare);opacity:0.5;transition:all 0.2s;user-select:none}
-.nav-btn:hover{background:rgba(0,0,0,0.2);border-color:var(--flare);opacity:1;box-shadow:0 0 14px color-mix(in srgb,var(--flare) 40%,transparent);transform:translateY(-1px)}
-.nav-btn:active{transform:scale(0.95)}
-.nav-btn.spin{animation:spin 0.5s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.addr-wrap{flex:1;display:flex;align-items:center;background:rgba(0,0,0,0.4);border:1px solid var(--glass-border);border-radius:var(--r-xl);padding:0 16px;gap:10px;height:36px;transition:all 0.3s;position:relative;overflow:hidden;backdrop-filter:blur(12px)}
-.addr-wrap::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--flare),transparent);animation:scanAddr 6s linear infinite}
-@keyframes scanAddr{0%{left:-60%}100%{left:160%}}
-.addr-wrap:focus-within{border-color:var(--flare);box-shadow:0 0 0 3px color-mix(in srgb,var(--core) 20%,transparent),0 0 24px color-mix(in srgb,var(--core) 30%,transparent)}
-.lock{font-size:0.75rem;flex-shrink:0;color:var(--speed)}
-.lock.warn{color:var(--danger)}
-.addr-input{flex:1;background:none;border:none;outline:none;font-family:'Syne',sans-serif;font-size:0.88rem;color:var(--white);caret-color:var(--flare);transition:color 0.5s ease}
-.addr-input::placeholder{color:color-mix(in srgb,var(--flare) 40%,transparent)}
-.go-btn{padding:6px 18px;background:linear-gradient(135deg,var(--core) 0%,var(--flare) 100%);border:none;border-radius:var(--r-md);font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.15em;color:white;cursor:pointer;transition:all 0.3s;box-shadow:0 0 16px color-mix(in srgb,var(--core) 60%,transparent);flex-shrink:0}
-.go-btn:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 0 28px color-mix(in srgb,var(--core) 80%,transparent)}
-.go-btn:active{transform:scale(0.97)}
-.progress{position:absolute;bottom:-1px;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--core),var(--flare),var(--speed));box-shadow:0 0 10px var(--speed);transition:width 0.4s ease;pointer-events:none;z-index:5;display:none;border-radius:0 2px 2px 0}
+/* ── DESKTOP ─────────────────────────────────────────────── */
+#desktop{position:fixed;inset:0;bottom:var(--bar-h);z-index:10;overflow:hidden}
+.desktop-icons{position:absolute;top:20px;left:20px;display:flex;flex-direction:column;gap:6px;z-index:11}
+.d-icon{width:80px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:var(--r-md);cursor:pointer;transition:background 0.15s;position:relative}
+.d-icon:hover{background:rgba(255,255,255,0.07)}
+.d-icon:active{background:rgba(255,255,255,0.12)}
+.d-icon.selected{background:rgba(255,255,255,0.1)}
+.d-icon-img{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:linear-gradient(160deg,rgba(255,255,255,0.1) 0%,rgba(0,0,0,0.3) 100%);border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 20px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.08) inset;transition:transform 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s}
+.d-icon:hover .d-icon-img{transform:scale(1.1);box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 24px color-mix(in srgb,var(--flare) 40%,transparent),0 1px 0 rgba(255,255,255,0.12) inset}
+.d-icon-label{font-size:0.68rem;font-weight:500;color:var(--white);text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 12px rgba(0,0,0,0.6);text-align:center;letter-spacing:0.02em;line-height:1.2}
 
-/* ── SETTINGS ──────────────────────────────────────────── */
-.settings-wrap{position:relative;flex-shrink:0}
-.settings-btn{width:32px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r-md);cursor:pointer;font-size:0.9rem;color:var(--flare);opacity:0.5;transition:all 0.2s;user-select:none}
-.settings-btn:hover,.settings-btn.open{background:color-mix(in srgb,var(--core) 20%,transparent);border-color:var(--flare);opacity:1;box-shadow:0 0 14px color-mix(in srgb,var(--flare) 40%,transparent)}
-.settings-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:color-mix(in srgb,var(--void) 90%,black);backdrop-filter:blur(28px);border:1px solid var(--glass-border);border-radius:var(--r-lg);padding:16px;min-width:230px;box-shadow:0 16px 48px rgba(0,0,0,0.6);z-index:999;opacity:0;pointer-events:none;transform:translateY(-6px) scale(0.97);transition:opacity 0.18s ease,transform 0.18s cubic-bezier(0.34,1.56,0.64,1)}
-.settings-dropdown.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
-.settings-section-label{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:color-mix(in srgb,var(--flare) 50%,transparent);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--glass-border)}
-.engine-options{display:flex;flex-direction:column;gap:4px}
-.engine-option{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-md);cursor:pointer;transition:all 0.15s;border:1px solid transparent}
-.engine-option:hover{background:color-mix(in srgb,var(--core) 15%,transparent);border-color:color-mix(in srgb,var(--flare) 20%,transparent)}
-.engine-option.active{background:color-mix(in srgb,var(--core) 22%,transparent);border-color:color-mix(in srgb,var(--flare) 35%,transparent)}
-.engine-icon{font-size:1.1rem;width:24px;text-align:center}
-.engine-info{flex:1}
-.engine-name{font-size:0.82rem;font-weight:600;color:var(--white);letter-spacing:0.04em;transition:color 0.5s ease}
-.engine-desc{font-size:0.65rem;color:color-mix(in srgb,var(--flare) 50%,transparent);letter-spacing:0.05em;margin-top:1px}
-.engine-check{font-size:0.7rem;color:var(--speed);text-shadow:0 0 8px var(--speed);opacity:0;transition:opacity 0.15s}
-.engine-option.active .engine-check{opacity:1}
-
-/* ── TABS ──────────────────────────────────────────────── */
-.tabs{display:flex;align-items:flex-end;padding:6px 14px 0;gap:3px;background:rgba(0,0,0,0.5);backdrop-filter:blur(16px);border-bottom:1px solid var(--glass-border);flex-shrink:0;overflow-x:auto;transition:border-color 0.5s ease}
-.tabs::-webkit-scrollbar{height:0}
-.tab{display:flex;align-items:center;gap:7px;padding:6px 14px;background:var(--glass);border:1px solid var(--glass-border);border-bottom:none;border-radius:var(--r-sm) var(--r-sm) 0 0;cursor:pointer;font-size:0.75rem;font-weight:600;color:color-mix(in srgb,var(--white) 40%,transparent);white-space:nowrap;max-width:180px;user-select:none;transition:all 0.18s}
-.tab.active{background:color-mix(in srgb,var(--core) 20%,transparent);border-color:color-mix(in srgb,var(--flare) 35%,transparent);color:var(--flare);box-shadow:0 -4px 16px color-mix(in srgb,var(--core) 15%,transparent)}
-.tab:hover:not(.active){background:color-mix(in srgb,var(--core) 10%,transparent);color:color-mix(in srgb,var(--white) 70%,transparent)}
-.tab-ttl{flex:1;overflow:hidden;text-overflow:ellipsis}
-.tab-x{font-size:0.6rem;color:color-mix(in srgb,var(--flare) 40%,transparent);transition:color 0.15s;flex-shrink:0;width:14px;height:14px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.tab-x:hover{color:var(--danger);background:rgba(244,63,94,0.15)}
-.plus-btn{padding:6px 12px;font-size:1rem;color:color-mix(in srgb,var(--flare) 40%,transparent);cursor:pointer;border-radius:var(--r-sm) var(--r-sm) 0 0;transition:all 0.18s;user-select:none;flex-shrink:0;border:1px solid transparent;border-bottom:none}
-.plus-btn:hover{color:var(--flare);background:color-mix(in srgb,var(--core) 12%,transparent);border-color:var(--glass-border)}
-
-/* ── VIEWPORT ──────────────────────────────────────────── */
-.viewport{flex:1;position:relative;overflow:hidden;background:transparent}
-.browser-frame{width:100%;height:100%;border:none;display:none;background:#fff}
-
-/* ── HOME ──────────────────────────────────────────────── */
-.home{position:absolute;inset:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:40px 24px;text-align:center;overflow:hidden}
-.home-logo-wrap{position:relative}
-.home-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(3rem,7vw,6rem);background:linear-gradient(135deg,var(--white) 0%,var(--flare) 40%,var(--pink) 70%,var(--speed) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px var(--flare));animation:homeGlow 5s ease-in-out infinite;position:relative;z-index:1;transition:filter 0.5s ease}
-.home-logo-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse,color-mix(in srgb,var(--core) 20%,transparent) 0%,transparent 70%);filter:blur(20px);animation:homeGlow 5s ease-in-out infinite}
-@keyframes homeGlow{0%,100%{filter:drop-shadow(0 0 30px var(--flare))}50%{filter:drop-shadow(0 0 70px var(--flare)) drop-shadow(0 0 120px var(--core))}}
-.home-sub{font-size:0.8rem;letter-spacing:0.28em;text-transform:uppercase;color:color-mix(in srgb,var(--flare) 45%,transparent);margin-top:-28px;transition:color 0.5s ease}
-.home-engine-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:color-mix(in srgb,var(--speed) 8%,transparent);border:1px solid color-mix(in srgb,var(--speed) 25%,transparent);border-radius:100px;font-size:0.68rem;letter-spacing:0.2em;color:var(--speed);text-shadow:0 0 10px var(--speed);margin-top:-20px;transition:all 0.5s ease}
-.engine-dot{width:5px;height:5px;border-radius:50%;background:var(--speed);box-shadow:0 0 8px var(--speed);animation:dpulse 2s ease-in-out infinite}
-@keyframes dpulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.home-stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.hstat{display:flex;align-items:center;gap:10px;background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;padding:8px 20px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,0.2);transition:all 0.5s ease}
-.hstat-dot{width:6px;height:6px;border-radius:50%;background:var(--speed);box-shadow:0 0 8px var(--speed);animation:dpulse 2s ease-in-out infinite}
-.hstat-val{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--speed);text-shadow:0 0 12px var(--speed)}
-.hstat-lbl{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 25%,transparent)}
-.quicknav{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:520px}
-.qn-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r-lg);padding:18px 10px;cursor:pointer;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);display:flex;flex-direction:column;align-items:center;gap:8px;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,0.15);position:relative;overflow:hidden}
-.qn-item::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,color-mix(in srgb,var(--flare) 10%,transparent),transparent 70%);opacity:0;transition:opacity 0.2s}
-.qn-item:hover{border-color:color-mix(in srgb,var(--flare) 40%,transparent);background:color-mix(in srgb,var(--core) 12%,transparent);transform:translateY(-4px) scale(1.02);box-shadow:0 12px 32px color-mix(in srgb,var(--core) 30%,transparent)}
-.qn-item:hover::before{opacity:1}
-.qn-icon{font-size:1.4rem;position:relative;z-index:1}
-.qn-lbl{font-size:0.62rem;letter-spacing:0.12em;color:color-mix(in srgb,var(--white) 40%,transparent);font-weight:600;text-transform:uppercase;position:relative;z-index:1;transition:color 0.5s ease}
-
-/* ── INIT ──────────────────────────────────────────────── */
-.init-screen{position:fixed;inset:0;background:var(--void);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;z-index:200;transition:opacity 0.6s ease}
-.init-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:2.2rem;letter-spacing:0.25em;background:linear-gradient(110deg,var(--flare),var(--pink),var(--speed));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px var(--flare));animation:logoPulse 3s ease-in-out infinite}
-.init-bar{width:220px;height:2px;background:color-mix(in srgb,var(--flare) 15%,transparent);border-radius:100px;overflow:hidden}
-.init-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--core),var(--flare),var(--speed));box-shadow:0 0 10px var(--speed);transition:width 0.45s cubic-bezier(0.4,0,0.2,1);border-radius:100px}
-.init-status{font-size:0.7rem;letter-spacing:0.22em;color:color-mix(in srgb,var(--flare) 45%,transparent);text-transform:uppercase}
-
-/* ── STATUSBAR ─────────────────────────────────────────── */
-.statusbar{display:flex;align-items:center;justify-content:space-between;padding:4px 16px;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);border-top:1px solid var(--glass-border);flex-shrink:0;font-size:0.65rem;letter-spacing:0.12em;transition:border-color 0.5s ease}
-.sl{display:flex;align-items:center;gap:8px;color:color-mix(in srgb,var(--white) 28%,transparent)}
-.sdot{width:5px;height:5px;border-radius:50%;background:var(--speed);box-shadow:0 0 6px var(--speed);animation:dpulse 2s ease-in-out infinite}
-.sr{display:flex;gap:18px;color:color-mix(in srgb,var(--white) 20%,transparent)}
-.sping{color:var(--speed);text-shadow:0 0 8px var(--speed);font-family:'Orbitron',monospace;font-size:0.62rem}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--flare) 35%,transparent);border-radius:100px}
-
-/* ── RAINBOW THEME ─────────────────────────────────────── */
-body.t-rainbow {
-  --void: #04000e;
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.12);
+/* ── WINDOW MANAGER ─────────────────────────────────────── */
+.window{position:absolute;min-width:320px;min-height:200px;border-radius:var(--r-lg);overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,color-mix(in srgb,var(--void) 88%,black) 100%);
+  border:1px solid var(--glass-border);
+  border-top:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 32px 80px rgba(0,0,0,0.7),0 8px 32px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.06) inset;
+  backdrop-filter:blur(32px) saturate(1.5);
+  -webkit-backdrop-filter:blur(32px) saturate(1.5);
+  display:flex;flex-direction:column;
+  transition:opacity 0.2s,transform 0.2s,box-shadow 0.2s;
+  transform-origin:top center;
 }
+.window.minimizing{opacity:0;transform:scale(0.85) translateY(40px)}
+.window.maximized{border-radius:0!important;border:none!important}
+.window.focused{box-shadow:0 40px 100px rgba(0,0,0,0.8),0 8px 32px rgba(0,0,0,0.5),0 0 0 1px var(--glass-border),0 1px 0 rgba(255,255,255,0.08) inset}
 
-body.t-rainbow {
-  animation: rbVoid 8s linear infinite;
-}
-@keyframes rbVoid {
-  0%   { background: #0a000e; }
-  14%  { background: #0e0005; }
-  28%  { background: #050a00; }
-  42%  { background: #00060e; }
-  57%  { background: #00080a; }
-  71%  { background: #0a0005; }
-  85%  { background: #0e0400; }
-  100% { background: #0a000e; }
-}
+.win-titlebar{height:40px;display:flex;align-items:center;gap:10px;padding:0 14px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,rgba(0,0,0,0.2) 100%);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  cursor:default;flex-shrink:0;user-select:none}
+.win-titlebar[data-draggable]{cursor:move}
+.win-dots{display:flex;gap:7px;flex-shrink:0}
+.win-dot{width:13px;height:13px;border-radius:50%;cursor:pointer;transition:filter 0.15s,transform 0.1s;border:1px solid rgba(0,0,0,0.2)}
+.win-dot:hover{filter:brightness(1.3);transform:scale(1.15)}
+.win-dot.close{background:#ff5f57}
+.win-dot.min{background:#febc2e}
+.win-dot.max{background:#28c840}
+.win-app-icon{font-size:1rem;flex-shrink:0}
+.win-title{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.04em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.win-body{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
 
-/* Rainbow CSS property animations */
-@keyframes rbColor {
-  0%   { color: #ff6ec7; }
-  14%  { color: #ff9a00; }
-  28%  { color: #ffe600; }
-  42%  { color: #00ff88; }
-  57%  { color: #00e5ff; }
-  71%  { color: #7b61ff; }
-  85%  { color: #ff3cac; }
-  100% { color: #ff6ec7; }
-}
-@keyframes rbGradText {
-  0%   { filter: drop-shadow(0 0 16px #ff6ec7) drop-shadow(0 0 32px #7b61ff); }
-  14%  { filter: drop-shadow(0 0 16px #ff9a00) drop-shadow(0 0 32px #ffe600); }
-  28%  { filter: drop-shadow(0 0 16px #ffe600) drop-shadow(0 0 32px #00ff88); }
-  42%  { filter: drop-shadow(0 0 16px #00ff88) drop-shadow(0 0 32px #00e5ff); }
-  57%  { filter: drop-shadow(0 0 16px #00e5ff) drop-shadow(0 0 32px #7b61ff); }
-  71%  { filter: drop-shadow(0 0 16px #7b61ff) drop-shadow(0 0 32px #ff3cac); }
-  85%  { filter: drop-shadow(0 0 16px #ff3cac) drop-shadow(0 0 32px #ff6ec7); }
-  100% { filter: drop-shadow(0 0 16px #ff6ec7) drop-shadow(0 0 32px #7b61ff); }
-}
-@keyframes rbBorder {
-  0%   { border-color: rgba(255,110,199,0.5); box-shadow: 0 0 14px rgba(255,110,199,0.3); }
-  14%  { border-color: rgba(255,154,0,0.5);   box-shadow: 0 0 14px rgba(255,154,0,0.3); }
-  28%  { border-color: rgba(255,230,0,0.5);   box-shadow: 0 0 14px rgba(255,230,0,0.3); }
-  42%  { border-color: rgba(0,255,136,0.5);   box-shadow: 0 0 14px rgba(0,255,136,0.3); }
-  57%  { border-color: rgba(0,229,255,0.5);   box-shadow: 0 0 14px rgba(0,229,255,0.3); }
-  71%  { border-color: rgba(123,97,255,0.5);  box-shadow: 0 0 14px rgba(123,97,255,0.3); }
-  85%  { border-color: rgba(255,60,172,0.5);  box-shadow: 0 0 14px rgba(255,60,172,0.3); }
-  100% { border-color: rgba(255,110,199,0.5); box-shadow: 0 0 14px rgba(255,110,199,0.3); }
-}
-@keyframes rbBg {
-  0%   { background: linear-gradient(135deg, #ff6ec7, #7b61ff); }
-  14%  { background: linear-gradient(135deg, #ff9a00, #ff6ec7); }
-  28%  { background: linear-gradient(135deg, #ffe600, #ff9a00); }
-  42%  { background: linear-gradient(135deg, #00ff88, #ffe600); }
-  57%  { background: linear-gradient(135deg, #00e5ff, #00ff88); }
-  71%  { background: linear-gradient(135deg, #7b61ff, #00e5ff); }
-  85%  { background: linear-gradient(135deg, #ff3cac, #7b61ff); }
-  100% { background: linear-gradient(135deg, #ff6ec7, #7b61ff); }
-}
-@keyframes rbBoxShadow {
-  0%   { box-shadow: 0 0 28px rgba(255,110,199,0.6); }
-  14%  { box-shadow: 0 0 28px rgba(255,154,0,0.6); }
-  28%  { box-shadow: 0 0 28px rgba(255,230,0,0.6); }
-  42%  { box-shadow: 0 0 28px rgba(0,255,136,0.6); }
-  57%  { box-shadow: 0 0 28px rgba(0,229,255,0.6); }
-  71%  { box-shadow: 0 0 28px rgba(123,97,255,0.6); }
-  85%  { box-shadow: 0 0 28px rgba(255,60,172,0.6); }
-  100% { box-shadow: 0 0 28px rgba(255,110,199,0.6); }
-}
-@keyframes rbTextGlow {
-  0%   { text-shadow: 0 0 12px #ff6ec7, 0 0 24px #7b61ff; }
-  14%  { text-shadow: 0 0 12px #ff9a00, 0 0 24px #ff6ec7; }
-  28%  { text-shadow: 0 0 12px #ffe600, 0 0 24px #00ff88; }
-  42%  { text-shadow: 0 0 12px #00ff88, 0 0 24px #00e5ff; }
-  57%  { text-shadow: 0 0 12px #00e5ff, 0 0 24px #7b61ff; }
-  71%  { text-shadow: 0 0 12px #7b61ff, 0 0 24px #ff3cac; }
-  85%  { text-shadow: 0 0 12px #ff3cac, 0 0 24px #ff6ec7; }
-  100% { text-shadow: 0 0 12px #ff6ec7, 0 0 24px #7b61ff; }
-}
+/* Resize handle */
+.win-resize{position:absolute;bottom:0;right:0;width:20px;height:20px;cursor:se-resize;z-index:5;
+  background:linear-gradient(135deg,transparent 50%,rgba(255,255,255,0.1) 50%);
+  border-radius:0 0 var(--r-lg) 0}
 
-/* Apply rainbow to all UI elements */
-body.t-rainbow .logo { animation: rbGradText 6s linear infinite; }
-body.t-rainbow .home-logo { animation: rbGradText 6s linear infinite; }
-body.t-rainbow .home-logo-glow { animation: rbBoxShadow 6s linear infinite; }
-body.t-rainbow .go-btn { animation: rbBg 6s linear infinite; }
-body.t-rainbow .go-btn:hover { animation: rbBg 6s linear infinite, rbBoxShadow 6s linear infinite; transform: translateY(-1px) scale(1.03); }
-body.t-rainbow .addr-wrap { animation: rbBorder 6s linear infinite; }
-body.t-rainbow .addr-wrap:focus-within { animation: rbBorder 4s linear infinite; }
-body.t-rainbow .settings-btn { animation: rbColor 6s linear infinite; opacity: 1; }
-body.t-rainbow .nav-btn { animation: rbColor 6s linear infinite; opacity: 1; }
-body.t-rainbow .nav-btn:hover { animation: rbColor 6s linear infinite, rbBorder 6s linear infinite; }
-body.t-rainbow .tab.active { animation: rbBorder 6s linear infinite; }
-body.t-rainbow .tab.active .tab-ttl { animation: rbColor 6s linear infinite; }
-body.t-rainbow .plus-btn:hover { animation: rbColor 6s linear infinite; }
-body.t-rainbow .qn-item:hover { animation: rbBorder 5s linear infinite; }
-body.t-rainbow .hstat { animation: rbBorder 7s linear infinite; }
-body.t-rainbow .hstat-val { animation: rbColor 5s linear infinite; }
-body.t-rainbow .sdot { animation: rbColor 4s linear infinite, dpulse 2s ease-in-out infinite; }
-body.t-rainbow .sping { animation: rbColor 5s linear infinite; }
-body.t-rainbow .progress { animation: rbBg 3s linear infinite; }
-body.t-rainbow .init-fill { animation: rbBg 3s linear infinite; }
-body.t-rainbow .engine-option.active { animation: rbBorder 5s linear infinite; }
-body.t-rainbow .engine-option.active .engine-check { animation: rbColor 5s linear infinite; }
-body.t-rainbow .home-engine-badge { animation: rbBorder 5s linear infinite, rbColor 5s linear infinite; }
-body.t-rainbow .engine-dot { animation: rbColor 4s linear infinite, dpulse 2s ease-in-out infinite; }
-body.t-rainbow .addr-input::placeholder { animation: rbColor 7s linear infinite; }
-body.t-rainbow .sep { animation: rbBorder 6s linear infinite; border: none; width: 1px; }
-body.t-rainbow .statusbar { animation: rbBorder 8s linear infinite; border-top: 1px solid; }
-body.t-rainbow .topbar { animation: rbBorder 8s linear infinite; border-bottom: 1px solid; }
-body.t-rainbow .tabs { animation: rbBorder 8s linear infinite; border-bottom: 1px solid; }
-body.t-rainbow .blob-1 { animation: blob1 22s ease-in-out infinite, rbBlobColor1 6s linear infinite; }
-body.t-rainbow .blob-2 { animation: blob2 18s ease-in-out infinite, rbBlobColor2 6s linear infinite; }
-body.t-rainbow .blob-3 { animation: blob3 26s ease-in-out infinite, rbBlobColor3 6s linear infinite; }
-body.t-rainbow .settings-dropdown { animation: rbBorder 6s linear infinite; }
+/* ── TASKBAR ─────────────────────────────────────────────── */
+#taskbar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);z-index:1000;
+  display:flex;align-items:center;gap:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.45) 0%,rgba(0,0,0,0.75) 100%);
+  backdrop-filter:blur(40px) saturate(1.6);
+  -webkit-backdrop-filter:blur(40px) saturate(1.6);
+  border-top:1px solid rgba(255,255,255,0.07);
+  box-shadow:0 -1px 0 rgba(255,255,255,0.04) inset,0 -8px 32px rgba(0,0,0,0.3);
+  padding:0 12px}
 
-@keyframes rbBlobColor1 {
-  0%   { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
-  20%  { background: radial-gradient(circle, #ff9a00 0%, transparent 70%); }
-  40%  { background: radial-gradient(circle, #00ff88 0%, transparent 70%); }
-  60%  { background: radial-gradient(circle, #00e5ff 0%, transparent 70%); }
-  80%  { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
-  100% { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
-}
-@keyframes rbBlobColor2 {
-  0%   { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
-  20%  { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
-  40%  { background: radial-gradient(circle, #ff9a00 0%, transparent 70%); }
-  60%  { background: radial-gradient(circle, #ffe600 0%, transparent 70%); }
-  80%  { background: radial-gradient(circle, #00ff88 0%, transparent 70%); }
-  100% { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
-}
-@keyframes rbBlobColor3 {
-  0%   { background: radial-gradient(circle, #00e5ff 0%, transparent 70%); }
-  20%  { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
-  40%  { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
-  60%  { background: radial-gradient(circle, #ff9a00 0%, transparent 70%); }
-  80%  { background: radial-gradient(circle, #ffe600 0%, transparent 70%); }
-  100% { background: radial-gradient(circle, #00e5ff 0%, transparent 70%); }
-}
+.tb-left{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.tb-mid{flex:1;display:flex;align-items:center;gap:4px;overflow:hidden;padding:0 12px}
+.tb-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
+/* VoidOS logo button */
+.tb-logo{width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-md);cursor:pointer;
+  background:linear-gradient(135deg,var(--core),var(--flare));
+  border:1px solid rgba(255,255,255,0.15);
+  box-shadow:0 0 20px color-mix(in srgb,var(--core) 60%,transparent),0 1px 0 rgba(255,255,255,0.18) inset;
+  font-family:'Orbitron',monospace;font-weight:900;font-size:0.65rem;color:white;
+  letter-spacing:0.05em;transition:all 0.2s;user-select:none}
+.tb-logo:hover{transform:scale(1.08);box-shadow:0 0 32px color-mix(in srgb,var(--core) 80%,transparent),0 1px 0 rgba(255,255,255,0.2) inset}
+.tb-logo.active{background:linear-gradient(135deg,var(--flare),var(--pink));box-shadow:0 0 28px color-mix(in srgb,var(--flare) 70%,transparent)}
+
+/* Taskbar divider */
+.tb-sep{width:1px;height:28px;background:rgba(255,255,255,0.08);margin:0 4px;flex-shrink:0}
+
+/* Pinned/running app buttons */
+.tb-app{height:42px;min-width:42px;max-width:160px;
+  display:flex;align-items:center;gap:8px;padding:0 10px;
+  border-radius:var(--r-md);cursor:pointer;
+  background:transparent;border:1px solid transparent;
+  transition:all 0.18s;position:relative;flex-shrink:0}
+.tb-app:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.08)}
+.tb-app.running{background:rgba(255,255,255,0.06)}
+.tb-app.active-win{background:color-mix(in srgb,var(--core) 20%,transparent);border-color:color-mix(in srgb,var(--flare) 30%,transparent)}
+.tb-app-icon{font-size:1.2rem;flex-shrink:0}
+.tb-app-label{font-size:0.72rem;font-weight:500;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-app-dot{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--speed);box-shadow:0 0 6px var(--speed)}
+
+/* Right tray */
+.tb-tray-btn{height:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 10px;border-radius:var(--r-md);cursor:pointer;
+  transition:background 0.15s;gap:1px}
+.tb-tray-btn:hover{background:rgba(255,255,255,0.07)}
+.tb-clock-time{font-family:'DM Mono',monospace;font-size:0.85rem;font-weight:500;color:var(--white);letter-spacing:0.05em}
+.tb-clock-date{font-size:0.6rem;color:rgba(255,255,255,0.45);letter-spacing:0.06em}
+.tb-icon-btn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-md);cursor:pointer;font-size:1rem;
+  color:rgba(255,255,255,0.55);transition:all 0.15s}
+.tb-icon-btn:hover{background:rgba(255,255,255,0.07);color:var(--white)}
+.tb-icon-btn.open{background:color-mix(in srgb,var(--core) 20%,transparent);color:var(--flare)}
+
+/* ── START MENU ─────────────────────────────────────────── */
+#start-menu{position:fixed;bottom:calc(var(--bar-h) + 8px);left:12px;width:340px;
+  background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,color-mix(in srgb,var(--void) 92%,black) 100%);
+  border:1px solid var(--glass-border);border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-lg);padding:20px;
+  backdrop-filter:blur(40px) saturate(1.5);
+  box-shadow:0 24px 64px rgba(0,0,0,0.7),0 1px 0 rgba(255,255,255,0.06) inset;
+  z-index:2000;opacity:0;pointer-events:none;
+  transform:translateY(10px) scale(0.97);
+  transition:opacity 0.2s ease,transform 0.2s cubic-bezier(0.34,1.56,0.64,1)}
+#start-menu.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
+.sm-title{font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;
+  background:linear-gradient(110deg,var(--flare),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:0.15em;margin-bottom:16px;text-align:center}
+.sm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.sm-app{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;
+  border-radius:var(--r-md);cursor:pointer;
+  background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,rgba(0,0,0,0.2) 100%);
+  border:1px solid rgba(255,255,255,0.07);
+  transition:all 0.18s cubic-bezier(0.34,1.56,0.64,1)}
+.sm-app:hover{background:color-mix(in srgb,var(--core) 18%,transparent);
+  border-color:color-mix(in srgb,var(--flare) 35%,transparent);
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.sm-app-icon{font-size:1.8rem}
+.sm-app-name{font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.7);text-align:center;letter-spacing:0.04em}
+.sm-sep{height:1px;background:rgba(255,255,255,0.07);margin:0 -4px 12px}
+.sm-footer{display:flex;justify-content:space-between;align-items:center}
+.sm-user{display:flex;align-items:center;gap:10px}
+.sm-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--core),var(--flare));
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;
+  border:2px solid rgba(255,255,255,0.15)}
+.sm-username{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.8)}
+.sm-power{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--danger);font-size:1rem;border:1px solid rgba(244,63,94,0.2);
+  transition:all 0.18s;background:rgba(244,63,94,0.05)}
+.sm-power:hover{background:rgba(244,63,94,0.15);border-color:rgba(244,63,94,0.4)}
+
+/* ── SYSTEM TRAY POPUPS ─────────────────────────────────── */
+.tray-popup{position:fixed;bottom:calc(var(--bar-h) + 8px);right:12px;width:300px;
+  background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,color-mix(in srgb,var(--void) 92%,black) 100%);
+  border:1px solid var(--glass-border);border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-lg);padding:16px;
+  backdrop-filter:blur(40px) saturate(1.5);
+  box-shadow:0 24px 64px rgba(0,0,0,0.7),0 1px 0 rgba(255,255,255,0.06) inset;
+  z-index:2000;opacity:0;pointer-events:none;
+  transform:translateY(10px) scale(0.97);
+  transition:opacity 0.2s ease,transform 0.2s cubic-bezier(0.34,1.56,0.64,1)}
+.tray-popup.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
+.tp-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:color-mix(in srgb,var(--flare) 55%,transparent);margin-bottom:10px;font-weight:600}
+.tp-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.tp-row-label{font-size:0.78rem;color:rgba(255,255,255,0.65)}
+.tp-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.12);outline:none;cursor:pointer}
+.tp-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--flare);cursor:pointer;border:2px solid rgba(255,255,255,0.2);
+  box-shadow:0 0 8px color-mix(in srgb,var(--flare) 60%,transparent)}
+.tp-sep{height:1px;background:rgba(255,255,255,0.07);margin:12px 0}
+.tp-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.tp-toggle-label{font-size:0.78rem;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px}
+.tp-toggle{width:40px;height:22px;border-radius:11px;background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.08);cursor:pointer;position:relative;transition:background 0.2s}
+.tp-toggle.on{background:var(--core);border-color:var(--flare)}
+.tp-toggle::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;
+  border-radius:50%;background:white;transition:transform 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.3)}
+.tp-toggle.on::after{transform:translateX(18px)}
+
+/* ── NOTIFICATION ────────────────────────────────────────── */
+.notif{position:fixed;top:20px;right:20px;min-width:280px;max-width:360px;
+  background:linear-gradient(160deg,rgba(255,255,255,0.07) 0%,color-mix(in srgb,var(--void) 88%,black) 100%);
+  border:1px solid var(--glass-border);border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-lg);padding:14px 16px;
+  backdrop-filter:blur(32px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.6);
+  z-index:5000;display:flex;align-items:flex-start;gap:12px;
+  animation:notifIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes notifIn{from{opacity:0;transform:translateX(60px) scale(0.9)}to{opacity:1;transform:none}}
+.notif-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.notif-title{font-size:0.8rem;font-weight:700;color:var(--white);margin-bottom:3px}
+.notif-msg{font-size:0.72rem;color:rgba(255,255,255,0.55);line-height:1.4}
+.notif-close{margin-left:auto;cursor:pointer;font-size:0.8rem;color:rgba(255,255,255,0.3);
+  padding:2px 6px;border-radius:6px;transition:all 0.15s;flex-shrink:0}
+.notif-close:hover{background:rgba(255,255,255,0.1);color:white}
+
+/* ── BOOT SCREEN ─────────────────────────────────────────── */
+#boot{position:fixed;inset:0;z-index:9999;background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  transition:opacity 0.6s ease}
+#boot.hidden{opacity:0;pointer-events:none}
+.boot-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:3.5rem;letter-spacing:0.25em;
+  background:linear-gradient(135deg,#fff 0%,#a855f7 40%,#e879f9 70%,#00f5c4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:bootGlow 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 40px #7c3aed)}
+@keyframes bootGlow{0%,100%{filter:drop-shadow(0 0 30px #7c3aed)}50%{filter:drop-shadow(0 0 60px #a855f7) drop-shadow(0 0 120px #e879f9)}}
+.boot-sub{font-size:0.75rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace}
+.boot-bar-wrap{width:240px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.boot-bar{height:100%;width:0;background:linear-gradient(90deg,#5b12d4,#a855f7,#00f5c4);border-radius:2px;
+  box-shadow:0 0 12px #a855f7;transition:width 0.4s cubic-bezier(0.4,0,0.2,1)}
+.boot-status{font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace;min-width:240px;text-align:center}
+
+/* ── CONTEXT MENU ────────────────────────────────────────── */
+#ctx-menu{position:fixed;min-width:180px;
+  background:linear-gradient(160deg,rgba(255,255,255,0.07) 0%,color-mix(in srgb,var(--void) 90%,black) 100%);
+  border:1px solid var(--glass-border);border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-md);padding:6px;
+  backdrop-filter:blur(32px) saturate(1.4);
+  box-shadow:0 16px 48px rgba(0,0,0,0.7);
+  z-index:9998;opacity:0;pointer-events:none;transform:scale(0.95);
+  transition:opacity 0.12s,transform 0.12s}
+#ctx-menu.open{opacity:1;pointer-events:all;transform:scale(1)}
+.ctx-item{padding:8px 14px;border-radius:8px;cursor:pointer;font-size:0.8rem;
+  color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:10px;transition:background 0.1s}
+.ctx-item:hover{background:color-mix(in srgb,var(--core) 20%,transparent);color:white}
+.ctx-item.danger:hover{background:rgba(244,63,94,0.15);color:var(--danger)}
+.ctx-sep{height:1px;background:rgba(255,255,255,0.07);margin:4px 0}
+
+/* ── APP STYLES ──────────────────────────────────────────── */
+
+/* Browser */
+.browser-wrap{display:flex;flex-direction:column;height:100%}
+.browser-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.3) 100%);
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.b-nav-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  background:var(--glass);border:1px solid rgba(255,255,255,0.07);border-radius:8px;
+  cursor:pointer;font-size:0.8rem;color:var(--flare);opacity:0.5;transition:all 0.15s}
+.b-nav-btn:hover{opacity:1;border-color:var(--flare);box-shadow:0 0 10px color-mix(in srgb,var(--flare) 40%,transparent)}
+.b-addr-wrap{flex:1;display:flex;align-items:center;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.4) 100%);
+  border:1px solid rgba(255,255,255,0.08);border-radius:20px;
+  padding:0 14px;height:30px;gap:8px;
+  backdrop-filter:blur(12px);transition:all 0.2s;
+  box-shadow:0 1px 0 rgba(255,255,255,0.05) inset}
+.b-addr-wrap:focus-within{border-color:var(--flare);box-shadow:0 0 0 2px color-mix(in srgb,var(--core) 20%,transparent),0 1px 0 rgba(255,255,255,0.05) inset}
+.b-lock{font-size:0.65rem;color:var(--speed);flex-shrink:0}
+.b-addr{flex:1;background:none;border:none;outline:none;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.78rem;color:var(--white);caret-color:var(--flare)}
+.b-addr::placeholder{color:rgba(255,255,255,0.25)}
+.b-go{padding:4px 14px;background:linear-gradient(135deg,var(--core),var(--flare));
+  border:none;border-top:1px solid rgba(255,255,255,0.18);border-radius:12px;
+  font-family:'Orbitron',monospace;font-size:0.55rem;font-weight:700;letter-spacing:0.12em;
+  color:white;cursor:pointer;transition:all 0.2s;flex-shrink:0;
+  box-shadow:0 0 12px color-mix(in srgb,var(--core) 50%,transparent)}
+.b-go:hover{transform:translateY(-1px);box-shadow:0 0 24px color-mix(in srgb,var(--core) 80%,transparent)}
+.b-tabs{display:flex;align-items:flex-end;padding:4px 10px 0;gap:2px;flex-shrink:0;
+  background:rgba(0,0,0,0.2);overflow-x:auto}
+.b-tab{display:flex;align-items:center;gap:6px;padding:5px 12px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+  border-bottom:none;border-radius:8px 8px 0 0;cursor:pointer;
+  font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.45);
+  white-space:nowrap;max-width:160px;user-select:none;transition:all 0.15s}
+.b-tab.active{background:color-mix(in srgb,var(--core) 20%,transparent);
+  border-color:color-mix(in srgb,var(--flare) 30%,transparent);color:var(--flare)}
+.b-tab-x{font-size:0.55rem;opacity:0.5;transition:opacity 0.1s;border-radius:50%;padding:1px 3px}
+.b-tab-x:hover{opacity:1;background:rgba(255,255,255,0.1)}
+.b-plus{padding:4px 8px;font-size:0.9rem;color:rgba(255,255,255,0.35);cursor:pointer;transition:color 0.15s}
+.b-plus:hover{color:var(--flare)}
+.b-viewport{flex:1;position:relative;background:#000}
+.b-iframe{width:100%;height:100%;border:none;background:#fff}
+.b-home{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;padding:20px}
+.b-home-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2rem,5vw,4rem);
+  background:linear-gradient(135deg,rgba(255,255,255,0.9) 0%,var(--flare) 40%,var(--pink) 70%,var(--speed) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px var(--flare));letter-spacing:0.08em;text-align:center}
+.b-search-row{display:flex;gap:8px;width:100%;max-width:500px}
+.b-search{flex:1;padding:10px 18px;background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);border-radius:24px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--white);
+  outline:none;transition:all 0.2s;caret-color:var(--flare)}
+.b-search:focus{border-color:var(--flare);box-shadow:0 0 0 3px color-mix(in srgb,var(--core) 20%,transparent)}
+.b-search::placeholder{color:rgba(255,255,255,0.2)}
+.b-ql{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:500px}
+.b-ql-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;
+  cursor:pointer;transition:all 0.18s;font-size:0.9rem}
+.b-ql-item:hover{background:color-mix(in srgb,var(--core) 14%,transparent);
+  border-color:color-mix(in srgb,var(--flare) 30%,transparent);transform:translateY(-2px)}
+.b-ql-label{font-size:0.6rem;color:rgba(255,255,255,0.4);font-weight:600}
+
+/* Terminal */
+.terminal-wrap{display:flex;flex-direction:column;height:100%;background:rgba(0,0,0,0.85)}
+.term-output{flex:1;overflow-y:auto;padding:14px;font-family:'DM Mono',monospace;font-size:0.8rem;line-height:1.7;color:#e5e5e5}
+.term-output::-webkit-scrollbar{width:6px}
+.term-output::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+.term-line{margin:0}
+.term-prompt{color:var(--speed)}
+.term-cmd{color:var(--white)}
+.term-out{color:rgba(255,255,255,0.6)}
+.term-err{color:var(--danger)}
+.term-info{color:var(--flare)}
+.term-input-row{display:flex;align-items:center;padding:8px 14px;
+  border-top:1px solid rgba(255,255,255,0.07);background:rgba(0,0,0,0.6);flex-shrink:0}
+.term-prompt-label{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--speed);white-space:nowrap;flex-shrink:0}
+.term-input{flex:1;background:none;border:none;outline:none;
+  font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--white);caret-color:var(--speed)}
+
+/* Files */
+.files-wrap{display:flex;height:100%}
+.files-sidebar{width:160px;border-right:1px solid rgba(255,255,255,0.07);
+  padding:12px 8px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;
+  background:rgba(0,0,0,0.2)}
+.fs-section{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);padding:8px 8px 4px;font-weight:600}
+.fs-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;
+  cursor:pointer;font-size:0.78rem;color:rgba(255,255,255,0.6);transition:all 0.15s}
+.fs-item:hover{background:rgba(255,255,255,0.07);color:white}
+.fs-item.active{background:color-mix(in srgb,var(--core) 20%,transparent);color:var(--flare)}
+.files-main{flex:1;overflow-y:auto;padding:16px}
+.files-main::-webkit-scrollbar{width:6px}
+.files-main::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+.file-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;
+  border-radius:10px;cursor:pointer;transition:all 0.15s;border:1px solid transparent}
+.file-item:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.08)}
+.file-item:active{background:color-mix(in srgb,var(--core) 15%,transparent)}
+.file-icon{font-size:2rem}
+.file-name{font-size:0.65rem;color:rgba(255,255,255,0.65);text-align:center;word-break:break-word;line-height:1.3}
+
+/* Notes */
+.notes-wrap{display:flex;flex-direction:column;height:100%}
+.notes-toolbar{display:flex;align-items:center;gap:4px;padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:rgba(0,0,0,0.2)}
+.note-btn{padding:4px 10px;border-radius:8px;font-size:0.75rem;cursor:pointer;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.65);transition:all 0.15s;font-weight:600}
+.note-btn:hover{background:rgba(255,255,255,0.1);color:white}
+.note-sep{width:1px;height:20px;background:rgba(255,255,255,0.08);margin:0 2px}
+.notes-editor{flex:1;padding:20px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.88rem;line-height:1.7;color:var(--white);
+  background:transparent;border:none;outline:none;resize:none;width:100%}
+.notes-editor::placeholder{color:rgba(255,255,255,0.15)}
+.notes-editor::-webkit-scrollbar{width:6px}
+.notes-editor::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+
+/* Settings App */
+.settings-wrap{display:flex;height:100%}
+.settings-nav{width:180px;border-right:1px solid rgba(255,255,255,0.07);
+  padding:12px 8px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;
+  background:rgba(0,0,0,0.2)}
+.sn-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+  cursor:pointer;font-size:0.8rem;color:rgba(255,255,255,0.6);transition:all 0.15s}
+.sn-item:hover{background:rgba(255,255,255,0.07);color:white}
+.sn-item.active{background:color-mix(in srgb,var(--core) 20%,transparent);color:var(--flare)}
+.settings-content{flex:1;overflow-y:auto;padding:20px}
+.settings-content::-webkit-scrollbar{width:6px}
+.settings-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.s-section{margin-bottom:24px}
+.s-section-title{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:color-mix(in srgb,var(--flare) 55%,transparent);margin-bottom:12px;font-weight:600}
+.s-card{background:linear-gradient(160deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.2) 100%);
+  border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md);padding:14px 16px;margin-bottom:8px}
+.s-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.s-label{font-size:0.8rem;color:rgba(255,255,255,0.7)}
+.s-sub{font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:2px}
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.theme-swatch{width:100%;aspect-ratio:1;border-radius:10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  border:2px solid transparent;transition:all 0.2s;position:relative}
+.theme-swatch.active{border-color:var(--flare);box-shadow:0 0 16px color-mix(in srgb,var(--flare) 50%,transparent)}
+.theme-swatch:hover{transform:scale(1.08)}
+.theme-swatch-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+  font-size:0.55rem;color:rgba(255,255,255,0.5);white-space:nowrap}
+
+/* Clock */
+.clock-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;gap:12px;padding:20px}
+.analog-clock{position:relative}
+.clock-svg{filter:drop-shadow(0 0 24px color-mix(in srgb,var(--flare) 50%,transparent))}
+.dig-time{font-family:'Orbitron',monospace;font-weight:900;font-size:2.5rem;
+  background:linear-gradient(135deg,var(--white),var(--flare));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:0.15em;text-shadow:none}
+.dig-date{font-size:0.78rem;letter-spacing:0.18em;color:rgba(255,255,255,0.4);text-transform:uppercase}
+.dig-day{font-size:0.68rem;letter-spacing:0.1em;color:color-mix(in srgb,var(--speed) 70%,transparent)}
+
+/* ── RAINBOW THEME (full cycling) ───────────────────────── */
+@keyframes rbColor{0%{color:#ff6ec7}14%{color:#ff9a00}28%{color:#ffe600}42%{color:#00ff88}57%{color:#00e5ff}71%{color:#7b61ff}85%{color:#ff3cac}100%{color:#ff6ec7}}
+@keyframes rbGradText{0%{filter:drop-shadow(0 0 16px #ff6ec7) drop-shadow(0 0 32px #7b61ff)}14%{filter:drop-shadow(0 0 16px #ff9a00) drop-shadow(0 0 32px #ffe600)}28%{filter:drop-shadow(0 0 16px #ffe600) drop-shadow(0 0 32px #00ff88)}42%{filter:drop-shadow(0 0 16px #00ff88) drop-shadow(0 0 32px #00e5ff)}57%{filter:drop-shadow(0 0 16px #00e5ff) drop-shadow(0 0 32px #7b61ff)}71%{filter:drop-shadow(0 0 16px #7b61ff) drop-shadow(0 0 32px #ff3cac)}85%{filter:drop-shadow(0 0 16px #ff3cac) drop-shadow(0 0 32px #ff6ec7)}100%{filter:drop-shadow(0 0 16px #ff6ec7) drop-shadow(0 0 32px #7b61ff)}}
+@keyframes rbBg{0%{background:linear-gradient(135deg,#ff6ec7,#7b61ff)}14%{background:linear-gradient(135deg,#ff9a00,#ff6ec7)}28%{background:linear-gradient(135deg,#ffe600,#ff9a00)}42%{background:linear-gradient(135deg,#00ff88,#ffe600)}57%{background:linear-gradient(135deg,#00e5ff,#00ff88)}71%{background:linear-gradient(135deg,#7b61ff,#00e5ff)}85%{background:linear-gradient(135deg,#ff3cac,#7b61ff)}100%{background:linear-gradient(135deg,#ff6ec7,#7b61ff)}}
+@keyframes rbBorder{0%{border-color:rgba(255,110,199,0.5);box-shadow:0 0 14px rgba(255,110,199,0.3)}14%{border-color:rgba(255,154,0,0.5);box-shadow:0 0 14px rgba(255,154,0,0.3)}28%{border-color:rgba(255,230,0,0.5);box-shadow:0 0 14px rgba(255,230,0,0.3)}42%{border-color:rgba(0,255,136,0.5);box-shadow:0 0 14px rgba(0,255,136,0.3)}57%{border-color:rgba(0,229,255,0.5);box-shadow:0 0 14px rgba(0,229,255,0.3)}71%{border-color:rgba(123,97,255,0.5);box-shadow:0 0 14px rgba(123,97,255,0.3)}85%{border-color:rgba(255,60,172,0.5);box-shadow:0 0 14px rgba(255,60,172,0.3)}100%{border-color:rgba(255,110,199,0.5);box-shadow:0 0 14px rgba(255,110,199,0.3)}}
+@keyframes rbBlobColor1{0%{background:radial-gradient(circle,#ff3cac 0%,transparent 70%)}20%{background:radial-gradient(circle,#ff9a00 0%,transparent 70%)}40%{background:radial-gradient(circle,#00ff88 0%,transparent 70%)}60%{background:radial-gradient(circle,#00e5ff 0%,transparent 70%)}80%{background:radial-gradient(circle,#7b61ff 0%,transparent 70%)}100%{background:radial-gradient(circle,#ff3cac 0%,transparent 70%)}}
+@keyframes rbBlobColor2{0%{background:radial-gradient(circle,#7b61ff 0%,transparent 70%)}20%{background:radial-gradient(circle,#ff3cac 0%,transparent 70%)}40%{background:radial-gradient(circle,#ff9a00 0%,transparent 70%)}60%{background:radial-gradient(circle,#ffe600 0%,transparent 70%)}80%{background:radial-gradient(circle,#00ff88 0%,transparent 70%)}100%{background:radial-gradient(circle,#7b61ff 0%,transparent 70%)}}
+@keyframes rbBlobColor3{0%{background:radial-gradient(circle,#00e5ff 0%,transparent 70%)}20%{background:radial-gradient(circle,#7b61ff 0%,transparent 70%)}40%{background:radial-gradient(circle,#ff3cac 0%,transparent 70%)}60%{background:radial-gradient(circle,#ff9a00 0%,transparent 70%)}80%{background:radial-gradient(circle,#ffe600 0%,transparent 70%)}100%{background:radial-gradient(circle,#00e5ff 0%,transparent 70%)}}
+
+body.t-rainbow .tb-logo{animation:rbBg 6s linear infinite}
+body.t-rainbow .win-titlebar{animation:none}
+body.t-rainbow .window.focused{animation:rbBorder 6s linear infinite}
+body.t-rainbow .blob-1{animation:blob1 22s ease-in-out infinite,rbBlobColor1 6s linear infinite}
+body.t-rainbow .blob-2{animation:blob2 18s ease-in-out infinite,rbBlobColor2 6s linear infinite}
+body.t-rainbow .blob-3{animation:blob3 26s ease-in-out infinite,rbBlobColor3 6s linear infinite}
 </style>
 </head>
 <body class="t-normal">
-<div class="bg-layer">
+
+<!-- Background -->
+<div id="bg">
   <div class="blob blob-1"></div><div class="blob blob-2"></div>
   <div class="blob blob-3"></div><div class="blob blob-4"></div>
   <div class="blob blob-5"></div>
@@ -337,393 +470,1102 @@ body.t-rainbow .settings-dropdown { animation: rbBorder 6s linear infinite; }
 <div class="vignette"></div>
 <canvas id="canvas"></canvas>
 
-<div class="init-screen" id="initScreen">
-  <div class="init-logo">OBLIVION</div>
-  <div class="init-bar"><div class="init-fill" id="initFill"></div></div>
-  <div class="init-status" id="initStatus">Booting Void Engine...</div>
+<!-- Desktop -->
+<div id="desktop">
+  <div class="desktop-icons" id="desktop-icons"></div>
 </div>
 
-<div class="app" style="opacity:0;transition:opacity 0.6s;" id="appShell">
-  <div class="topbar">
-    <div class="logo">Oblivion</div>
-    <div class="sep"></div>
-    <div class="nav-btns">
-      <div class="nav-btn" onclick="navBack()">&#8592;</div>
-      <div class="nav-btn" onclick="navFwd()">&#8594;</div>
-      <div class="nav-btn" id="btnRefresh" onclick="navRefresh()">&#8635;</div>
-      <div class="nav-btn" onclick="goHome()">&#8962;</div>
-    </div>
-    <div class="addr-wrap">
-      <span class="lock" id="lockIcon">&#128274;</span>
-      <input class="addr-input" id="addrInput" type="text" placeholder="Enter URL or search..." spellcheck="false" autocomplete="off">
-      <button class="go-btn" onclick="navigate()">GO &#9658;</button>
-    </div>
-    <div class="settings-wrap" id="settingsWrap">
-      <div class="settings-btn" id="settingsBtn" onclick="toggleSettings()">&#9881;</div>
-      <div class="settings-dropdown" id="settingsDropdown">
+<!-- Window container -->
+<div id="win-container" style="position:fixed;inset:0;bottom:var(--bar-h);z-index:100;pointer-events:none"></div>
 
-        <div class="settings-section-label">Search Engine</div>
-        <div class="engine-options">
-          <div class="engine-option active" id="eng-google" onclick="setEngine('google')">
-            <div class="engine-icon">&#128269;</div>
-            <div class="engine-info"><div class="engine-name">Google</div><div class="engine-desc">google.com/search</div></div>
-            <div class="engine-check">&#10003;</div>
-          </div>
-          <div class="engine-option" id="eng-brave" onclick="setEngine('brave')">
-            <div class="engine-icon">&#129293;</div>
-            <div class="engine-info"><div class="engine-name">Brave</div><div class="engine-desc">search.brave.com</div></div>
-            <div class="engine-check">&#10003;</div>
-          </div>
-          <div class="engine-option" id="eng-startpage" onclick="setEngine('startpage')">
-            <div class="engine-icon">&#128274;</div>
-            <div class="engine-info"><div class="engine-name">Startpage</div><div class="engine-desc">startpage.com — private</div></div>
-            <div class="engine-check">&#10003;</div>
-          </div>
-        </div>
-
-        <div class="settings-section-label" style="margin-top:14px">Theme</div>
-        <div class="engine-options" id="themeOptions">
-          <div class="engine-option active" id="theme-normal" onclick="setTheme('normal')"><div class="engine-icon">&#9676;</div><div class="engine-info"><div class="engine-name">Normal</div><div class="engine-desc">Deep void purple</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-dark" onclick="setTheme('dark')"><div class="engine-icon">&#9899;</div><div class="engine-info"><div class="engine-name">Dark</div><div class="engine-desc">Clean monochrome</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-sky" onclick="setTheme('sky')"><div class="engine-icon">&#127774;</div><div class="engine-info"><div class="engine-name">Sky</div><div class="engine-desc">Ocean blue glow</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-ember" onclick="setTheme('ember')"><div class="engine-icon">&#128293;</div><div class="engine-info"><div class="engine-name">Ember</div><div class="engine-desc">Molten amber fire</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-rose" onclick="setTheme('rose')"><div class="engine-icon">&#127801;</div><div class="engine-info"><div class="engine-name">Rose</div><div class="engine-desc">Neon pink bloom</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-forest" onclick="setTheme('forest')"><div class="engine-icon">&#127807;</div><div class="engine-info"><div class="engine-name">Forest</div><div class="engine-desc">Electric green mist</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-crimson" onclick="setTheme('crimson')"><div class="engine-icon">&#128997;</div><div class="engine-info"><div class="engine-name">Crimson</div><div class="engine-desc">Blood red pulse</div></div><div class="engine-check">&#10003;</div></div>
-          <div class="engine-option" id="theme-rainbow" onclick="setTheme('rainbow')"><div class="engine-icon">&#127752;</div><div class="engine-info"><div class="engine-name">Rainbow</div><div class="engine-desc">Full spectrum cycle</div></div><div class="engine-check">&#10003;</div></div>
-        </div>
-
-      </div>
-    </div>
-    <div class="progress" id="progress"></div>
+<!-- Taskbar -->
+<div id="taskbar">
+  <div class="tb-left">
+    <div class="tb-logo" id="tb-logo" onclick="toggleStartMenu()">VO</div>
+    <div class="tb-sep"></div>
   </div>
-
-  <div class="tabs" id="tabsBar">
-    <div class="plus-btn" onclick="newTab()">&#xFF0B;</div>
-  </div>
-
-  <div class="viewport">
-    <div class="home" id="homeScreen">
-      <div class="home-logo-wrap">
-        <div class="home-logo-glow"></div>
-        <div class="home-logo">Oblivion</div>
-      </div>
-      <div class="home-sub">Void Engine — Custom Built</div>
-      <div class="home-engine-badge"><div class="engine-dot"></div>VOID ENGINE v1.0 — ACTIVE</div>
-      <div class="home-stats">
-        <div class="hstat"><div class="hstat-dot"></div><span class="hstat-val" id="pingDisp">--</span><span class="hstat-lbl">Latency</span></div>
-        <div class="hstat"><div class="hstat-dot" style="animation-delay:0.5s"></div><span class="hstat-val" style="color:var(--flare);text-shadow:0 0 12px var(--flare)" id="swStat">Void</span><span class="hstat-lbl">Engine</span></div>
-        <div class="hstat"><div class="hstat-dot" style="animation-delay:1s"></div><span class="hstat-val" style="color:var(--pink);text-shadow:0 0 12px var(--pink)">Fastest</span><span class="hstat-lbl">Proxy Today</span></div>
-      </div>
-      <div class="quicknav">
-        <div class="qn-item" onclick="loadUrl('https://google.com')"><div class="qn-icon">&#128269;</div><div class="qn-lbl">Google</div></div>
-        <div class="qn-item" onclick="loadUrl('https://youtube.com')"><div class="qn-icon">&#9654;</div><div class="qn-lbl">YouTube</div></div>
-        <div class="qn-item" onclick="loadUrl('https://reddit.com')"><div class="qn-icon">&#128126;</div><div class="qn-lbl">Reddit</div></div>
-        <div class="qn-item" onclick="loadUrl('https://twitter.com')"><div class="qn-icon">&#128038;</div><div class="qn-lbl">Twitter</div></div>
-        <div class="qn-item" onclick="loadUrl('https://github.com')"><div class="qn-icon">&#128025;</div><div class="qn-lbl">GitHub</div></div>
-        <div class="qn-item" onclick="loadUrl('https://twitch.tv')"><div class="qn-icon">&#127918;</div><div class="qn-lbl">Twitch</div></div>
-        <div class="qn-item" onclick="loadUrl('https://discord.com/app')"><div class="qn-icon">&#128172;</div><div class="qn-lbl">Discord</div></div>
-        <div class="qn-item" onclick="loadUrl('https://wikipedia.org')"><div class="qn-icon">&#128214;</div><div class="qn-lbl">Wikipedia</div></div>
-      </div>
+  <div class="tb-mid" id="tb-mid"></div>
+  <div class="tb-right">
+    <div class="tb-sep"></div>
+    <div class="tb-icon-btn" id="btn-notif" onclick="toggleTrayPopup('notif-tray')" title="Notifications">🔔</div>
+    <div class="tb-icon-btn" id="btn-wifi"  onclick="toggleTrayPopup('sys-tray')" title="System">📶</div>
+    <div class="tb-icon-btn" onclick="openApp('settings')" title="Settings">⚙️</div>
+    <div class="tb-tray-btn" onclick="toggleTrayPopup('notif-tray')">
+      <div class="tb-clock-time" id="clock-time">00:00</div>
+      <div class="tb-clock-date" id="clock-date">--</div>
     </div>
-    <iframe class="browser-frame" id="frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
   </div>
+</div>
 
-  <div class="statusbar">
-    <div class="sl"><div class="sdot"></div><span id="statusTxt">Ready — Void Engine Active</span></div>
-    <div class="sr"><span>Void Engine</span><span>No Logs</span><span>No Trace</span><span class="sping" id="sPing">--</span></div>
+<!-- Start Menu -->
+<div id="start-menu">
+  <div class="sm-title">VOID OS</div>
+  <div class="sm-grid" id="sm-grid"></div>
+  <div class="sm-sep"></div>
+  <div class="sm-footer">
+    <div class="sm-user">
+      <div class="sm-avatar">👤</div>
+      <div class="sm-username">Void User</div>
+    </div>
+    <div class="sm-power" onclick="confirmShutdown()" title="Shut down">⏻</div>
   </div>
+</div>
+
+<!-- System Tray popup -->
+<div class="tray-popup" id="sys-tray">
+  <div class="tp-label">System</div>
+  <div class="tp-row">
+    <div class="tp-row-label">🔊 Volume</div>
+    <input type="range" class="tp-slider" id="vol-slider" min="0" max="100" value="75">
+  </div>
+  <div class="tp-row">
+    <div class="tp-row-label">☀️ Brightness</div>
+    <input type="range" class="tp-slider" id="bright-slider" min="20" max="100" value="100">
+  </div>
+  <div class="tp-sep"></div>
+  <div class="tp-toggle-row">
+    <div class="tp-toggle-label">📶 Wi-Fi</div>
+    <div class="tp-toggle on" onclick="this.classList.toggle('on')"></div>
+  </div>
+  <div class="tp-toggle-row">
+    <div class="tp-toggle-label">🔵 Bluetooth</div>
+    <div class="tp-toggle" onclick="this.classList.toggle('on')"></div>
+  </div>
+  <div class="tp-toggle-row">
+    <div class="tp-toggle-label">✈️ Airplane Mode</div>
+    <div class="tp-toggle" onclick="this.classList.toggle('on')"></div>
+  </div>
+</div>
+
+<!-- Notifications popup -->
+<div class="tray-popup" id="notif-tray" style="width:320px">
+  <div class="tp-label">Notifications</div>
+  <div style="text-align:center;padding:20px;color:rgba(255,255,255,0.2);font-size:0.8rem">No new notifications</div>
+</div>
+
+<!-- Context Menu -->
+<div id="ctx-menu">
+  <div class="ctx-item" onclick="openApp('browser')">🌐 Open Browser</div>
+  <div class="ctx-item" onclick="openApp('files')">📁 Open Files</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="openApp('settings')">⚙️ Display Settings</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" onclick="confirmShutdown()">⏻ Shut Down</div>
+</div>
+
+<!-- Boot screen -->
+<div id="boot">
+  <div class="boot-logo">VOID OS</div>
+  <div class="boot-sub">Powered by Void Engine</div>
+  <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
+  <div class="boot-status" id="boot-status">Initializing kernel...</div>
 </div>
 
 <script>
-/* =====================================================================
-   THEME SYSTEM
-===================================================================== */
+// ═══════════════════════════════════════════════════════════
+//  THEME SYSTEM
+// ═══════════════════════════════════════════════════════════
 const THEME_HUES = {
-  normal:  [260, 290, 320],
-  dark:    [0,   0,   180],
-  sky:     [200, 210, 185],
-  ember:   [30,  40,  20],
-  rose:    [320, 340, 300],
-  forest:  [130, 145, 115],
-  crimson: [0,   10,  350],
-  rainbow: [0,   120,  240],
+  normal:[260,290,320], dark:[220,230,210], sky:[195,210,170],
+  ember:[25,40,50], rose:[320,340,350], forest:[140,120,165],
+  crimson:[0,10,350], rainbow:[0,120,240]
 };
-
 const THEMES = Object.keys(THEME_HUES);
-let currentTheme = localStorage.getItem('oblivion-theme') || 'normal';
+let currentTheme = localStorage.getItem('void-theme') || 'normal';
 
 function setTheme(id) {
-  THEMES.forEach(t => {
-    document.body.classList.remove('t-' + t);
-    const el = document.getElementById('theme-' + t);
-    if (el) el.classList.remove('active');
-  });
-  document.body.classList.add('t-' + id);
-  const active = document.getElementById('theme-' + id);
-  if (active) active.classList.add('active');
+  THEMES.forEach(t => document.body.classList.remove('t-'+t));
+  document.body.classList.add('t-'+id);
   currentTheme = id;
-  localStorage.setItem('oblivion-theme', id);
-  // Update particle hues
+  localStorage.setItem('void-theme', id);
   updateParticleHues();
-  closeSettings();
+  // update settings UI
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.theme === id);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PARTICLE SYSTEM
+// ═══════════════════════════════════════════════════════════
+const canvas = document.getElementById('canvas');
+const ctx2 = canvas.getContext('2d');
+let W, H;
+const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
+addEventListener('resize', resize); resize();
+
+function initHues() { return THEME_HUES[currentTheme] || [260,290,320]; }
+
+const ptcls = Array.from({length:200}, () => {
+  const h = initHues();
+  return {x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    vx:(Math.random()-0.5)*0.35, vy:(Math.random()-0.5)*0.35,
+    r:Math.random()*2+0.5, hue:h[0]+(Math.random()-0.5)*50,
+    a:Math.random()*0.6+0.2, tw:Math.random()*Math.PI*2, tws:(Math.random()-0.5)*0.02, rainbowDrift:0};
+});
+const orbs = Array.from({length:12}, () => {
+  const h = initHues();
+  return {x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    vx:(Math.random()-0.5)*0.15, vy:(Math.random()-0.5)*0.15,
+    r:Math.random()*40+20, hue:h[1]+(Math.random()-0.5)*30,
+    a:Math.random()*0.12+0.04, tw:Math.random()*Math.PI*2, tws:(Math.random()-0.5)*0.01, rainbowDrift:0};
+});
+const streaks = Array.from({length:14}, ()=>newStreak());
+function newStreak() {
+  const h = initHues();
+  return {x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    angle:Math.random()*Math.PI*2, speed:Math.random()*3+2,
+    len:Math.random()*80+40, hue:h[2]+(Math.random()-0.5)*30,
+    a:Math.random()*0.4+0.1, life:0, maxLife:Math.random()*80+40, rainbowDrift:0};
 }
 
 function updateParticleHues() {
-  if (currentTheme === 'rainbow') {
-    // Spread particles across full spectrum
-    ptcls.forEach((p, i)   => { p.hue = (i / ptcls.length) * 360; p.rainbowDrift = Math.random() * 0.8 + 0.3; });
-    orbs.forEach((o, i)    => { o.hue = (i / orbs.length) * 360; o.rainbowDrift = Math.random() * 0.5 + 0.2; });
-    streaks.forEach((s, i) => { s.hue = (i / streaks.length) * 360; s.rainbowDrift = Math.random() * 1.2 + 0.5; });
+  if (currentTheme==='rainbow') {
+    ptcls.forEach((p,i) => { p.hue=(i/ptcls.length)*360; p.rainbowDrift=Math.random()*0.8+0.3; });
+    orbs.forEach((o,i) => { o.hue=(i/orbs.length)*360; o.rainbowDrift=Math.random()*0.5+0.2; });
+    streaks.forEach((s,i) => { s.hue=(i/streaks.length)*360; s.rainbowDrift=Math.random()*1.2+0.5; });
     return;
   }
-  const hues = THEME_HUES[currentTheme] || [260, 290, 320];
-  ptcls.forEach(p   => { p.hue = hues[0] + (Math.random() - 0.5) * 40; p.rainbowDrift = 0; });
-  orbs.forEach(o    => { o.hue = hues[1] + (Math.random() - 0.5) * 30; o.rainbowDrift = 0; });
-  streaks.forEach(s => { s.hue = hues[2] + (Math.random() - 0.5) * 30; s.rainbowDrift = 0; });
+  const hues = THEME_HUES[currentTheme]||[260,290,320];
+  ptcls.forEach(p => { p.hue=hues[0]+(Math.random()-0.5)*40; p.rainbowDrift=0; });
+  orbs.forEach(o => { o.hue=hues[1]+(Math.random()-0.5)*30; o.rainbowDrift=0; });
+  streaks.forEach(s => { s.hue=hues[2]+(Math.random()-0.5)*30; s.rainbowDrift=0; });
 }
 
-/* =====================================================================
-   PARTICLE SYSTEM
-===================================================================== */
-const canvas = document.getElementById('canvas');
-const ctx    = canvas.getContext('2d');
-let W, H, mouse = {x: -9999, y: -9999};
-const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
-resize(); window.addEventListener('resize', resize);
-window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+let mx=W/2, my=H/2;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 
-function rndHue(base, spread) { return base + (Math.random() - 0.5) * spread; }
-function initHues() { return THEME_HUES[currentTheme] || [260, 290, 320]; }
-
-// 200 particles
-const ptcls = Array.from({length: 200}, () => {
-  const h = initHues();
-  return { x: Math.random()*3000, y: Math.random()*3000, r: Math.random()*1.8+0.2, vx: (Math.random()-0.5)*0.3, vy: -(Math.random()*0.45+0.05), hue: rndHue(h[0],40), tw: Math.random()*Math.PI*2, tws: Math.random()*0.012+0.003 };
-});
-
-// 12 glowing orbs
-const orbs = Array.from({length: 12}, () => {
-  const h = initHues();
-  return { x: Math.random()*3000, y: Math.random()*3000, r: Math.random()*4+2, vx: (Math.random()-0.5)*0.12, vy: -(Math.random()*0.18+0.02), hue: rndHue(h[1],30), tw: Math.random()*Math.PI*2, tws: Math.random()*0.008+0.002 };
-});
-
-// 14 streaks
-function newStreak() {
-  const h = initHues();
-  return { x: Math.random()*2000, y: Math.random()*2000, len: Math.random()*120+30, speed: Math.random()*3+1, angle: -Math.PI/2+(Math.random()-0.5)*0.6, life: 0, maxLife: Math.random()*80+30, hue: rndHue(h[2],30) };
-}
-const streaks = Array.from({length: 14}, newStreak);
-
-(function animP() {
-  ctx.clearRect(0, 0, W, H);
-
-  // Mouse connection lines to nearby particles
-  for (const p of ptcls) {
-    const dx = p.x - mouse.x, dy = p.y - mouse.y;
-    const d = Math.sqrt(dx*dx + dy*dy);
-    if (d < 140) {
-      const alpha = (1 - d/140) * 0.55;
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      const g = ctx.createLinearGradient(mouse.x, mouse.y, p.x, p.y);
-      g.addColorStop(0, `hsla(${p.hue},90%,72%,0.9)`);
-      g.addColorStop(1, `hsla(${p.hue},90%,72%,0)`);
-      ctx.strokeStyle = g;
-      ctx.lineWidth = 0.8;
-      ctx.shadowBlur = 4;
-      ctx.shadowColor = `hsl(${p.hue},90%,72%)`;
-      ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(p.x, p.y); ctx.stroke();
-      ctx.restore();
-    }
-  }
-
-  // Particle-to-particle connection lines
-  for (let i = 0; i < ptcls.length; i++) {
-    for (let j = i+1; j < ptcls.length; j++) {
-      const dx = ptcls[i].x-ptcls[j].x, dy = ptcls[i].y-ptcls[j].y;
-      const d = Math.sqrt(dx*dx+dy*dy);
-      if (d < 70) {
-        ctx.save();
-        ctx.globalAlpha = (1-d/70)*0.07;
-        ctx.strokeStyle = `hsl(${ptcls[i].hue},80%,65%)`;
-        ctx.lineWidth = 0.4;
-        ctx.beginPath(); ctx.moveTo(ptcls[i].x,ptcls[i].y); ctx.lineTo(ptcls[j].x,ptcls[j].y); ctx.stroke();
-        ctx.restore();
-      }
-    }
-  }
-
-  // Streaks
-  for (const s of streaks) {
-    s.x += Math.cos(s.angle)*s.speed; s.y += Math.sin(s.angle)*s.speed; s.life++;
-    if(s.rainbowDrift) s.hue = (s.hue + s.rainbowDrift) % 360;
-    if (s.life > s.maxLife || s.x < 0 || s.x > W || s.y < 0 || s.y > H) {
-      Object.assign(s, newStreak()); s.x = Math.random()*W; s.y = Math.random()*H;
-    }
-    const t = s.life/s.maxLife, a = 0.18 * Math.sin(t*Math.PI);
-    ctx.save(); ctx.globalAlpha = a;
-    const g = ctx.createLinearGradient(s.x,s.y, s.x-Math.cos(s.angle)*s.len, s.y-Math.sin(s.angle)*s.len);
-    g.addColorStop(0,`hsl(${s.hue},90%,75%)`); g.addColorStop(1,'transparent');
-    ctx.strokeStyle = g; ctx.lineWidth = 1; ctx.shadowBlur = 5; ctx.shadowColor = `hsl(${s.hue},90%,70%)`;
-    ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x-Math.cos(s.angle)*s.len, s.y-Math.sin(s.angle)*s.len); ctx.stroke();
-    ctx.restore();
-  }
-
+function drawFrame() {
+  ctx2.clearRect(0,0,W,H);
   // Orbs
   for (const o of orbs) {
     o.x+=o.vx; o.y+=o.vy; o.tw+=o.tws;
-    if(o.rainbowDrift) o.hue = (o.hue + o.rainbowDrift) % 360;
-    if(o.y<-10){o.y=H+10;o.x=Math.random()*W;} if(o.x<-10)o.x=W+10; if(o.x>W+10)o.x=-10;
-    const mdx=o.x-mouse.x,mdy=o.y-mouse.y,md=Math.sqrt(mdx*mdx+mdy*mdy);
-    if(md<160){const f=(160-md)/160*0.7;o.x+=mdx/md*f;o.y+=mdy/md*f;}
-    ctx.save(); ctx.globalAlpha=0.4+Math.sin(o.tw)*0.3;
-    const rg=ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r*4);
-    rg.addColorStop(0,`hsla(${o.hue},90%,80%,1)`); rg.addColorStop(1,'transparent');
-    ctx.fillStyle=rg; ctx.shadowBlur=22; ctx.shadowColor=`hsl(${o.hue},90%,70%)`;
-    ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2); ctx.fill();
-    ctx.restore();
+    if(o.rainbowDrift) o.hue=(o.hue+o.rainbowDrift)%360;
+    if(o.x<-100)o.x=W+100; if(o.x>W+100)o.x=-100;
+    if(o.y<-100)o.y=H+100; if(o.y>H+100)o.y=-100;
+    const pulse=Math.sin(o.tw)*0.15+0.85;
+    const g=ctx2.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r*pulse*2);
+    g.addColorStop(0,`hsla(${o.hue},100%,70%,${o.a})`);
+    g.addColorStop(1,'transparent');
+    ctx2.beginPath(); ctx2.arc(o.x,o.y,o.r*pulse*2,0,Math.PI*2);
+    ctx2.fillStyle=g; ctx2.fill();
   }
-
   // Particles
   for (const p of ptcls) {
     p.x+=p.vx; p.y+=p.vy; p.tw+=p.tws;
-    if(p.rainbowDrift) p.hue = (p.hue + p.rainbowDrift) % 360;
-    if(p.y<-5){p.y=H+5;p.x=Math.random()*W;} if(p.x<-5)p.x=W+5; if(p.x>W+5)p.x=-5;
-    const mdx=p.x-mouse.x,mdy=p.y-mouse.y,md=Math.sqrt(mdx*mdx+mdy*mdy);
-    if(md<120){const f=(120-md)/120*0.55;p.x+=mdx/md*f;p.y+=mdy/md*f;}
-    ctx.save();
-    ctx.globalAlpha=0.16+Math.sin(p.tw)*0.16;
-    ctx.fillStyle=`hsl(${p.hue},85%,72%)`;
-    ctx.shadowBlur=7; ctx.shadowColor=ctx.fillStyle;
-    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-    ctx.restore();
+    if(p.rainbowDrift) p.hue=(p.hue+p.rainbowDrift)%360;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    const dx=p.x-mx, dy=p.y-my, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<120){p.x+=dx/d*0.8; p.y+=dy/d*0.8;}
+    const tw=Math.sin(p.tw)*0.3+0.7;
+    ctx2.beginPath(); ctx2.arc(p.x,p.y,p.r*tw,0,Math.PI*2);
+    ctx2.fillStyle=`hsla(${p.hue},100%,75%,${p.a*tw})`;
+    ctx2.fill();
   }
+  // Connection lines from mouse
+  for (const p of ptcls) {
+    const dx=p.x-mx,dy=p.y-my,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<140){
+      const g=ctx2.createLinearGradient(mx,my,p.x,p.y);
+      g.addColorStop(0,`hsla(${p.hue},100%,75%,0.35)`);
+      g.addColorStop(1,`hsla(${p.hue},100%,75%,0)`);
+      ctx2.beginPath(); ctx2.moveTo(mx,my); ctx2.lineTo(p.x,p.y);
+      ctx2.strokeStyle=g; ctx2.lineWidth=0.6; ctx2.stroke();
+    }
+  }
+  // Streaks
+  for (let i=0;i<streaks.length;i++) {
+    const s=streaks[i];
+    s.x+=Math.cos(s.angle)*s.speed; s.y+=Math.sin(s.angle)*s.speed; s.life++;
+    if(s.rainbowDrift) s.hue=(s.hue+s.rainbowDrift)%360;
+    if(s.life>s.maxLife || s.x<-200||s.x>W+200||s.y<-200||s.y>H+200) {
+      streaks[i]=newStreak(); continue;
+    }
+    const prog=s.life/s.maxLife;
+    const fade=prog<0.2?prog/0.2:prog>0.8?(1-prog)/0.2:1;
+    const g=ctx2.createLinearGradient(s.x,s.y,s.x-Math.cos(s.angle)*s.len,s.y-Math.sin(s.angle)*s.len);
+    g.addColorStop(0,`hsla(${s.hue},100%,80%,${s.a*fade})`);
+    g.addColorStop(1,'transparent');
+    ctx2.beginPath(); ctx2.moveTo(s.x,s.y);
+    ctx2.lineTo(s.x-Math.cos(s.angle)*s.len,s.y-Math.sin(s.angle)*s.len);
+    ctx2.strokeStyle=g; ctx2.lineWidth=1.5; ctx2.stroke();
+  }
+  requestAnimationFrame(drawFrame);
+}
 
-  requestAnimationFrame(animP);
-})();
-
-/* =====================================================================
-   SETTINGS
-===================================================================== */
-const ENGINES = {
-  google:    q => 'https://www.google.com/search?q='+encodeURIComponent(q),
-  brave:     q => 'https://search.brave.com/search?q='+encodeURIComponent(q),
-  startpage: q => 'https://www.startpage.com/search?q='+encodeURIComponent(q),
+// ═══════════════════════════════════════════════════════════
+//  APP DEFINITIONS
+// ═══════════════════════════════════════════════════════════
+const APPS = {
+  browser: { name:'Oblivion', icon:'🌐', color:'#5b12d4',
+    defaultSize:[820,560], minSize:[500,340], pinned:true },
+  terminal:{ name:'Terminal', icon:'⬛', color:'#00f5c4',
+    defaultSize:[600,400], minSize:[360,240], pinned:true },
+  files:   { name:'Files',    icon:'📁', color:'#febc2e',
+    defaultSize:[680,460], minSize:[400,280], pinned:true },
+  notes:   { name:'Notes',    icon:'📝', color:'#ff9a00',
+    defaultSize:[540,440], minSize:[320,240], pinned:false },
+  settings:{ name:'Settings', icon:'⚙️', color:'#a855f7',
+    defaultSize:[600,480], minSize:[400,300], pinned:false },
+  clock:   { name:'Clock',    icon:'🕐', color:'#00e5ff',
+    defaultSize:[320,340], minSize:[260,280], pinned:false },
 };
-let currentEngine = localStorage.getItem('oblivion-engine') || 'google';
 
-function setEngine(id) {
-  currentEngine = id;
-  localStorage.setItem('oblivion-engine', id);
-  document.querySelectorAll('[id^="eng-"]').forEach(el => el.classList.remove('active'));
-  document.getElementById('eng-'+id).classList.add('active');
-  closeSettings();
+// ═══════════════════════════════════════════════════════════
+//  WINDOW MANAGER
+// ═══════════════════════════════════════════════════════════
+const wins = {}; // id -> {el, app, state:'normal'|'minimized'|'maximized', savedRect}
+let zTop = 200;
+let focusedId = null;
+
+function genId() { return 'w' + Date.now() + Math.random().toString(36).slice(2,6); }
+
+function openApp(appId) {
+  // If already open, bring to front / restore
+  const existing = Object.entries(wins).find(([,w]) => w.appId === appId);
+  if (existing) {
+    const [id, w] = existing;
+    if (w.state === 'minimized') restoreWindow(id);
+    focusWindow(id);
+    closeAllPopups();
+    return;
+  }
+  closeAllPopups();
+  const app = APPS[appId];
+  if (!app) return;
+
+  const id = genId();
+  const [dw, dh] = app.defaultSize;
+  const [vw, vh] = [window.innerWidth, window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'))];
+
+  const left = Math.max(60, (vw - dw) / 2 + Object.keys(wins).length * 22);
+  const top  = Math.max(40, (vh - dh) / 2 + Object.keys(wins).length * 22);
+
+  const el = document.createElement('div');
+  el.className = 'window';
+  el.id = id;
+  el.style.cssText = `left:${left}px;top:${top}px;width:${dw}px;height:${dh}px;z-index:${++zTop};pointer-events:all`;
+
+  el.innerHTML = `
+    <div class="win-titlebar" data-draggable>
+      <div class="win-dots">
+        <div class="win-dot close" onclick="closeWindow('${id}')"></div>
+        <div class="win-dot min"   onclick="minimizeWindow('${id}')"></div>
+        <div class="win-dot max"   onclick="toggleMaximize('${id}')"></div>
+      </div>
+      <div class="win-app-icon">${app.icon}</div>
+      <div class="win-title">${app.name}</div>
+    </div>
+    <div class="win-body" id="body-${id}">${buildAppContent(appId, id)}</div>
+    <div class="win-resize" onmousedown="startResize(event,'${id}')"></div>
+  `;
+
+  document.getElementById('win-container').appendChild(el);
+  wins[id] = { el, appId, state:'normal', savedRect:null };
+
+  initDrag(el, el.querySelector('[data-draggable]'));
+  el.addEventListener('mousedown', () => focusWindow(id));
+
+  // Animate in
+  el.style.opacity = '0';
+  el.style.transform = 'scale(0.92) translateY(12px)';
+  requestAnimationFrame(() => {
+    el.style.transition = 'opacity 0.2s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1)';
+    el.style.opacity = '1';
+    el.style.transform = '';
+  });
+
+  focusWindow(id);
+  updateTaskbar();
+  initAppLogic(appId, id);
 }
 
-function toggleSettings() {
-  const open = document.getElementById('settingsDropdown').classList.toggle('open');
-  document.getElementById('settingsBtn').classList.toggle('open', open);
-}
-function closeSettings() {
-  document.getElementById('settingsDropdown').classList.remove('open');
-  document.getElementById('settingsBtn').classList.remove('open');
-}
-document.addEventListener('click', e => {
-  if (!document.getElementById('settingsWrap').contains(e.target)) closeSettings();
-});
-
-// Apply saved settings on load
-setEngine(currentEngine);
-setTheme(currentTheme);
-
-/* =====================================================================
-   PROXY ENGINE
-===================================================================== */
-const delay = ms => new Promise(r => setTimeout(r, ms));
-function proxyUrl(url) { return '/proxy?url='+encodeURIComponent(url); }
-
-async function init() {
-  const fill = document.getElementById('initFill'), status = document.getElementById('initStatus');
-  fill.style.width='30%'; status.textContent='Loading Void Engine modules...'; await delay(250);
-  fill.style.width='65%'; status.textContent='Booting Void Engine...'; await delay(250);
-  try { await fetch('/proxy?url=https%3A%2F%2Fhttpbin.org%2Fget',{method:'HEAD'}); } catch {}
-  fill.style.width='100%'; status.textContent='Void Engine online.'; await delay(300);
-  document.getElementById('initScreen').style.opacity='0';
-  document.getElementById('appShell').style.opacity='1';
-  setTimeout(()=>document.getElementById('initScreen').style.display='none',600);
-  measurePing(); setInterval(measurePing,3000);
-  mkTab();
+function buildAppContent(appId, id) {
+  switch (appId) {
+    case 'browser': return buildBrowser(id);
+    case 'terminal': return buildTerminal(id);
+    case 'files': return buildFiles(id);
+    case 'notes': return buildNotes(id);
+    case 'settings': return buildSettings(id);
+    case 'clock': return buildClock(id);
+    default: return '<div style="padding:20px;color:rgba(255,255,255,0.4)">Coming soon</div>';
+  }
 }
 
-async function measurePing() {
-  const t=Date.now();
-  try { await fetch('/proxy?url=https%3A%2F%2Fhttpbin.org%2Fget',{method:'HEAD',cache:'no-store'}); const ms=Date.now()-t; document.getElementById('sPing').textContent=ms+'ms'; document.getElementById('pingDisp').textContent=ms+'ms'; }
-  catch { document.getElementById('sPing').textContent='--'; }
+function focusWindow(id) {
+  if (!wins[id]) return;
+  // Unfocus all
+  Object.entries(wins).forEach(([wid, w]) => {
+    w.el.classList.toggle('focused', wid === id);
+  });
+  wins[id].el.style.zIndex = ++zTop;
+  focusedId = id;
+  updateTaskbar();
 }
 
-window.addEventListener('message', e => {
-  if (e.data?.type==='oblivion-navigate') loadUrl(e.data.url);
-  if (e.data?.type==='oblivion-url' && e.data.url && active) { document.getElementById('addrInput').value=e.data.url; active.url=e.data.url; }
-});
-
-/* =====================================================================
-   TABS
-===================================================================== */
-let tabs=[],active=null,tid=0;
-function mkTab(url=null){const t={id:++tid,url,title:'New Tab',hist:url?[url]:[],hp:url?0:-1};tabs.push(t);active=t;renderTabs();if(url)_load(url);else showHome();}
-function switchTab(id){const t=tabs.find(t=>t.id===id);if(!t)return;active=t;renderTabs();if(!t.url){document.getElementById('addrInput').value='';showHome();}else{document.getElementById('addrInput').value=t.url;_load(t.url);}}
-function closeTab(id,e){e.stopPropagation();const i=tabs.findIndex(t=>t.id===id);tabs.splice(i,1);if(!tabs.length){mkTab();return;}if(active.id===id){active=tabs[Math.min(i,tabs.length-1)];if(!active.url)showHome();else _load(active.url);}renderTabs();}
-function newTab(){mkTab();}
-function renderTabs(){
-  const bar=document.getElementById('tabsBar'),plus=bar.querySelector('.plus-btn');
-  Array.from(bar.querySelectorAll('.tab')).forEach(el=>el.remove());
-  for(const t of tabs){const el=document.createElement('div');el.className='tab'+(t.id===active?.id?' active':'');el.innerHTML=`<span>&#127760;</span><span class="tab-ttl">${t.title}</span><span class="tab-x" onclick="closeTab(${t.id},event)">&#x2715;</span>`;el.addEventListener('click',()=>switchTab(t.id));bar.insertBefore(el,plus);}
+function closeWindow(id) {
+  if (!wins[id]) return;
+  const el = wins[id].el;
+  el.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+  el.style.opacity = '0';
+  el.style.transform = 'scale(0.9) translateY(10px)';
+  setTimeout(() => { el.remove(); delete wins[id]; updateTaskbar(); }, 150);
 }
 
-/* =====================================================================
-   NAVIGATION
-===================================================================== */
-function navigate(){
-  let v=document.getElementById('addrInput').value.trim();if(!v)return;
-  const isUrl=/^(https?:\/\/)/.test(v)||/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/.test(v);
-  if(!isUrl)v=ENGINES[currentEngine](v);
-  else if(!/^https?:\/\//.test(v))v='https://'+v;
-  loadUrl(v);
+function minimizeWindow(id) {
+  if (!wins[id]) return;
+  const w = wins[id];
+  w.el.classList.add('minimizing');
+  setTimeout(() => {
+    w.el.style.display = 'none';
+    w.el.classList.remove('minimizing');
+    w.state = 'minimized';
+    updateTaskbar();
+  }, 200);
 }
-function loadUrl(url){
-  document.getElementById('addrInput').value=url;
-  if(active){active.url=url;active.hist=active.hist.slice(0,active.hp+1);active.hist.push(url);active.hp=active.hist.length-1;}
-  _load(url);
+
+function restoreWindow(id) {
+  if (!wins[id]) return;
+  const w = wins[id];
+  if (w.state === 'minimized') {
+    w.el.style.display = 'flex';
+    w.state = 'normal';
+    w.el.style.opacity = '0';
+    w.el.style.transform = 'scale(0.9) translateY(10px)';
+    requestAnimationFrame(() => {
+      w.el.style.transition = 'opacity 0.2s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1)';
+      w.el.style.opacity = '1';
+      w.el.style.transform = '';
+    });
+  }
+  if (w.state === 'maximized') {
+    toggleMaximize(id);
+  }
+  focusWindow(id);
+  updateTaskbar();
 }
-function _load(url){
-  const frame=document.getElementById('frame'),home=document.getElementById('homeScreen'),prog=document.getElementById('progress');
-  home.style.display='none';frame.style.display='block';
-  const lock=document.getElementById('lockIcon');
-  lock.className=url.startsWith('https://')?'lock':'lock warn';
-  lock.innerHTML=url.startsWith('https://')?'&#128274;':'&#9888;';
-  prog.style.display='block';prog.style.width='0%';
-  requestAnimationFrame(()=>{prog.style.transition='width .45s ease';prog.style.width='65%';});
-  document.getElementById('statusTxt').textContent='Loading — '+url;
-  document.getElementById('btnRefresh').classList.add('spin');
-  frame.onload=()=>{
-    prog.style.width='100%';
-    setTimeout(()=>{prog.style.display='none';prog.style.width='0%';},400);
-    document.getElementById('btnRefresh').classList.remove('spin');
-    document.getElementById('statusTxt').textContent='Loaded — '+url;
-    const title=url.replace(/^https?:\/\//,'').split('/')[0];
-    if(active){active.title=title.length>18?title.slice(0,16)+'…':title;renderTabs();}
+
+function toggleMaximize(id) {
+  if (!wins[id]) return;
+  const w = wins[id];
+  const el = w.el;
+  if (w.state === 'maximized') {
+    // restore
+    const r = w.savedRect;
+    el.style.left = r.left+'px'; el.style.top = r.top+'px';
+    el.style.width = r.width+'px'; el.style.height = r.height+'px';
+    el.classList.remove('maximized');
+    el.querySelector('.win-resize').style.display = '';
+    w.state = 'normal';
+  } else {
+    w.savedRect = { left:parseInt(el.style.left), top:parseInt(el.style.top),
+      width:parseInt(el.style.width), height:parseInt(el.style.height) };
+    el.style.left='0'; el.style.top='0';
+    el.style.width='100%';
+    el.style.height = (window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'))) + 'px';
+    el.classList.add('maximized');
+    el.querySelector('.win-resize').style.display = 'none';
+    w.state = 'maximized';
+  }
+}
+
+// Drag
+function initDrag(winEl, handle) {
+  let dragging = false, ox, oy;
+  handle.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('win-dot')) return;
+    if (wins[winEl.id]?.state === 'maximized') return;
+    dragging = true;
+    ox = e.clientX - winEl.offsetLeft;
+    oy = e.clientY - winEl.offsetTop;
+    document.body.style.cursor = 'move';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const bh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));
+    winEl.style.left = Math.max(0, Math.min(window.innerWidth - 100, e.clientX - ox)) + 'px';
+    winEl.style.top  = Math.max(0, Math.min(window.innerHeight - bh - 40, e.clientY - oy)) + 'px';
+  });
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+    document.body.style.cursor = '';
+  });
+}
+
+// Resize
+function startResize(e, id) {
+  e.preventDefault(); e.stopPropagation();
+  const el = wins[id].el;
+  const app = APPS[wins[id].appId];
+  const [minW, minH] = app.minSize;
+  const startW = parseInt(el.style.width);
+  const startH = parseInt(el.style.height);
+  const startX = e.clientX, startY = e.clientY;
+  const onMove = ev => {
+    el.style.width  = Math.max(minW, startW + ev.clientX - startX) + 'px';
+    el.style.height = Math.max(minH, startH + ev.clientY - startY) + 'px';
   };
-  frame.src=proxyUrl(url);
+  const onUp = () => {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  };
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
 }
-function showHome(){document.getElementById('homeScreen').style.display='flex';document.getElementById('frame').style.display='none';document.getElementById('frame').src='about:blank';document.getElementById('addrInput').value='';document.getElementById('statusTxt').textContent='Ready — Void Engine Active';if(active){active.title='New Tab';active.url=null;renderTabs();}}
-function navBack(){if(!active||active.hp<=0)return;active.hp--;active.url=active.hist[active.hp];document.getElementById('addrInput').value=active.url;_load(active.url);}
-function navFwd(){if(!active||active.hp>=active.hist.length-1)return;active.hp++;active.url=active.hist[active.hp];document.getElementById('addrInput').value=active.url;_load(active.url);}
-function navRefresh(){if(active?.url)_load(active.url);else showHome();}
-function goHome(){showHome();}
-document.getElementById('addrInput').addEventListener('keydown',e=>{if(e.key==='Enter')navigate();});
 
-init();
+// Taskbar
+function updateTaskbar() {
+  const mid = document.getElementById('tb-mid');
+  mid.innerHTML = '';
+  // Pinned apps
+  Object.entries(APPS).filter(([,a]) => a.pinned).forEach(([appId, app]) => {
+    const openWin = Object.entries(wins).find(([,w]) => w.appId === appId);
+    const btn = document.createElement('div');
+    btn.className = 'tb-app' + (openWin ? ' running' : '') + (openWin && openWin[0] === focusedId ? ' active-win' : '');
+    btn.innerHTML = `<span class="tb-app-icon">${app.icon}</span><span class="tb-app-label">${app.name}</span>${openWin?'<div class="tb-app-dot"></div>':''}`;
+    btn.onclick = () => {
+      if (openWin) {
+        if (wins[openWin[0]].state === 'minimized') restoreWindow(openWin[0]);
+        else if (openWin[0] === focusedId) minimizeWindow(openWin[0]);
+        else focusWindow(openWin[0]);
+      } else openApp(appId);
+    };
+    mid.appendChild(btn);
+  });
+  // Non-pinned open windows
+  Object.entries(wins).forEach(([wid, w]) => {
+    if (APPS[w.appId]?.pinned) return;
+    const app = APPS[w.appId];
+    const btn = document.createElement('div');
+    btn.className = 'tb-app running' + (wid === focusedId ? ' active-win' : '');
+    btn.innerHTML = `<span class="tb-app-icon">${app.icon}</span><span class="tb-app-label">${app.name}</span><div class="tb-app-dot"></div>`;
+    btn.onclick = () => {
+      if (w.state === 'minimized') restoreWindow(wid);
+      else if (wid === focusedId) minimizeWindow(wid);
+      else focusWindow(wid);
+    };
+    mid.appendChild(btn);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  APP BUILDERS
+// ═══════════════════════════════════════════════════════════
+let tabCounter = 0;
+const browserTabs = {}; // winId -> [{id,title,url,home}]
+
+function buildBrowser(winId) {
+  browserTabs[winId] = [{id:'t0',title:'New Tab',url:'',home:true}];
+  return `
+  <div class="browser-wrap" id="bw-${winId}">
+    <div class="b-tabs" id="btabs-${winId}">
+      <div class="b-tab active" id="tab-t0-${winId}">
+        <span class="b-tab-icon">🏠</span>
+        <span class="b-tab-title">New Tab</span>
+        <span class="b-tab-x" onclick="closeBTab(event,'${winId}','t0')">✕</span>
+      </div>
+      <div class="b-plus" onclick="newBTab('${winId}')">＋</div>
+    </div>
+    <div class="browser-bar">
+      <div class="b-nav-btn" onclick="bNav('${winId}','back')" title="Back">‹</div>
+      <div class="b-nav-btn" onclick="bNav('${winId}','fwd')" title="Forward">›</div>
+      <div class="b-nav-btn" onclick="bNav('${winId}','refresh')" title="Refresh">↺</div>
+      <div class="b-addr-wrap">
+        <span class="b-lock">🔒</span>
+        <input class="b-addr" id="baddr-${winId}" placeholder="Search or enter URL..." 
+          onkeydown="if(event.key==='Enter')bGo('${winId}')">
+      </div>
+      <button class="b-go" onclick="bGo('${winId}')">GO</button>
+    </div>
+    <div class="b-viewport" id="bvp-${winId}">
+      <div class="b-home" id="bhome-${winId}">
+        <div class="b-home-logo">OBLIVION</div>
+        <div style="font-size:0.7rem;letter-spacing:0.22em;color:rgba(255,255,255,0.3);text-transform:uppercase;font-family:'DM Mono',monospace">Void Engine — Custom Built</div>
+        <div class="b-search-row">
+          <input class="b-search" id="bsearch-${winId}" placeholder="Search the web or enter URL..."
+            onkeydown="if(event.key==='Enter'){document.getElementById('baddr-${winId}').value=this.value;bGo('${winId}')}">
+        </div>
+        <div class="b-ql">
+          ${[['🔍','Google','https://google.com'],['📺','YouTube','https://youtube.com'],
+             ['💬','Reddit','https://reddit.com'],['🐙','GitHub','https://github.com'],
+             ['🎮','Twitch','https://twitch.tv'],['🐦','Twitter','https://x.com'],
+             ['📚','Wiki','https://wikipedia.org'],['🤖','Claude','https://claude.ai']]
+            .map(([ico,label,url])=>`<div class="b-ql-item" onclick="bNavTo('${winId}','${url}')"><span>${ico}</span><span class="b-ql-label">${label}</span></div>`).join('')}
+        </div>
+      </div>
+      <iframe class="b-iframe" id="biframe-${winId}" style="display:none" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"></iframe>
+    </div>
+  </div>`;
+}
+
+function bNavTo(winId, url) {
+  document.getElementById('baddr-'+winId).value = url;
+  bGo(winId);
+}
+
+function bGo(winId) {
+  let raw = document.getElementById('baddr-'+winId).value.trim() ||
+            document.getElementById('bsearch-'+winId)?.value.trim() || '';
+  if (!raw) return;
+  let url;
+  if (/^https?:\/\//i.test(raw)) url = raw;
+  else if (/^[\w-]+\.[a-z]{2,}/.test(raw)) url = 'https://'+raw;
+  else {
+    const engine = localStorage.getItem('void-engine') || 'google';
+    const engines = {google:'https://www.google.com/search?q=',brave:'https://search.brave.com/search?q=',startpage:'https://www.startpage.com/search?q='};
+    url = (engines[engine]||engines.google) + encodeURIComponent(raw);
+  }
+  const iframe = document.getElementById('biframe-'+winId);
+  const home   = document.getElementById('bhome-'+winId);
+  home.style.display = 'none';
+  iframe.style.display = 'block';
+  iframe.src = '/proxy?url=' + encodeURIComponent(url);
+  document.getElementById('baddr-'+winId).value = url;
+  // update tab title
+  setActiveTabTitle(winId, new URL(url).hostname.replace('www.',''));
+  // update window title
+  const w = Object.values(wins).find(w => w.appId === 'browser');
+  if (w) {
+    w.el.querySelector('.win-title').textContent = 'Oblivion — ' + new URL(url).hostname.replace('www.','');
+  }
+}
+
+function setActiveTabTitle(winId, title) {
+  const activeTab = document.querySelector(`#btabs-${winId} .b-tab.active .b-tab-title`);
+  if (activeTab) activeTab.textContent = title;
+}
+
+function bNav(winId, dir) {
+  const iframe = document.getElementById('biframe-'+winId);
+  if (dir==='back') iframe.contentWindow?.history.back();
+  else if (dir==='fwd') iframe.contentWindow?.history.forward();
+  else if (dir==='refresh') iframe.contentWindow?.location.reload();
+}
+
+function newBTab(winId) {
+  const id = 't'+tabCounter++;
+  browserTabs[winId].push({id,title:'New Tab',url:'',home:true});
+  const tabsEl = document.getElementById('btabs-'+winId);
+  const plus = tabsEl.querySelector('.b-plus');
+  const tab = document.createElement('div');
+  tab.className = 'b-tab';
+  tab.id = 'tab-'+id+'-'+winId;
+  tab.innerHTML = `<span>🏠</span><span class="b-tab-title">New Tab</span><span class="b-tab-x" onclick="closeBTab(event,'${winId}','${id}')">✕</span>`;
+  tab.onclick = () => switchBTab(winId, id);
+  tabsEl.insertBefore(tab, plus);
+  switchBTab(winId, id);
+}
+
+function switchBTab(winId, tabId) {
+  document.querySelectorAll(`#btabs-${winId} .b-tab`).forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tabId+'-'+winId)?.classList.add('active');
+  // For now show home on tab switch (full tab state management would be elaborate)
+  document.getElementById('biframe-'+winId).style.display = 'none';
+  document.getElementById('bhome-'+winId).style.display = 'flex';
+  document.getElementById('baddr-'+winId).value = '';
+}
+
+function closeBTab(e, winId, tabId) {
+  e.stopPropagation();
+  const tabs = browserTabs[winId];
+  if (tabs.length <= 1) { closeWindow(Object.keys(wins).find(k => wins[k].appId==='browser')); return; }
+  document.getElementById('tab-'+tabId+'-'+winId)?.remove();
+  const i = tabs.findIndex(t=>t.id===tabId);
+  tabs.splice(i,1);
+  switchBTab(winId, tabs[Math.max(0,i-1)].id);
+}
+
+// Listen for proxy navigation messages
+window.addEventListener('message', e => {
+  if (e.data?.type === 'oblivion-navigate' || e.data?.type === 'oblivion-url') {
+    const url = e.data.url;
+    if (!url) return;
+    // Find which browser window's iframe sent this
+    Object.entries(wins).forEach(([wid, w]) => {
+      if (w.appId !== 'browser') return;
+      const iframe = document.getElementById('biframe-'+wid);
+      if (!iframe) return;
+      if (e.data.type === 'oblivion-navigate') {
+        iframe.src = '/proxy?url=' + encodeURIComponent(url);
+      }
+      document.getElementById('baddr-'+wid).value = url;
+      setActiveTabTitle(wid, new URL(url).hostname.replace('www.',''));
+    });
+  }
+});
+
+// Terminal
+function buildTerminal(id) {
+  return `<div class="terminal-wrap">
+    <div class="term-output" id="term-out-${id}">
+      <div class="term-line term-info">VoidOS Terminal v1.0 — Void Engine</div>
+      <div class="term-line term-info">Type <span style="color:var(--speed)">help</span> for available commands.</div>
+      <div class="term-line"> </div>
+    </div>
+    <div class="term-input-row">
+      <span class="term-prompt-label">void@voidOS:~$ </span>
+      <input class="term-input" id="term-in-${id}" placeholder="Enter command..." autocomplete="off"
+        onkeydown="termKey(event,'${id}')">
+    </div>
+  </div>`;
+}
+
+const TERM_CMDS = {
+  help: () => `<span style="color:var(--flare)">Available commands:</span>\n  ls, cd, pwd, echo, whoami, date, uname, clear, neofetch, theme, open, ping, cat, history`,
+  ls: () => `<span style="color:var(--speed)">Desktop/</span>  <span style="color:var(--speed)">Documents/</span>  <span style="color:var(--speed)">Downloads/</span>  notes.txt  config.json`,
+  pwd: () => `/home/void`,
+  whoami: () => `void`,
+  date: () => new Date().toString(),
+  uname: () => `VoidOS 1.0.0 Void-Kernel #1 SMP x86_64 Void Engine`,
+  neofetch: () => `<span style="color:var(--flare)">
+  ██╗   ██╗ ██████╗ ██╗██████╗ ██████╗ ███████╗
+  ██║   ██║██╔═══██╗██║██╔══██╗██╔══██╗██╔════╝
+  ██║   ██║██║   ██║██║██║  ██║██║  ██║███████╗
+  ╚██╗ ██╔╝██║   ██║██║██║  ██║██║  ██║╚════██║
+   ╚████╔╝ ╚██████╔╝██║██████╔╝██████╔╝███████║
+    ╚═══╝   ╚═════╝ ╚═╝╚═════╝ ╚═════╝ ╚══════╝
+</span><span style="color:var(--speed)">void@VoidOS</span> ─────────────────
+OS: VoidOS 1.0.0
+Kernel: Void-Engine 1.0
+Shell: void-shell
+DE: VoidDesktop
+WM: VoidWM
+Terminal: VoidTerm
+CPU: Quantum-X 8-core @ 3.8GHz
+GPU: Void-GPU 16GB
+Memory: 16384MB / 32768MB
+`,
+  clear: (outEl) => { outEl.innerHTML=''; return null; },
+  theme: () => `Current theme: ${currentTheme}\nUsage: theme <normal|dark|sky|ember|rose|forest|crimson|rainbow>`,
+  ping: (_, args) => `PING ${args[0]||'8.8.8.8'}: 56 bytes\n64 bytes from ${args[0]||'8.8.8.8'}: icmp_seq=1 ttl=64 time=12.3ms\n64 bytes from ${args[0]||'8.8.8.8'}: icmp_seq=2 ttl=64 time=11.8ms`,
+  echo: (_, args) => args.join(' '),
+  'cat notes.txt': () => `# My Notes\nWelcome to VoidOS!\nYou can use the Notes app to write things.`,
+  'cat config.json': () => `{\n  "theme": "${currentTheme}",\n  "version": "1.0.0",\n  "engine": "void"\n}`,
+};
+
+const termHistory = {}; // winId -> string[]
+const termHistIdx = {};
+
+function termKey(e, id) {
+  if (!termHistory[id]) { termHistory[id]=[]; termHistIdx[id]=-1; }
+  const input = document.getElementById('term-in-'+id);
+  if (e.key === 'Enter') {
+    const cmd = input.value.trim();
+    if (!cmd) return;
+    termHistory[id].unshift(cmd); termHistIdx[id]=-1;
+    const out = document.getElementById('term-out-'+id);
+    out.innerHTML += `<div class="term-line"><span class="term-prompt">void@voidOS:~$ </span><span class="term-cmd">${cmd}</span></div>`;
+    const parts = cmd.split(' ');
+    const base = parts[0];
+    const args = parts.slice(1);
+    let result;
+    if (base === 'clear') { TERM_CMDS.clear(out); out.innerHTML = ''; result=null; }
+    else if (base === 'theme' && args[0]) { setTheme(args[0]); result = 'Theme set: '+args[0]; }
+    else if (base === 'open' && args[0]) { openApp(args[0]); result = 'Opening '+args[0]+'...'; }
+    else if (TERM_CMDS[cmd]) result = TERM_CMDS[cmd](out, args);
+    else if (TERM_CMDS[base]) result = TERM_CMDS[base](out, args);
+    else result = `<span class="term-err">Command not found: ${cmd}</span>`;
+    if (result !== null && result !== undefined) {
+      out.innerHTML += `<div class="term-line term-out">${result.replace(/\n/g,'<br>')}</div>`;
+    }
+    out.innerHTML += `<div class="term-line"> </div>`;
+    out.scrollTop = out.scrollHeight;
+    input.value = '';
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (termHistIdx[id] < termHistory[id].length-1) {
+      termHistIdx[id]++;
+      input.value = termHistory[id][termHistIdx[id]];
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (termHistIdx[id] > 0) { termHistIdx[id]--; input.value = termHistory[id][termHistIdx[id]]; }
+    else { termHistIdx[id]=-1; input.value=''; }
+  }
+}
+
+// Files
+const FILES_FS = {
+  Desktop: [{icon:'🌐',name:'Oblivion',type:'app',app:'browser'},{icon:'⬛',name:'Terminal',type:'app',app:'terminal'},{icon:'📝',name:'Notes',type:'app',app:'notes'}],
+  Documents: [{icon:'📄',name:'readme.txt',type:'file'},{icon:'📄',name:'notes.txt',type:'file'},{icon:'📋',name:'config.json',type:'file'}],
+  Downloads: [{icon:'📦',name:'package.tar.gz',type:'file'},{icon:'🎵',name:'void_theme.mp3',type:'file'}],
+  Pictures: [{icon:'🖼️',name:'wallpaper.png',type:'file'},{icon:'🖼️',name:'screenshot.png',type:'file'}],
+  Music: [{icon:'🎵',name:'ambient.mp3',type:'file'},{icon:'🎵',name:'chill.flac',type:'file'}],
+};
+const activeFolder = {};
+
+function buildFiles(id) {
+  activeFolder[id] = 'Desktop';
+  return `<div class="files-wrap">
+    <div class="files-sidebar">
+      <div class="fs-section">Locations</div>
+      ${Object.keys(FILES_FS).map(f=>`<div class="fs-item${f==='Desktop'?' active':''}" id="fsitem-${f}-${id}" onclick="openFolder('${id}','${f}')">
+        ${{Desktop:'🖥️',Documents:'📁',Downloads:'⬇️',Pictures:'🖼️',Music:'🎵'}[f]||'📁'} ${f}
+      </div>`).join('')}
+      <div class="fs-section" style="margin-top:12px">Devices</div>
+      <div class="fs-item">💾 System (C:)</div>
+      <div class="fs-item">🌐 Network</div>
+    </div>
+    <div class="files-main">
+      <div class="files-grid" id="files-grid-${id}"></div>
+    </div>
+  </div>`;
+}
+
+function openFolder(winId, folder) {
+  activeFolder[winId] = folder;
+  document.querySelectorAll(`[id^="fsitem-"][id$="-${winId}"]`).forEach(el => el.classList.remove('active'));
+  document.getElementById(`fsitem-${folder}-${winId}`)?.classList.add('active');
+  const grid = document.getElementById('files-grid-'+winId);
+  const files = FILES_FS[folder] || [];
+  grid.innerHTML = files.map(f=>`<div class="file-item" ondblclick="${f.type==='app'?`openApp('${f.app}')`:''}" title="${f.name}">
+    <span class="file-icon">${f.icon}</span>
+    <span class="file-name">${f.name}</span>
+  </div>`).join('');
+}
+
+// Notes
+function buildNotes(id) {
+  const saved = localStorage.getItem('void-notes') || '';
+  return `<div class="notes-wrap">
+    <div class="notes-toolbar">
+      <button class="note-btn" onclick="document.execCommand('bold')"><b>B</b></button>
+      <button class="note-btn" onclick="document.execCommand('italic')"><i>I</i></button>
+      <button class="note-btn" onclick="document.execCommand('underline')"><u>U</u></button>
+      <div class="note-sep"></div>
+      <button class="note-btn" onclick="saveNote('${id}')">💾 Save</button>
+      <button class="note-btn" onclick="clearNote('${id}')">🗑 Clear</button>
+    </div>
+    <textarea class="notes-editor" id="notes-ed-${id}" placeholder="Start typing...">${saved}</textarea>
+  </div>`;
+}
+function saveNote(id) {
+  localStorage.setItem('void-notes', document.getElementById('notes-ed-'+id).value);
+  showNotif('Notes', '💾 Saved successfully!');
+}
+function clearNote(id) {
+  document.getElementById('notes-ed-'+id).value = '';
+  localStorage.removeItem('void-notes');
+}
+
+// Settings
+function buildSettings(id) {
+  const themeInfo = {
+    normal:{bg:'#5b12d4',label:'Normal'},dark:{bg:'#222',label:'Dark'},
+    sky:{bg:'#0284c7',label:'Sky'},ember:{bg:'#ea580c',label:'Ember'},
+    rose:{bg:'#be185d',label:'Rose'},forest:{bg:'#16a34a',label:'Forest'},
+    crimson:{bg:'#dc2626',label:'Crimson'},rainbow:{bg:'linear-gradient(135deg,#ff6ec7,#7b61ff,#00ff88)',label:'Rainbow'}
+  };
+  return `<div class="settings-wrap">
+    <div class="settings-nav">
+      <div class="sn-item active" onclick="showSPanel('${id}','appearance')">🎨 Appearance</div>
+      <div class="sn-item" onclick="showSPanel('${id}','system')">💻 System</div>
+      <div class="sn-item" onclick="showSPanel('${id}','browser')">🌐 Browser</div>
+      <div class="sn-item" onclick="showSPanel('${id}','about')">ℹ️ About</div>
+    </div>
+    <div class="settings-content" id="scontent-${id}">
+      <div id="spanel-appearance-${id}">
+        <div class="s-section">
+          <div class="s-section-title">Theme</div>
+          <div class="theme-grid">
+            ${Object.entries(themeInfo).map(([key,{bg,label}])=>`
+              <div style="display:flex;flex-direction:column;align-items:center;gap:18px;cursor:pointer" onclick="setTheme('${key}')">
+                <div class="theme-swatch${currentTheme===key?' active':''}" data-theme="${key}"
+                  style="background:${bg};box-shadow:0 4px 16px rgba(0,0,0,0.3)">
+                  ${currentTheme===key?'✓':''}
+                </div>
+                <span style="font-size:0.65rem;color:rgba(255,255,255,0.5)">${label}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="s-section">
+          <div class="s-section-title">Display</div>
+          <div class="s-card">
+            <div class="s-row">
+              <div><div class="s-label">Particle Effects</div><div class="s-sub">Background particle animation</div></div>
+              <div class="tp-toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="s-row">
+              <div><div class="s-label">Blur Effects</div><div class="s-sub">Glass/frosted windows</div></div>
+              <div class="tp-toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="spanel-system-${id}" style="display:none">
+        <div class="s-section">
+          <div class="s-section-title">System</div>
+          <div class="s-card">
+            <div class="s-row"><div class="s-label">OS</div><div style="color:var(--flare);font-size:0.8rem">VoidOS 1.0.0</div></div>
+            <div class="s-row"><div class="s-label">Engine</div><div style="color:var(--speed);font-size:0.8rem">Void Engine v1.0</div></div>
+            <div class="s-row"><div class="s-label">Memory</div><div style="color:rgba(255,255,255,0.5);font-size:0.8rem">16 GB</div></div>
+          </div>
+        </div>
+      </div>
+      <div id="spanel-browser-${id}" style="display:none">
+        <div class="s-section">
+          <div class="s-section-title">Default Search Engine</div>
+          ${[['google','🔍','Google'],['brave','🦁','Brave'],['startpage','🔒','Startpage']].map(([key,ico,name])=>`
+          <div class="s-card" style="cursor:pointer;margin-bottom:8px" onclick="setEngine('${key}','${id}')">
+            <div class="s-row">
+              <div class="s-label">${ico} ${name}</div>
+              <span id="eng-check-${key}-${id}" style="color:var(--speed)">${localStorage.getItem('void-engine')===key||(!localStorage.getItem('void-engine')&&key==='google')?'✓':''}</span>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div id="spanel-about-${id}" style="display:none">
+        <div style="text-align:center;padding:30px 20px">
+          <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:2rem;background:linear-gradient(135deg,var(--flare),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">VOID OS</div>
+          <div style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-bottom:20px">Version 1.0.0 — Void Engine</div>
+          <div style="color:rgba(255,255,255,0.25);font-size:0.7rem;line-height:1.8">
+            Built on the Oblivion proxy engine<br>
+            Particle system by VoidOS<br>
+            All rights reserved © 2025
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function showSPanel(winId, panel) {
+  ['appearance','system','browser','about'].forEach(p => {
+    document.getElementById('spanel-'+p+'-'+winId).style.display = p===panel?'':'none';
+  });
+  document.querySelectorAll(`#body-${winId} .sn-item`).forEach((el,i) => {
+    el.classList.toggle('active', i === ['appearance','system','browser','about'].indexOf(panel));
+  });
+}
+
+function setEngine(key, winId) {
+  localStorage.setItem('void-engine', key);
+  ['google','brave','startpage'].forEach(k => {
+    const el = document.getElementById('eng-check-'+k+'-'+winId);
+    if (el) el.textContent = k===key?'✓':'';
+  });
+}
+
+// Clock
+function buildClock(id) {
+  return `<div class="clock-wrap">
+    <svg class="clock-svg analog-clock" id="aclock-${id}" width="180" height="180" viewBox="0 0 180 180">
+      <circle cx="90" cy="90" r="86" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(168,85,247,0.2)" stroke-width="0.5"/>
+      ${[...Array(12)].map((_,i)=>{
+        const a=(i/12)*Math.PI*2-Math.PI/2;
+        const r1=72,r2=79;
+        return `<line x1="${90+Math.cos(a)*r1}" y1="${90+Math.sin(a)*r1}" x2="${90+Math.cos(a)*r2}" y2="${90+Math.sin(a)*r2}" stroke="rgba(168,85,247,0.5)" stroke-width="2" stroke-linecap="round"/>`;
+      }).join('')}
+      <line id="ch-${id}" x1="90" y1="90" x2="90" y2="60" stroke="rgba(240,232,255,0.9)" stroke-width="4" stroke-linecap="round"/>
+      <line id="cm-${id}" x1="90" y1="90" x2="90" y2="45" stroke="rgba(168,85,247,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+      <line id="cs-${id}" x1="90" y1="90" x2="90" y2="38" stroke="var(--speed)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="90" cy="90" r="5" fill="var(--flare)" filter="url(#glow)"/>
+      <circle cx="90" cy="90" r="2.5" fill="white"/>
+      <defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    </svg>
+    <div class="dig-time" id="dtime-${id}">00:00:00</div>
+    <div class="dig-date" id="ddate-${id}"></div>
+    <div class="dig-day" id="dday-${id}"></div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  APP INIT HOOKS
+// ═══════════════════════════════════════════════════════════
+function initAppLogic(appId, id) {
+  if (appId === 'files') openFolder(id, 'Desktop');
+  if (appId === 'terminal') setTimeout(() => document.getElementById('term-in-'+id)?.focus(), 100);
+  if (appId === 'clock') updateClockHands(id);
+}
+
+// Clock hands update
+function updateClockHands(winId) {
+  const el = document.getElementById('aclock-'+winId);
+  if (!el) return;
+  const now = new Date();
+  const s = now.getSeconds() + now.getMilliseconds()/1000;
+  const m = now.getMinutes() + s/60;
+  const h = (now.getHours()%12) + m/60;
+  const hAngle = (h/12)*360-90;
+  const mAngle = (m/60)*360-90;
+  const sAngle = (s/60)*360-90;
+  const hand = (id, angle, len) => {
+    const a = (angle*Math.PI)/180;
+    const hEl = document.getElementById(id);
+    if (hEl) { hEl.setAttribute('x2', 90+Math.cos(a)*len); hEl.setAttribute('y2', 90+Math.sin(a)*len); }
+  };
+  hand('ch-'+winId, hAngle, 32);
+  hand('cm-'+winId, mAngle, 45);
+  hand('cs-'+winId, sAngle, 52);
+  document.getElementById('dtime-'+winId).textContent = now.toLocaleTimeString();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  document.getElementById('ddate-'+winId).textContent = now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('dday-'+winId).textContent = days[now.getDay()];
+  setTimeout(() => updateClockHands(winId), 100);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DESKTOP ICONS
+// ═══════════════════════════════════════════════════════════
+function buildDesktopIcons() {
+  const cont = document.getElementById('desktop-icons');
+  cont.innerHTML = '';
+  Object.entries(APPS).forEach(([appId, app]) => {
+    const el = document.createElement('div');
+    el.className = 'd-icon';
+    el.ondblclick = () => openApp(appId);
+    el.innerHTML = `<div class="d-icon-img">${app.icon}</div><div class="d-icon-label">${app.name}</div>`;
+    cont.appendChild(el);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  POPUPS & MENUS
+// ═══════════════════════════════════════════════════════════
+let openPopup = null;
+
+function toggleStartMenu() {
+  const sm = document.getElementById('start-menu');
+  const logo = document.getElementById('tb-logo');
+  if (sm.classList.contains('open')) {
+    sm.classList.remove('open');
+    logo.classList.remove('active');
+    openPopup = null;
+  } else {
+    closeAllPopups();
+    sm.classList.add('open');
+    logo.classList.add('active');
+    openPopup = 'start-menu';
+  }
+}
+
+function toggleTrayPopup(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    openPopup = null;
+  } else {
+    closeAllPopups();
+    el.classList.add('open');
+    openPopup = id;
+  }
+}
+
+function closeAllPopups() {
+  document.getElementById('start-menu').classList.remove('open');
+  document.getElementById('tb-logo').classList.remove('active');
+  document.querySelectorAll('.tray-popup').forEach(p => p.classList.remove('open'));
+  document.getElementById('ctx-menu').classList.remove('open');
+  openPopup = null;
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#start-menu') && !e.target.closest('#tb-logo') &&
+      !e.target.closest('.tray-popup') && !e.target.closest('.tb-icon-btn') &&
+      !e.target.closest('.tb-tray-btn')) {
+    closeAllPopups();
+  }
+  if (!e.target.closest('#ctx-menu')) {
+    document.getElementById('ctx-menu').classList.remove('open');
+  }
+});
+
+// Right-click context menu on desktop
+document.getElementById('desktop').addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const ctx = document.getElementById('ctx-menu');
+  ctx.style.left = Math.min(e.clientX, window.innerWidth-200) + 'px';
+  ctx.style.top  = Math.min(e.clientY, window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h')) - 160) + 'px';
+  ctx.classList.add('open');
+});
+
+// Start menu grid
+function buildStartMenuGrid() {
+  const grid = document.getElementById('sm-grid');
+  grid.innerHTML = Object.entries(APPS).map(([appId, app]) =>
+    `<div class="sm-app" onclick="openApp('${appId}');closeAllPopups()">
+      <span class="sm-app-icon">${app.icon}</span>
+      <span class="sm-app-name">${app.name}</span>
+    </div>`
+  ).join('');
+}
+
+// Notifications
+function showNotif(title, msg, icon='✦') {
+  const el = document.createElement('div');
+  el.className = 'notif';
+  el.style.zIndex = 9999;
+  el.innerHTML = `<div class="notif-icon">${icon}</div><div style="flex:1"><div class="notif-title">${title}</div><div class="notif-msg">${msg}</div></div><div class="notif-close" onclick="this.parentElement.remove()">✕</div>`;
+  document.body.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    el.style.opacity = '0'; el.style.transform = 'translateX(60px)';
+    setTimeout(() => el.remove(), 300);
+  }, 4000);
+}
+
+// Clock in taskbar
+function updateTaskbarClock() {
+  const now = new Date();
+  document.getElementById('clock-time').textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('clock-date').textContent = now.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+setInterval(updateTaskbarClock, 1000);
+updateTaskbarClock();
+
+// Shutdown
+function confirmShutdown() {
+  if (confirm('Shut down VoidOS?')) {
+    document.body.style.transition = 'opacity 1s ease';
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+      document.body.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#000;font-family:'Orbitron',monospace;color:rgba(255,255,255,0.2);letter-spacing:0.3em;font-size:0.8rem">SYSTEM OFFLINE</div>`;
+    }, 1000);
+  }
+}
+
+// Brightness slider
+document.getElementById('bright-slider')?.addEventListener('input', e => {
+  document.body.style.filter = `brightness(${e.target.value/100})`;
+});
+
+// ═══════════════════════════════════════════════════════════
+//  BOOT SEQUENCE
+// ═══════════════════════════════════════════════════════════
+const bootMessages = [
+  'Initializing kernel...','Loading Void Engine...','Mounting filesystem...',
+  'Starting display server...','Loading desktop environment...','Launching VoidOS...'
+];
+let bootStep = 0;
+const bootBar = document.getElementById('boot-bar');
+const bootStatus = document.getElementById('boot-status');
+
+function bootTick() {
+  if (bootStep >= bootMessages.length) {
+    document.getElementById('boot').classList.add('hidden');
+    setTimeout(() => { document.getElementById('boot').remove(); }, 600);
+    showNotif('VoidOS', '✦ Welcome to VoidOS 1.0', '🚀');
+    return;
+  }
+  bootStatus.textContent = bootMessages[bootStep];
+  bootBar.style.width = ((bootStep+1)/bootMessages.length*100) + '%';
+  bootStep++;
+  setTimeout(bootTick, 400 + Math.random()*300);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+setTheme(currentTheme);
+buildDesktopIcons();
+buildStartMenuGrid();
+updateTaskbar();
+drawFrame();
+setTimeout(bootTick, 300);
 </script>
 </body>
 </html>
