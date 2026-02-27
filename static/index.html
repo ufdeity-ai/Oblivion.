@@ -39,7 +39,7 @@
   .app { position: relative; z-index: 10; display: flex; flex-direction: column; height: 100vh; width: 100vw; }
 
   /* TOPBAR */
-  .topbar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(8,0,24,0.75); backdrop-filter: blur(24px); border-bottom: 1px solid var(--glass-border); flex-shrink: 0; position: relative; box-shadow: 0 4px 40px rgba(91,18,212,0.15); }
+  .topbar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(8,0,24,0.75); backdrop-filter: blur(24px); border-bottom: 1px solid var(--glass-border); flex-shrink: 0; position: relative; z-index: 50; box-shadow: 0 4px 40px rgba(91,18,212,0.15); }
   .logo { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 0.95rem; letter-spacing: 0.22em; background: linear-gradient(110deg, var(--flare) 0%, var(--speed) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 12px rgba(168,85,247,0.9)); animation: logoPulse 4s ease-in-out infinite; user-select: none; white-space: nowrap; flex-shrink: 0; }
   @keyframes logoPulse { 0%,100%{filter:drop-shadow(0 0 8px rgba(168,85,247,0.7))} 50%{filter:drop-shadow(0 0 22px rgba(168,85,247,1)) drop-shadow(0 0 44px rgba(91,18,212,0.5))} }
   .sep { width: 1px; height: 26px; background: var(--glass-border); flex-shrink: 0; }
@@ -117,6 +117,73 @@
   .sping { color: var(--speed); text-shadow: 0 0 8px var(--speed); font-family: 'Orbitron', monospace; font-size: 0.62rem; }
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.3); border-radius: 100px; }
+
+
+  /* THEMES */
+  body.theme-dark {
+    --void: #0f0f0f; --core: #1d1d1d; --pulse: #2d2d2d;
+    --flare: #e0e0e0; --pink: #ffffff; --white: #f5f5f5;
+    --speed: #00f5c4; --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.1);
+  }
+  body.theme-sky {
+    --void: #020b18; --core: #0369a1; --pulse: #0284c7;
+    --flare: #38bdf8; --pink: #7dd3fc; --white: #e0f2fe;
+    --speed: #00f5c4; --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(56,189,248,0.18);
+  }
+  body.theme-sky .blob-1 { background: radial-gradient(circle, #0369a1 0%, #01386e 60%, transparent 100%); }
+  body.theme-sky .blob-2 { background: radial-gradient(circle, #0284c7 0%, #014e8a 60%, transparent 100%); }
+  body.theme-sky .blob-3 { background: radial-gradient(circle, #38bdf8 0%, #0369a1 60%, transparent 100%); }
+  body.theme-sky .blob-4 { background: radial-gradient(circle, #00f5c4 0%, #0891b2 60%, transparent 100%); }
+  body.theme-sky .blob-5 { background: radial-gradient(circle, #1d4ed8 0%, #1e3a5f 60%, transparent 100%); }
+  body.theme-normal {
+    --void: #04000e; --core: #5b12d4; --pulse: #7c3aed;
+    --flare: #a855f7; --pink: #e879f9; --white: #f0e8ff;
+    --speed: #00f5c4; --glass: rgba(255,255,255,0.03);
+    --glass-border: rgba(168,85,247,0.15);
+  }
+  body.theme-dark .blob-1 { background: radial-gradient(circle, #2a2a2a 0%, #111 60%, transparent 100%); }
+  body.theme-dark .blob-2 { background: radial-gradient(circle, #333 0%, #1a1a1a 60%, transparent 100%); }
+  body.theme-dark .blob-3 { background: radial-gradient(circle, #3a3a3a 0%, #222 60%, transparent 100%); opacity: 0.2; }
+  body.theme-dark .blob-4 { background: radial-gradient(circle, #00f5c4 0%, #004d40 60%, transparent 100%); }
+  body.theme-dark .blob-5 { background: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 60%, transparent 100%); }
+  body.theme-dark .home-logo { background: linear-gradient(135deg, #fff 0%, #e0e0e0 50%, #00f5c4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  body.theme-dark .logo { background: linear-gradient(110deg, #e0e0e0 0%, #00f5c4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* SETTINGS */
+  .settings-wrap { position: relative; flex-shrink: 0; }
+  .settings-btn { width: 32px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--r-md); cursor: pointer; font-size: 0.9rem; color: rgba(168,85,247,0.5); transition: all 0.2s; user-select: none; }
+  .settings-btn:hover { background: rgba(124,58,237,0.15); border-color: rgba(168,85,247,0.4); color: var(--flare); box-shadow: 0 0 14px rgba(124,58,237,0.25); }
+  .settings-btn.open { background: rgba(124,58,237,0.2); border-color: rgba(168,85,247,0.5); color: var(--flare); box-shadow: 0 0 14px rgba(124,58,237,0.3); }
+  .settings-dropdown {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: rgba(8,0,24,0.95); backdrop-filter: blur(24px);
+    border: 1px solid rgba(168,85,247,0.2); border-radius: var(--r-lg);
+    padding: 16px; min-width: 220px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(168,85,247,0.05);
+    z-index: 999; opacity: 0; pointer-events: none;
+    transform: translateY(-6px) scale(0.97);
+    transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .settings-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+  .settings-section-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(168,85,247,0.4); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(168,85,247,0.1); }
+  .engine-options { display: flex; flex-direction: column; gap: 4px; }
+  .engine-option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: var(--r-md);
+    cursor: pointer; transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .engine-option:hover { background: rgba(124,58,237,0.12); border-color: rgba(168,85,247,0.15); }
+  .engine-option.active { background: rgba(124,58,237,0.18); border-color: rgba(168,85,247,0.3); }
+  .engine-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+  .engine-info { flex: 1; }
+  .engine-name { font-size: 0.82rem; font-weight: 600; color: rgba(240,232,255,0.8); letter-spacing: 0.04em; }
+  .engine-desc { font-size: 0.65rem; color: rgba(168,85,247,0.4); letter-spacing: 0.05em; margin-top: 1px; }
+  .engine-check { font-size: 0.7rem; color: var(--speed); text-shadow: 0 0 8px var(--speed); opacity: 0; transition: opacity 0.15s; }
+  .engine-option.active .engine-check { opacity: 1; }
+
 </style>
 </head>
 <body>
@@ -132,7 +199,7 @@
 <div class="init-screen" id="initScreen">
   <div class="init-logo">OBLIVION</div>
   <div class="init-bar"><div class="init-fill" id="initFill"></div></div>
-  <div class="init-status" id="initStatus">Booting custom proxy engine...</div>
+  <div class="init-status" id="initStatus">Booting Void Engine...</div>
 </div>
 
 <div class="app" style="opacity:0;transition:opacity 0.6s;" id="appShell">
@@ -150,6 +217,48 @@
       <input class="addr-input" id="addrInput" type="text" placeholder="Enter URL or search..." spellcheck="false" autocomplete="off">
       <button class="go-btn" onclick="navigate()">GO &#9658;</button>
     </div>
+    <div class="settings-wrap" id="settingsWrap">
+      <div class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="Settings">&#9881;</div>
+      <div class="settings-dropdown" id="settingsDropdown">
+        <div class="settings-section-label">Search Engine</div>
+        <div class="engine-options">
+          <div class="engine-option active" id="eng-google" onclick="setEngine('google')">
+            <div class="engine-icon">&#128269;</div>
+            <div class="engine-info"><div class="engine-name">Google</div><div class="engine-desc">google.com/search</div></div>
+            <div class="engine-check">&#10003;</div>
+          </div>
+          <div class="engine-option" id="eng-brave" onclick="setEngine('brave')">
+            <div class="engine-icon">&#129293;</div>
+            <div class="engine-info"><div class="engine-name">Brave</div><div class="engine-desc">search.brave.com</div></div>
+            <div class="engine-check">&#10003;</div>
+          </div>
+          <div class="engine-option" id="eng-startpage" onclick="setEngine('startpage')">
+            <div class="engine-icon">&#128274;</div>
+            <div class="engine-info"><div class="engine-name">Startpage</div><div class="engine-desc">startpage.com — private</div></div>
+            <div class="engine-check">&#10003;</div>
+          </div>
+        </div>
+
+        <div class="settings-section-label" style="margin-top:14px">Theme</div>
+        <div class="engine-options">
+          <div class="engine-option active" id="theme-dark" onclick="setTheme('dark')">
+            <div class="engine-icon">&#127763;</div>
+            <div class="engine-info"><div class="engine-name">Dark</div><div class="engine-desc">Deep void purple</div></div>
+            <div class="engine-check">&#10003;</div>
+          </div>
+          <div class="engine-option" id="theme-sky" onclick="setTheme('sky')">
+            <div class="engine-icon">&#127774;</div>
+            <div class="engine-info"><div class="engine-name">Sky</div><div class="engine-desc">Ocean blue glow</div></div>
+            <div class="engine-check">&#10003;</div>
+          </div>
+          <div class="engine-option" id="theme-normal" onclick="setTheme('normal')">
+            <div class="engine-icon">&#9899;</div>
+            <div class="engine-info"><div class="engine-name">Normal</div><div class="engine-desc">Clean monochrome</div></div>
+            <div class="engine-check">&#10003;</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="progress" id="progress"></div>
   </div>
 
@@ -163,12 +272,12 @@
         <div class="home-logo-glow"></div>
         <div class="home-logo">Oblivion</div>
       </div>
-      <div class="home-sub">Custom Proxy Engine</div>
-      <div class="home-engine-badge"><div class="engine-dot"></div>OBLIVION ENGINE v1.0 — ACTIVE</div>
+      <div class="home-sub">Void Engine — Custom Built</div>
+      <div class="home-engine-badge"><div class="engine-dot"></div>VOID ENGINE v1.0 — ACTIVE</div>
       <div class="home-stats">
         <div class="hstat"><div class="hstat-dot"></div><span class="hstat-val" id="pingDisp">--</span><span class="hstat-lbl">Latency</span></div>
-        <div class="hstat"><div class="hstat-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7"></div><span class="hstat-val" style="color:#a855f7;text-shadow:0 0 12px #a855f7">Custom</span><span class="hstat-lbl">Engine</span></div>
-        <div class="hstat"><div class="hstat-dot" style="background:#e879f9;box-shadow:0 0 8px #e879f9"></div><span class="hstat-val" style="color:#e879f9;text-shadow:0 0 12px #e879f9">No SW</span><span class="hstat-lbl">Required</span></div>
+        <div class="hstat"><div class="hstat-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7"></div><span class="hstat-val" style="color:#a855f7;text-shadow:0 0 12px #a855f7">Void</span><span class="hstat-lbl">Engine</span></div>
+        <div class="hstat"><div class="hstat-dot" style="background:#e879f9;box-shadow:0 0 8px #e879f9"></div><span class="hstat-val" style="color:#e879f9;text-shadow:0 0 12px #e879f9">Fastest</span><span class="hstat-lbl">Proxy Today</span></div>
       </div>
       <div class="quicknav">
         <div class="qn-item" onclick="loadUrl('https://google.com')"><div class="qn-icon">&#128269;</div><div class="qn-lbl">Google</div></div>
@@ -185,8 +294,8 @@
   </div>
 
   <div class="statusbar">
-    <div class="sl"><div class="sdot"></div><span id="statusTxt">Ready — Oblivion Custom Engine</span></div>
-    <div class="sr"><span>Custom Engine</span><span>No Logs</span><span>No SW</span><span class="sping" id="sPing">--</span></div>
+    <div class="sl"><div class="sdot"></div><span id="statusTxt">Ready — Void Engine Active</span></div>
+    <div class="sr"><span>Void Engine</span><span>No Logs</span><span>No Trace</span><span class="sping" id="sPing">--</span></div>
   </div>
 </div>
 
@@ -218,12 +327,12 @@ function proxyUrl(url){return '/proxy?url='+encodeURIComponent(url);}
 async function init(){
   const fill=document.getElementById('initFill'),status=document.getElementById('initStatus');
   fill.style.width='30%'; status.textContent='Loading engine modules...'; await delay(250);
-  fill.style.width='65%'; status.textContent='Testing proxy connection...';
+  fill.style.width='65%'; status.textContent='Booting Void Engine...';
   try {
     const r=await fetch('/proxy?url=https%3A%2F%2Fhttpbin.org%2Fget',{method:'HEAD'});
-    fill.style.width='90%'; status.textContent='Engine online.';
+    fill.style.width='90%'; status.textContent='Void Engine online.';
   } catch(e) {
-    fill.style.width='90%'; status.textContent='Engine ready (offline test skipped).';
+    fill.style.width='90%'; status.textContent='Void Engine ready.';
   }
   await delay(250);
   fill.style.width='100%'; status.textContent='Oblivion ready.'; await delay(300);
@@ -265,7 +374,7 @@ function renderTabs(){
 function navigate(){
   let v=document.getElementById('addrInput').value.trim();if(!v)return;
   const isUrl=/^(https?:\/\/)/.test(v)||/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/.test(v);
-  if(!isUrl)v='https://www.google.com/search?q='+encodeURIComponent(v);
+  if(!isUrl)v=ENGINES[currentEngine](v);
   else if(!/^https?:\/\//.test(v))v='https://'+v;
   loadUrl(v);
 }
@@ -294,12 +403,69 @@ function _load(url){
   };
   frame.src=proxyUrl(url);
 }
-function showHome(){document.getElementById('homeScreen').style.display='flex';document.getElementById('frame').style.display='none';document.getElementById('frame').src='about:blank';document.getElementById('addrInput').value='';document.getElementById('statusTxt').textContent='Ready — Oblivion Custom Engine';if(active){active.title='New Tab';active.url=null;renderTabs();}}
+function showHome(){document.getElementById('homeScreen').style.display='flex';document.getElementById('frame').style.display='none';document.getElementById('frame').src='about:blank';document.getElementById('addrInput').value='';document.getElementById('statusTxt').textContent='Ready — Void Engine Active';if(active){active.title='New Tab';active.url=null;renderTabs();}}
 function navBack(){if(!active||active.hp<=0)return;active.hp--;active.url=active.hist[active.hp];document.getElementById('addrInput').value=active.url;_load(active.url);}
 function navFwd(){if(!active||active.hp>=active.hist.length-1)return;active.hp++;active.url=active.hist[active.hp];document.getElementById('addrInput').value=active.url;_load(active.url);}
 function navRefresh(){if(active?.url)_load(active.url);else showHome();}
 function goHome(){showHome();}
 document.getElementById('addrInput').addEventListener('keydown',e=>{if(e.key==='Enter')navigate();});
+
+
+
+/* THEMES */
+const THEMES = ['dark','sky','normal'];
+let currentTheme = localStorage.getItem('oblivion-theme') || 'dark';
+
+function setTheme(id) {
+  currentTheme = id;
+  localStorage.setItem('oblivion-theme', id);
+  THEMES.forEach(t => {
+    document.body.classList.remove('theme-' + t);
+    const el = document.getElementById('theme-' + t);
+    if (el) el.classList.remove('active');
+  });
+  document.body.classList.add('theme-' + id);
+  const active = document.getElementById('theme-' + id);
+  if (active) active.classList.add('active');
+}
+
+setTheme(currentTheme);
+
+/* SETTINGS */
+const ENGINES = {
+  google:    q => 'https://www.google.com/search?q=' + encodeURIComponent(q),
+  brave:     q => 'https://search.brave.com/search?q=' + encodeURIComponent(q),
+  startpage: q => 'https://www.startpage.com/search?q=' + encodeURIComponent(q),
+};
+let currentEngine = localStorage.getItem('oblivion-engine') || 'google';
+
+function setEngine(id) {
+  currentEngine = id;
+  localStorage.setItem('oblivion-engine', id);
+  document.querySelectorAll('.engine-option').forEach(el => el.classList.remove('active'));
+  document.getElementById('eng-' + id).classList.add('active');
+  closeSettings();
+}
+
+function toggleSettings() {
+  const btn = document.getElementById('settingsBtn');
+  const dd  = document.getElementById('settingsDropdown');
+  const open = dd.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+
+function closeSettings() {
+  document.getElementById('settingsDropdown').classList.remove('open');
+  document.getElementById('settingsBtn').classList.remove('open');
+}
+
+// Close when clicking outside
+document.addEventListener('click', e => {
+  if (!document.getElementById('settingsWrap').contains(e.target)) closeSettings();
+});
+
+// Apply saved engine on load
+setEngine(currentEngine);
 
 init();
 </script>
