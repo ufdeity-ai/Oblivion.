@@ -181,6 +181,150 @@ html,body{height:100%;background:var(--void);font-family:'Syne',sans-serif;color
 .sping{color:var(--speed);text-shadow:0 0 8px var(--speed);font-family:'Orbitron',monospace;font-size:0.62rem}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--flare) 35%,transparent);border-radius:100px}
+
+/* ── RAINBOW THEME ─────────────────────────────────────── */
+body.t-rainbow {
+  --void: #04000e;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.12);
+}
+
+body.t-rainbow {
+  animation: rbVoid 8s linear infinite;
+}
+@keyframes rbVoid {
+  0%   { background: #0a000e; }
+  14%  { background: #0e0005; }
+  28%  { background: #050a00; }
+  42%  { background: #00060e; }
+  57%  { background: #00080a; }
+  71%  { background: #0a0005; }
+  85%  { background: #0e0400; }
+  100% { background: #0a000e; }
+}
+
+/* Rainbow CSS property animations */
+@keyframes rbColor {
+  0%   { color: #ff6ec7; }
+  14%  { color: #ff9a00; }
+  28%  { color: #ffe600; }
+  42%  { color: #00ff88; }
+  57%  { color: #00e5ff; }
+  71%  { color: #7b61ff; }
+  85%  { color: #ff3cac; }
+  100% { color: #ff6ec7; }
+}
+@keyframes rbGradText {
+  0%   { filter: drop-shadow(0 0 16px #ff6ec7) drop-shadow(0 0 32px #7b61ff); }
+  14%  { filter: drop-shadow(0 0 16px #ff9a00) drop-shadow(0 0 32px #ffe600); }
+  28%  { filter: drop-shadow(0 0 16px #ffe600) drop-shadow(0 0 32px #00ff88); }
+  42%  { filter: drop-shadow(0 0 16px #00ff88) drop-shadow(0 0 32px #00e5ff); }
+  57%  { filter: drop-shadow(0 0 16px #00e5ff) drop-shadow(0 0 32px #7b61ff); }
+  71%  { filter: drop-shadow(0 0 16px #7b61ff) drop-shadow(0 0 32px #ff3cac); }
+  85%  { filter: drop-shadow(0 0 16px #ff3cac) drop-shadow(0 0 32px #ff6ec7); }
+  100% { filter: drop-shadow(0 0 16px #ff6ec7) drop-shadow(0 0 32px #7b61ff); }
+}
+@keyframes rbBorder {
+  0%   { border-color: rgba(255,110,199,0.5); box-shadow: 0 0 14px rgba(255,110,199,0.3); }
+  14%  { border-color: rgba(255,154,0,0.5);   box-shadow: 0 0 14px rgba(255,154,0,0.3); }
+  28%  { border-color: rgba(255,230,0,0.5);   box-shadow: 0 0 14px rgba(255,230,0,0.3); }
+  42%  { border-color: rgba(0,255,136,0.5);   box-shadow: 0 0 14px rgba(0,255,136,0.3); }
+  57%  { border-color: rgba(0,229,255,0.5);   box-shadow: 0 0 14px rgba(0,229,255,0.3); }
+  71%  { border-color: rgba(123,97,255,0.5);  box-shadow: 0 0 14px rgba(123,97,255,0.3); }
+  85%  { border-color: rgba(255,60,172,0.5);  box-shadow: 0 0 14px rgba(255,60,172,0.3); }
+  100% { border-color: rgba(255,110,199,0.5); box-shadow: 0 0 14px rgba(255,110,199,0.3); }
+}
+@keyframes rbBg {
+  0%   { background: linear-gradient(135deg, #ff6ec7, #7b61ff); }
+  14%  { background: linear-gradient(135deg, #ff9a00, #ff6ec7); }
+  28%  { background: linear-gradient(135deg, #ffe600, #ff9a00); }
+  42%  { background: linear-gradient(135deg, #00ff88, #ffe600); }
+  57%  { background: linear-gradient(135deg, #00e5ff, #00ff88); }
+  71%  { background: linear-gradient(135deg, #7b61ff, #00e5ff); }
+  85%  { background: linear-gradient(135deg, #ff3cac, #7b61ff); }
+  100% { background: linear-gradient(135deg, #ff6ec7, #7b61ff); }
+}
+@keyframes rbBoxShadow {
+  0%   { box-shadow: 0 0 28px rgba(255,110,199,0.6); }
+  14%  { box-shadow: 0 0 28px rgba(255,154,0,0.6); }
+  28%  { box-shadow: 0 0 28px rgba(255,230,0,0.6); }
+  42%  { box-shadow: 0 0 28px rgba(0,255,136,0.6); }
+  57%  { box-shadow: 0 0 28px rgba(0,229,255,0.6); }
+  71%  { box-shadow: 0 0 28px rgba(123,97,255,0.6); }
+  85%  { box-shadow: 0 0 28px rgba(255,60,172,0.6); }
+  100% { box-shadow: 0 0 28px rgba(255,110,199,0.6); }
+}
+@keyframes rbTextGlow {
+  0%   { text-shadow: 0 0 12px #ff6ec7, 0 0 24px #7b61ff; }
+  14%  { text-shadow: 0 0 12px #ff9a00, 0 0 24px #ff6ec7; }
+  28%  { text-shadow: 0 0 12px #ffe600, 0 0 24px #00ff88; }
+  42%  { text-shadow: 0 0 12px #00ff88, 0 0 24px #00e5ff; }
+  57%  { text-shadow: 0 0 12px #00e5ff, 0 0 24px #7b61ff; }
+  71%  { text-shadow: 0 0 12px #7b61ff, 0 0 24px #ff3cac; }
+  85%  { text-shadow: 0 0 12px #ff3cac, 0 0 24px #ff6ec7; }
+  100% { text-shadow: 0 0 12px #ff6ec7, 0 0 24px #7b61ff; }
+}
+
+/* Apply rainbow to all UI elements */
+body.t-rainbow .logo { animation: rbGradText 6s linear infinite; }
+body.t-rainbow .home-logo { animation: rbGradText 6s linear infinite; }
+body.t-rainbow .home-logo-glow { animation: rbBoxShadow 6s linear infinite; }
+body.t-rainbow .go-btn { animation: rbBg 6s linear infinite; }
+body.t-rainbow .go-btn:hover { animation: rbBg 6s linear infinite, rbBoxShadow 6s linear infinite; transform: translateY(-1px) scale(1.03); }
+body.t-rainbow .addr-wrap { animation: rbBorder 6s linear infinite; }
+body.t-rainbow .addr-wrap:focus-within { animation: rbBorder 4s linear infinite; }
+body.t-rainbow .settings-btn { animation: rbColor 6s linear infinite; opacity: 1; }
+body.t-rainbow .nav-btn { animation: rbColor 6s linear infinite; opacity: 1; }
+body.t-rainbow .nav-btn:hover { animation: rbColor 6s linear infinite, rbBorder 6s linear infinite; }
+body.t-rainbow .tab.active { animation: rbBorder 6s linear infinite; }
+body.t-rainbow .tab.active .tab-ttl { animation: rbColor 6s linear infinite; }
+body.t-rainbow .plus-btn:hover { animation: rbColor 6s linear infinite; }
+body.t-rainbow .qn-item:hover { animation: rbBorder 5s linear infinite; }
+body.t-rainbow .hstat { animation: rbBorder 7s linear infinite; }
+body.t-rainbow .hstat-val { animation: rbColor 5s linear infinite; }
+body.t-rainbow .sdot { animation: rbColor 4s linear infinite, dpulse 2s ease-in-out infinite; }
+body.t-rainbow .sping { animation: rbColor 5s linear infinite; }
+body.t-rainbow .progress { animation: rbBg 3s linear infinite; }
+body.t-rainbow .init-fill { animation: rbBg 3s linear infinite; }
+body.t-rainbow .engine-option.active { animation: rbBorder 5s linear infinite; }
+body.t-rainbow .engine-option.active .engine-check { animation: rbColor 5s linear infinite; }
+body.t-rainbow .home-engine-badge { animation: rbBorder 5s linear infinite, rbColor 5s linear infinite; }
+body.t-rainbow .engine-dot { animation: rbColor 4s linear infinite, dpulse 2s ease-in-out infinite; }
+body.t-rainbow .addr-input::placeholder { animation: rbColor 7s linear infinite; }
+body.t-rainbow .sep { animation: rbBorder 6s linear infinite; border: none; width: 1px; }
+body.t-rainbow .statusbar { animation: rbBorder 8s linear infinite; border-top: 1px solid; }
+body.t-rainbow .topbar { animation: rbBorder 8s linear infinite; border-bottom: 1px solid; }
+body.t-rainbow .tabs { animation: rbBorder 8s linear infinite; border-bottom: 1px solid; }
+body.t-rainbow .blob-1 { animation: blob1 22s ease-in-out infinite, rbBlobColor1 6s linear infinite; }
+body.t-rainbow .blob-2 { animation: blob2 18s ease-in-out infinite, rbBlobColor2 6s linear infinite; }
+body.t-rainbow .blob-3 { animation: blob3 26s ease-in-out infinite, rbBlobColor3 6s linear infinite; }
+body.t-rainbow .settings-dropdown { animation: rbBorder 6s linear infinite; }
+
+@keyframes rbBlobColor1 {
+  0%   { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
+  20%  { background: radial-gradient(circle, #ff9a00 0%, transparent 70%); }
+  40%  { background: radial-gradient(circle, #00ff88 0%, transparent 70%); }
+  60%  { background: radial-gradient(circle, #00e5ff 0%, transparent 70%); }
+  80%  { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
+  100% { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
+}
+@keyframes rbBlobColor2 {
+  0%   { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
+  20%  { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
+  40%  { background: radial-gradient(circle, #ff9a00 0%, transparent 70%); }
+  60%  { background: radial-gradient(circle, #ffe600 0%, transparent 70%); }
+  80%  { background: radial-gradient(circle, #00ff88 0%, transparent 70%); }
+  100% { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
+}
+@keyframes rbBlobColor3 {
+  0%   { background: radial-gradient(circle, #00e5ff 0%, transparent 70%); }
+  20%  { background: radial-gradient(circle, #7b61ff 0%, transparent 70%); }
+  40%  { background: radial-gradient(circle, #ff3cac 0%, transparent 70%); }
+  60%  { background: radial-gradient(circle, #ff9a00 0%, transparent 70%); }
+  80%  { background: radial-gradient(circle, #ffe600 0%, transparent 70%); }
+  100% { background: radial-gradient(circle, #00e5ff 0%, transparent 70%); }
+}
+
 </style>
 </head>
 <body class="t-normal">
@@ -246,6 +390,7 @@ html,body{height:100%;background:var(--void);font-family:'Syne',sans-serif;color
           <div class="engine-option" id="theme-rose" onclick="setTheme('rose')"><div class="engine-icon">&#127801;</div><div class="engine-info"><div class="engine-name">Rose</div><div class="engine-desc">Neon pink bloom</div></div><div class="engine-check">&#10003;</div></div>
           <div class="engine-option" id="theme-forest" onclick="setTheme('forest')"><div class="engine-icon">&#127807;</div><div class="engine-info"><div class="engine-name">Forest</div><div class="engine-desc">Electric green mist</div></div><div class="engine-check">&#10003;</div></div>
           <div class="engine-option" id="theme-crimson" onclick="setTheme('crimson')"><div class="engine-icon">&#128997;</div><div class="engine-info"><div class="engine-name">Crimson</div><div class="engine-desc">Blood red pulse</div></div><div class="engine-check">&#10003;</div></div>
+          <div class="engine-option" id="theme-rainbow" onclick="setTheme('rainbow')"><div class="engine-icon">&#127752;</div><div class="engine-info"><div class="engine-name">Rainbow</div><div class="engine-desc">Full spectrum cycle</div></div><div class="engine-check">&#10003;</div></div>
         </div>
 
       </div>
@@ -302,6 +447,7 @@ const THEME_HUES = {
   rose:    [320, 340, 300],
   forest:  [130, 145, 115],
   crimson: [0,   10,  350],
+  rainbow: [0,   120,  240],
 };
 
 const THEMES = Object.keys(THEME_HUES);
@@ -324,10 +470,17 @@ function setTheme(id) {
 }
 
 function updateParticleHues() {
+  if (currentTheme === 'rainbow') {
+    // Spread particles across full spectrum
+    ptcls.forEach((p, i)   => { p.hue = (i / ptcls.length) * 360; p.rainbowDrift = Math.random() * 0.8 + 0.3; });
+    orbs.forEach((o, i)    => { o.hue = (i / orbs.length) * 360; o.rainbowDrift = Math.random() * 0.5 + 0.2; });
+    streaks.forEach((s, i) => { s.hue = (i / streaks.length) * 360; s.rainbowDrift = Math.random() * 1.2 + 0.5; });
+    return;
+  }
   const hues = THEME_HUES[currentTheme] || [260, 290, 320];
-  ptcls.forEach(p  => { p.hue = hues[0] + (Math.random() - 0.5) * 40; });
-  orbs.forEach(o   => { o.hue = hues[1] + (Math.random() - 0.5) * 30; });
-  streaks.forEach(s=> { s.hue = hues[2] + (Math.random() - 0.5) * 30; });
+  ptcls.forEach(p   => { p.hue = hues[0] + (Math.random() - 0.5) * 40; p.rainbowDrift = 0; });
+  orbs.forEach(o    => { o.hue = hues[1] + (Math.random() - 0.5) * 30; o.rainbowDrift = 0; });
+  streaks.forEach(s => { s.hue = hues[2] + (Math.random() - 0.5) * 30; s.rainbowDrift = 0; });
 }
 
 /* =====================================================================
@@ -404,6 +557,7 @@ const streaks = Array.from({length: 14}, newStreak);
   // Streaks
   for (const s of streaks) {
     s.x += Math.cos(s.angle)*s.speed; s.y += Math.sin(s.angle)*s.speed; s.life++;
+    if(s.rainbowDrift) s.hue = (s.hue + s.rainbowDrift) % 360;
     if (s.life > s.maxLife || s.x < 0 || s.x > W || s.y < 0 || s.y > H) {
       Object.assign(s, newStreak()); s.x = Math.random()*W; s.y = Math.random()*H;
     }
@@ -419,6 +573,7 @@ const streaks = Array.from({length: 14}, newStreak);
   // Orbs
   for (const o of orbs) {
     o.x+=o.vx; o.y+=o.vy; o.tw+=o.tws;
+    if(o.rainbowDrift) o.hue = (o.hue + o.rainbowDrift) % 360;
     if(o.y<-10){o.y=H+10;o.x=Math.random()*W;} if(o.x<-10)o.x=W+10; if(o.x>W+10)o.x=-10;
     const mdx=o.x-mouse.x,mdy=o.y-mouse.y,md=Math.sqrt(mdx*mdx+mdy*mdy);
     if(md<160){const f=(160-md)/160*0.7;o.x+=mdx/md*f;o.y+=mdy/md*f;}
@@ -433,6 +588,7 @@ const streaks = Array.from({length: 14}, newStreak);
   // Particles
   for (const p of ptcls) {
     p.x+=p.vx; p.y+=p.vy; p.tw+=p.tws;
+    if(p.rainbowDrift) p.hue = (p.hue + p.rainbowDrift) % 360;
     if(p.y<-5){p.y=H+5;p.x=Math.random()*W;} if(p.x<-5)p.x=W+5; if(p.x>W+5)p.x=-5;
     const mdx=p.x-mouse.x,mdy=p.y-mouse.y,md=Math.sqrt(mdx*mdx+mdy*mdy);
     if(md<120){const f=(120-md)/120*0.55;p.x+=mdx/md*f;p.y+=mdy/md*f;}
