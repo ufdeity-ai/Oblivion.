@@ -1,7 +1,7 @@
 {
   "name": "oblivion-proxy",
   "version": "1.0.0",
-  "description": "Oblivion Proxy - Custom Engine",
+  "description": "VoidOS — Void Engine Proxy",
   "main": "server.js",
   "type": "module",
   "scripts": {
