@@ -1155,6 +1155,8 @@ const APPS = {
     defaultSize:[500,460], minSize:[360,340], pinned:false },
   games:   { name:'Games',    icon:'🎮', color:'#f43f5e',
     defaultSize:[860,580], minSize:[600,420], pinned:true },
+  snowrider: { name:'Snow Rider 3D', icon:'🏂', color:'#38bdf8',
+    defaultSize:[900,600], minSize:[600,420], pinned:false },
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -1242,6 +1244,7 @@ function buildAppContent(appId, id) {
     case 'weather': return buildWeather(id);
     case 'calendar': return buildCalendar(id);
     case 'games': return buildGames(id);
+    case 'snowrider': return buildSnowRider(id);
     default: return '<div style="padding:20px;color:rgba(255,255,255,0.4)">Coming soon</div>';
   }
 }
@@ -2683,6 +2686,8 @@ const GAME_LIBRARY = [
    url:'https://www.mahjong-solitaire.com/', src:'mahjong-solitaire.com'},
   {id:'wordle',   name:'Wordle',        icon:'📝', genre:'Word',     rating:'★★★★★', color:'#a3e635',
    url:'https://wordleunlimited.org/', src:'wordleunlimited.org'},
+  {id:'snowrider-ext', name:"Snow Rider 3D", icon:'🏂', genre:'Action', rating:'★★★★★', color:'#38bdf8',
+   url:'https://snowrider3d.github.io/', src:'snowrider3d (built-in)'},
 ];
 
 const GAME_CATS = ['All','Arcade','Puzzle','Strategy','Card','Word','FPS','Sports'];
@@ -2744,6 +2749,8 @@ function setGameCat(id, cat) {
 function filterGames(id) { renderGames(id); }
 
 function launchGame(winId, gameId) {
+  // Special case: Snow Rider 3D opens as its own app window
+  if (gameId === 'snowrider-ext') { openApp('snowrider'); return; }
   const game = GAME_LIBRARY.find(g => g.id === gameId);
   if (!game) return;
   const wrap = document.getElementById('gw-'+winId);
@@ -2798,14 +2805,51 @@ function backToGames(winId) {
   renderGames(winId);
 }
 
+
 // ═══════════════════════════════════════════════════════════
-//  INIT
+//  SNOW RIDER 3D — loads the game from /snow-rider.html
 // ═══════════════════════════════════════════════════════════
-setTheme(currentTheme);
-buildDesktopIcons();
-buildStartMenuGrid();
-updateTaskbar();
-drawFrame();
+function buildSnowRider(id) {
+  return `<div style="display:flex;flex-direction:column;height:100%;background:#000">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;
+      background:linear-gradient(180deg,rgba(56,189,248,0.15),rgba(0,0,0,0.3));
+      border-bottom:1px solid rgba(56,189,248,0.2);flex-shrink:0">
+      <span style="font-size:1.2rem">🏂</span>
+      <span style="font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;
+        background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+        SNOW RIDER 3D</span>
+      <span style="font-size:0.6rem;color:rgba(255,255,255,0.25);margin-left:auto;font-family:'DM Mono',monospace">
+        ← → to steer &nbsp;·&nbsp; Avoid obstacles &nbsp;·&nbsp; Collect gifts</span>
+    </div>
+    <div style="flex:1;position:relative">
+      <iframe
+        id="sr3d-${id}"
+        src="/snow-rider.html"
+        style="width:100%;height:100%;border:none;display:block;background:#000"
+        allow="autoplay"
+        onload="document.getElementById('sr3d-loading-${id}')?.remove()">
+      </iframe>
+      <div id="sr3d-loading-${id}" style="position:absolute;inset:0;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:14px;background:#000;pointer-events:none">
+        <div style="font-size:4rem;animation:gameLoad 1s ease-in-out infinite">🏂</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.2em;
+          color:rgba(56,189,248,0.6)">LOADING SNOW RIDER 3D...</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.2);font-family:'DM Mono',monospace">
+          Powered by Unity WebGL</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT — wrapped so boot always fires even if something throws
+// ═══════════════════════════════════════════════════════════
+try { setTheme(currentTheme); } catch(e) { console.error('setTheme',e); }
+try { buildDesktopIcons(); } catch(e) { console.error('buildDesktopIcons',e); }
+try { buildStartMenuGrid(); } catch(e) { console.error('buildStartMenuGrid',e); }
+try { updateTaskbar(); } catch(e) { console.error('updateTaskbar',e); }
+try { drawFrame(); } catch(e) { console.error('drawFrame',e); }
+// Boot always runs — even if init had errors
 setTimeout(bootTick, 300);
 </script>
 </body>
