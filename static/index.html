@@ -62,11 +62,12 @@ html,body{
 
 /* ── DESKTOP ─────────────────────────────────────────────── */
 #desktop{position:fixed;inset:0;bottom:var(--bar-h);z-index:10;overflow:hidden}
-.desktop-icons{position:absolute;top:20px;left:20px;display:flex;flex-direction:column;gap:6px;z-index:11}
-.d-icon{width:80px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:var(--r-md);cursor:pointer;transition:background 0.15s;position:relative}
+.desktop-icons{position:absolute;inset:0;z-index:11;pointer-events:none}
+.d-icon{width:82px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:var(--r-md);cursor:pointer;transition:background 0.15s;position:absolute;pointer-events:all;user-select:none}
 .d-icon:hover{background:rgba(255,255,255,0.07)}
 .d-icon:active{background:rgba(255,255,255,0.12)}
 .d-icon.selected{background:rgba(255,255,255,0.1)}
+.d-icon.dragging{opacity:0.8;z-index:999;transition:none!important;background:rgba(255,255,255,0.1);box-shadow:0 12px 40px rgba(0,0,0,0.6)}
 .d-icon-img{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:linear-gradient(160deg,rgba(255,255,255,0.1) 0%,rgba(0,0,0,0.3) 100%);border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 20px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.08) inset;transition:transform 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s}
 .d-icon:hover .d-icon-img{transform:scale(1.1);box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 24px color-mix(in srgb,var(--flare) 40%,transparent),0 1px 0 rgba(255,255,255,0.12) inset}
 .d-icon-label{font-size:0.68rem;font-weight:500;color:var(--white);text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 12px rgba(0,0,0,0.6);text-align:center;letter-spacing:0.02em;line-height:1.2}
@@ -110,11 +111,10 @@ html,body{
 /* ── TASKBAR ─────────────────────────────────────────────── */
 #taskbar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);z-index:1000;
   display:flex;align-items:center;gap:0;
-  background:linear-gradient(180deg,rgba(0,0,0,0.45) 0%,rgba(0,0,0,0.75) 100%);
-  backdrop-filter:blur(40px) saturate(1.6);
-  -webkit-backdrop-filter:blur(40px) saturate(1.6);
-  border-top:1px solid rgba(255,255,255,0.07);
-  box-shadow:0 -1px 0 rgba(255,255,255,0.04) inset,0 -8px 32px rgba(0,0,0,0.3);
+  background:linear-gradient(180deg,rgba(0,0,0,0.06) 0%,rgba(0,0,0,0.15) 100%);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border-top:1px solid rgba(255,255,255,0.05);
   padding:0 12px}
 
 .tb-left{display:flex;align-items:center;gap:6px;flex-shrink:0}
@@ -686,6 +686,75 @@ body.t-rainbow .blob-3{animation:blob3 26s ease-in-out infinite,rbBlobColor3 6s 
   border:1px solid color-mix(in srgb,var(--flare) 20%,transparent);
   border-radius:8px;font-size:0.72rem;color:rgba(255,255,255,0.7)}
 .cal-event-dot{width:6px;height:6px;border-radius:50%;background:var(--speed);flex-shrink:0}
+
+/* ── GAMES APP ─────────────────────────────────────────────── */
+.games-wrap{display:flex;flex-direction:column;height:100%}
+.games-topbar{display:flex;align-items:center;gap:10px;padding:12px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.25) 100%)}
+.games-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;
+  background:linear-gradient(135deg,var(--danger),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.1em}
+.games-search{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:6px 14px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.78rem;color:var(--white);outline:none;caret-color:var(--flare);max-width:260px}
+.games-search::placeholder{color:rgba(255,255,255,0.2)}
+.games-cats{display:flex;gap:6px;overflow-x:auto;flex-shrink:0}
+.games-cats::-webkit-scrollbar{display:none}
+.g-cat{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:600;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.5);transition:all 0.15s;white-space:nowrap}
+.g-cat:hover{background:rgba(255,255,255,0.08);color:white}
+.g-cat.active{background:linear-gradient(135deg,var(--danger),var(--pink));
+  border-color:transparent;color:white}
+.games-content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.games-grid-wrap{flex:1;overflow-y:auto;padding:14px}
+.games-grid-wrap::-webkit-scrollbar{width:5px}
+.games-grid-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.game-card{border-radius:14px;overflow:hidden;cursor:pointer;
+  background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,rgba(0,0,0,0.3) 100%);
+  border:1px solid rgba(255,255,255,0.07);border-top:1px solid rgba(255,255,255,0.1);
+  transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.game-card:hover{transform:translateY(-4px) scale(1.02);border-color:color-mix(in srgb,var(--flare) 35%,transparent);
+  box-shadow:0 12px 36px rgba(0,0,0,0.5),0 0 20px color-mix(in srgb,var(--flare) 20%,transparent)}
+.game-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem;
+  position:relative;overflow:hidden}
+.game-thumb::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.6) 100%)}
+.game-info{padding:10px 12px 12px}
+.game-name{font-size:0.8rem;font-weight:700;color:var(--white);margin-bottom:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-meta{display:flex;align-items:center;justify-content:space-between}
+.game-genre{font-size:0.6rem;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-transform:uppercase}
+.game-rating{font-size:0.65rem;color:#fbbf24}
+.game-play-btn{width:100%;padding:6px;border:none;border-radius:0 0 14px 14px;
+  background:linear-gradient(135deg,var(--danger),var(--pink));
+  color:white;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;cursor:pointer;
+  font-family:'Orbitron',monospace;transition:all 0.2s;display:none}
+.game-card:hover .game-play-btn{display:block}
+.game-card:hover .game-info{padding-bottom:0}
+
+/* Game player view */
+.game-player{display:flex;flex-direction:column;height:100%}
+.game-player-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:rgba(0,0,0,0.3)}
+.game-player-back{padding:5px 12px;border-radius:8px;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.6);
+  cursor:pointer;transition:all 0.15s}
+.game-player-back:hover{background:rgba(255,255,255,0.1);color:white}
+.game-player-title{font-size:0.82rem;font-weight:700;color:var(--white)}
+.game-player-src{font-size:0.62rem;color:rgba(255,255,255,0.3);margin-left:auto;font-family:'DM Mono',monospace}
+.game-iframe-wrap{flex:1;position:relative;background:#000}
+.game-iframe{width:100%;height:100%;border:none}
+.game-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:12px;background:#000}
+.game-loading-icon{font-size:3rem;animation:gameLoad 1s ease-in-out infinite}
+@keyframes gameLoad{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.game-loading-text{font-size:0.75rem;letter-spacing:0.15em;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace}
+
 </style>
 </head>
 <body class="t-normal">
@@ -952,6 +1021,8 @@ const APPS = {
     defaultSize:[460,520], minSize:[340,400], pinned:false },
   calendar:{ name:'Calendar', icon:'📅', color:'#4ade80',
     defaultSize:[500,460], minSize:[360,340], pinned:false },
+  games:   { name:'Games',    icon:'🎮', color:'#f43f5e',
+    defaultSize:[860,580], minSize:[600,420], pinned:true },
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -1037,6 +1108,7 @@ function buildAppContent(appId, id) {
     case 'music': return buildMusic(id);
     case 'weather': return buildWeather(id);
     case 'calendar': return buildCalendar(id);
+    case 'games': return buildGames(id);
     default: return '<div style="padding:20px;color:rgba(255,255,255,0.4)">Coming soon</div>';
   }
 }
@@ -1630,7 +1702,8 @@ function initAppLogic(appId, id) {
   if (appId === 'paint') setTimeout(() => initPaint(id), 60);
   if (appId === 'weather') setTimeout(() => renderWeather(id, 'New York'), 0);
   if (appId === 'calendar') setTimeout(() => renderCalendar(id), 0);
-  if (appId === 'ai') setTimeout(() => document.getElementById('ai-input-'+id)?.focus(), 100);
+  if (appId === 'ai') setTimeout(() => { initAriaKey(id); document.getElementById('ai-input-'+id)?.focus(); }, 100);
+  if (appId === 'games') setTimeout(() => renderGames(id), 0);
 }
 
 // Clock hands update
@@ -1665,11 +1738,62 @@ function updateClockHands(winId) {
 function buildDesktopIcons() {
   const cont = document.getElementById('desktop-icons');
   cont.innerHTML = '';
+  const saved = JSON.parse(localStorage.getItem('void-icon-pos') || '{}');
+  const COLS = 2, ICON_W = 90, ICON_H = 96, PAD = 16;
+  let idx = 0;
+
   Object.entries(APPS).forEach(([appId, app]) => {
     const el = document.createElement('div');
     el.className = 'd-icon';
-    el.ondblclick = () => openApp(appId);
+    el.dataset.app = appId;
     el.innerHTML = `<div class="d-icon-img">${app.icon}</div><div class="d-icon-label">${app.name}</div>`;
+
+    // Position: use saved or default grid
+    const col = idx % COLS;
+    const row = Math.floor(idx / COLS);
+    const defX = PAD + col * ICON_W;
+    const defY = PAD + row * ICON_H;
+    const pos = saved[appId] || {x: defX, y: defY};
+    el.style.left = pos.x + 'px';
+    el.style.top  = pos.y + 'px';
+    idx++;
+
+    // Drag logic
+    let dragging = false, ox = 0, oy = 0, moved = false;
+    el.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      e.stopPropagation();
+      dragging = true; moved = false;
+      ox = e.clientX - el.offsetLeft;
+      oy = e.clientY - el.offsetTop;
+      el.classList.add('dragging');
+      el.style.zIndex = 999;
+    });
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      moved = true;
+      const bh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));
+      const nx = Math.max(0, Math.min(window.innerWidth - 82, e.clientX - ox));
+      const ny = Math.max(0, Math.min(window.innerHeight - bh - 96, e.clientY - oy));
+      el.style.left = nx + 'px';
+      el.style.top  = ny + 'px';
+    });
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      el.classList.remove('dragging');
+      el.style.zIndex = '';
+      // Save position
+      const allPos = JSON.parse(localStorage.getItem('void-icon-pos') || '{}');
+      allPos[appId] = {x: parseInt(el.style.left), y: parseInt(el.style.top)};
+      localStorage.setItem('void-icon-pos', JSON.stringify(allPos));
+    });
+
+    // Double click to open (only if not dragged)
+    el.addEventListener('dblclick', e => {
+      if (!moved) openApp(appId);
+    });
+
     cont.appendChild(el);
   });
 }
@@ -1816,7 +1940,7 @@ const aiHistory = {}; // winId -> [{role,content}]
 
 function buildAI(id) {
   aiHistory[id] = [];
-  return `<div class="ai-wrap">
+  return `<div class="ai-wrap" id="ai-wrap-${id}">
     <div class="ai-header">
       <div class="ai-header-top">
         <div class="ai-avatar">🤖</div>
@@ -1827,6 +1951,15 @@ function buildAI(id) {
         <button class="ai-clear-btn" style="margin-left:auto" onclick="clearAI('${id}')">Clear</button>
       </div>
       <div class="ai-status"><div class="ai-dot"></div>Online · VoidOS AI Assistant</div>
+    </div>
+    <div id="ai-key-banner-${id}" style="display:none;padding:8px 14px;background:rgba(244,63,94,0.08);border-bottom:1px solid rgba(244,63,94,0.2);flex-shrink:0">
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.6);margin-bottom:6px">🔑 Enter your Anthropic API key to use ARIA. <a href="https://console.anthropic.com/keys" target="_blank" style="color:var(--flare)">Get one free →</a></div>
+      <div style="display:flex;gap:8px">
+        <input id="ai-key-input-${id}" type="password" placeholder="sk-ant-..." 
+          style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 12px;font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--white);outline:none;caret-color:var(--flare)"
+          onkeydown="if(event.key==='Enter')saveAriaKey('${id}')">
+        <button onclick="saveAriaKey('${id}')" style="padding:6px 14px;background:linear-gradient(135deg,var(--core),var(--flare));border:none;border-radius:8px;color:white;font-size:0.72rem;cursor:pointer;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif">Save</button>
+      </div>
     </div>
     <div class="ai-messages" id="ai-msgs-${id}">
       <div class="ai-msg assistant">
@@ -1850,6 +1983,17 @@ function buildAI(id) {
   </div>`;
 }
 
+function saveAriaKey(id) {
+  const key = document.getElementById('ai-key-input-'+id)?.value.trim();
+  if (!key || !key.startsWith('sk-ant-')) {
+    alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
+    return;
+  }
+  localStorage.setItem('aria-api-key', key);
+  document.getElementById('ai-key-banner-'+id).style.display = 'none';
+  addAiMsg(id, 'assistant', '✦ API key saved! I'm ready to help. What's on your mind?');
+}
+
 function aiResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(120, el.scrollHeight) + 'px';
@@ -1871,6 +2015,32 @@ function clearAI(id) {
   document.getElementById('ai-sugs-'+id).style.display = 'flex';
 }
 
+function initAriaKey(id) {
+  // Check if server has a key set, or if user has one saved
+  const localKey = localStorage.getItem('aria-api-key');
+  // Ping server to see if it has a key configured
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: [], system: 'ping', _ping: true }),
+  }).then(r => r.json()).then(data => {
+    // If we get no_key error and no local key, show banner
+    if (data.error === 'no_key' && !localKey) {
+      document.getElementById('ai-key-banner-'+id).style.display = '';
+    }
+  }).catch(() => {
+    if (!localKey) document.getElementById('ai-key-banner-'+id).style.display = '';
+  });
+}
+
+function addAiMsg(id, role, text) {
+  const msgs = document.getElementById('ai-msgs-'+id);
+  if (!msgs) return;
+  const t = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  msgs.innerHTML += `<div class="ai-msg ${role}"><div class="ai-bubble">${escHtml(text)}</div><div class="ai-meta">${role==='user'?'You':'ARIA'} · ${t}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
 async function aiSend(id) {
   const input = document.getElementById('ai-input-'+id);
   const text = input.value.trim();
@@ -1880,8 +2050,7 @@ async function aiSend(id) {
   const msgs = document.getElementById('ai-msgs-'+id);
 
   // Add user message
-  const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-  msgs.innerHTML += `<div class="ai-msg user"><div class="ai-bubble">${escHtml(text)}</div><div class="ai-meta">You · ${now}</div></div>`;
+  msgs.innerHTML += `<div class="ai-msg user"><div class="ai-bubble">${escHtml(text)}</div><div class="ai-meta">You · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div></div>`;
   input.value = '';
   input.style.height = 'auto';
   sendBtn.disabled = true;
@@ -1895,28 +2064,52 @@ async function aiSend(id) {
   aiHistory[id].push({ role:'user', content: text });
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const localKey = localStorage.getItem('aria-api-key');
+    const headers = { 'Content-Type': 'application/json' };
+    if (localKey) headers['x-aria-key'] = localKey;
+
+    const res = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `You are ARIA, a sleek and intelligent AI assistant built into VoidOS — a futuristic desktop operating system with a dark void aesthetic. You have a helpful, smart, slightly futuristic personality. You're concise but thorough. You use the ✦ symbol occasionally. The OS has apps: Oblivion Browser, Terminal, Files, Notes, Settings, Clock, Calculator, Paint, Music, Weather, Calendar.`,
+        system: 'You are ARIA, a sleek and intelligent AI assistant built into VoidOS — a futuristic desktop operating system with a dark void aesthetic. You are helpful, smart, and have a slightly futuristic personality. Be concise but thorough. Use the ✦ symbol occasionally. The OS has apps: Oblivion Browser, Terminal, Files, Notes, Settings, Clock, Calculator, Paint, Music, Weather, Calendar, Games.',
         messages: aiHistory[id],
-      })
+      }),
     });
 
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Sorry, I encountered an error. Please try again.';
 
     document.getElementById(typingId)?.remove();
-    aiHistory[id].push({ role:'assistant', content: reply });
 
-    const replyTime = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble">${escHtml(reply)}</div><div class="ai-meta">ARIA · ${replyTime}</div></div>`;
+    if (data.error === 'no_key') {
+      // Show the key banner
+      document.getElementById('ai-key-banner-'+id).style.display = '';
+      msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:rgba(255,200,0,0.9)">🔑 No API key configured. Please enter your Anthropic API key above to use ARIA.</div></div>`;
+      aiHistory[id].pop(); // remove the failed message
+      sendBtn.disabled = false;
+      msgs.scrollTop = msgs.scrollHeight;
+      return;
+    }
+
+    if (data.error) {
+      msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(data.message || 'Unknown error')}</div></div>`;
+      aiHistory[id].pop();
+      sendBtn.disabled = false;
+      msgs.scrollTop = msgs.scrollHeight;
+      return;
+    }
+
+    const reply = data.content?.[0]?.text;
+    if (!reply) throw new Error('Empty response from API');
+
+    aiHistory[id].push({ role:'assistant', content: reply });
+    const t = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble">${escHtml(reply)}</div><div class="ai-meta">ARIA · ${t}</div></div>`;
+
   } catch (err) {
     document.getElementById(typingId)?.remove();
-    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ Connection error: ${escHtml(err.message)}</div></div>`;
+    aiHistory[id].pop();
+    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(err.message)}</div></div>`;
   }
 
   sendBtn.disabled = false;
@@ -2313,6 +2506,163 @@ function calNav(id, dir) {
   if (s.month > 11) { s.month=0; s.year++; }
   if (s.month < 0)  { s.month=11; s.year--; }
   renderCalendar(id);
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  GAMES APP — sourcing from OpenGameArt & free HTML5 game sites
+// ═══════════════════════════════════════════════════════════
+const GAME_LIBRARY = [
+  // Puzzle
+  {id:'2048',     name:'2048',          icon:'🔢', genre:'Puzzle',   rating:'★★★★★', color:'#ff9a00',
+   url:'https://play2048.co/', src:'play2048.co'},
+  {id:'chess',    name:'Chess',         icon:'♟️', genre:'Strategy', rating:'★★★★☆', color:'#a855f7',
+   url:'https://lichess.org/tv', src:'lichess.org'},
+  {id:'tetris',   name:'Jstris',        icon:'🟦', genre:'Puzzle',   rating:'★★★★★', color:'#38bdf8',
+   url:'https://jstris.jezevec10.com/', src:'jstris.jezevec10.com'},
+  {id:'sudoku',   name:'Sudoku',        icon:'🔲', genre:'Puzzle',   rating:'★★★★☆', color:'#4ade80',
+   url:'https://sudoku.com/', src:'sudoku.com'},
+  // Action
+  {id:'pacman',   name:'Pac-Man',       icon:'🟡', genre:'Arcade',   rating:'★★★★★', color:'#fde68a',
+   url:'https://freepacman.org/', src:'freepacman.org'},
+  {id:'snake',    name:'Snake',         icon:'🐍', genre:'Arcade',   rating:'★★★★☆', color:'#4ade80',
+   url:'https://playsnake.org/', src:'playsnake.org'},
+  {id:'doom',     name:'DOOM (1993)',    icon:'👹', genre:'FPS',      rating:'★★★★★', color:'#f43f5e',
+   url:'https://dos.zone/doom-1993/', src:'dos.zone'},
+  {id:'qbert',    name:'Q*bert',        icon:'🟠', genre:'Arcade',   rating:'★★★★☆', color:'#fb923c',
+   url:'https://dos.zone/q-bert-1983/', src:'dos.zone'},
+  // Strategy
+  {id:'go',       name:'Go',            icon:'⚫', genre:'Strategy', rating:'★★★★☆', color:'#6b7280',
+   url:'https://online-go.com/', src:'online-go.com'},
+  {id:'minesweep',name:'Minesweeper',   icon:'💣', genre:'Puzzle',   rating:'★★★★☆', color:'#a3e635',
+   url:'https://minesweeperonline.com/', src:'minesweeperonline.com'},
+  // Cards
+  {id:'solitaire',name:'Solitaire',     icon:'🃏', genre:'Card',     rating:'★★★★★', color:'#e879f9',
+   url:'https://solitaired.com/', src:'solitaired.com'},
+  {id:'freecell', name:'FreeCell',      icon:'🂡', genre:'Card',     rating:'★★★★☆', color:'#60a5fa',
+   url:'https://freecell.org/', src:'freecell.org'},
+  // Classics
+  {id:'asteroids',name:'Asteroids',     icon:'🚀', genre:'Arcade',   rating:'★★★★☆', color:'#00e5ff',
+   url:'https://www.freeasteroids.org/', src:'freeasteroids.org'},
+  {id:'pong',     name:'Pong',          icon:'🏓', genre:'Sports',   rating:'★★★☆☆', color:'#fff',
+   url:'https://www.ponggame.org/', src:'ponggame.org'},
+  {id:'mahjong',  name:'Mahjong',       icon:'🀄', genre:'Puzzle',   rating:'★★★★☆', color:'#f87171',
+   url:'https://www.mahjong-solitaire.com/', src:'mahjong-solitaire.com'},
+  {id:'wordle',   name:'Wordle',        icon:'📝', genre:'Word',     rating:'★★★★★', color:'#a3e635',
+   url:'https://wordleunlimited.org/', src:'wordleunlimited.org'},
+];
+
+const GAME_CATS = ['All','Arcade','Puzzle','Strategy','Card','Word','FPS','Sports'];
+let activeGameCat = 'All';
+let gameWinId = null;
+
+function buildGames(id) {
+  gameWinId = id;
+  return `<div class="games-wrap" id="gw-${id}">
+    <div class="games-topbar">
+      <div class="games-title">🎮 GAME VAULT</div>
+      <input class="games-search" id="g-search-${id}" placeholder="Search games..." 
+        oninput="filterGames('${id}')">
+      <div class="games-cats">
+        ${GAME_CATS.map(c=>`<div class="g-cat${c==='All'?' active':''}" id="gcat-${c.replace(/[^a-z]/gi,'')}-${id}" onclick="setGameCat('${id}','${c}')">${c}</div>`).join('')}
+      </div>
+    </div>
+    <div class="games-content">
+      <div class="games-grid-wrap">
+        <div class="games-grid" id="games-grid-${id}"></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGames(id) {
+  const search = document.getElementById('g-search-'+id)?.value.toLowerCase() || '';
+  const filtered = GAME_LIBRARY.filter(g => {
+    const catMatch = activeGameCat==='All' || g.genre===activeGameCat;
+    const searchMatch = !search || g.name.toLowerCase().includes(search) || g.genre.toLowerCase().includes(search);
+    return catMatch && searchMatch;
+  });
+  const grid = document.getElementById('games-grid-'+id);
+  if (!grid) return;
+  grid.innerHTML = filtered.map(g => `
+    <div class="game-card" onclick="launchGame('${id}','${g.id}')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,${g.color}33,${g.color}11)">
+        <span style="position:relative;z-index:1">${g.icon}</span>
+      </div>
+      <div class="game-info">
+        <div class="game-name">${g.name}</div>
+        <div class="game-meta">
+          <div class="game-genre">${g.genre}</div>
+          <div class="game-rating">${g.rating}</div>
+        </div>
+      </div>
+      <div style="font-size:0.58rem;color:rgba(255,255,255,0.2);padding:0 12px 8px;font-family:'DM Mono',monospace">${g.src}</div>
+      <button class="game-play-btn" onclick="launchGame('${id}','${g.id}')">▶ PLAY NOW</button>
+    </div>`).join('');
+}
+
+function setGameCat(id, cat) {
+  activeGameCat = cat;
+  document.querySelectorAll(`[id^="gcat-"][id$="-${id}"]`).forEach(el => el.classList.remove('active'));
+  document.getElementById('gcat-'+cat.replace(/[^a-z]/gi,'')+'-'+id)?.classList.add('active');
+  renderGames(id);
+}
+
+function filterGames(id) { renderGames(id); }
+
+function launchGame(winId, gameId) {
+  const game = GAME_LIBRARY.find(g => g.id === gameId);
+  if (!game) return;
+  const wrap = document.getElementById('gw-'+winId);
+  if (!wrap) return;
+
+  // Expand window for gaming
+  const winEl = document.getElementById(winId);
+  if (winEl && wins[winId]?.state !== 'maximized') {
+    const vw = window.innerWidth, vh = window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));
+    winEl.style.width = Math.min(960, vw-40) + 'px';
+    winEl.style.height = Math.min(640, vh-40) + 'px';
+    winEl.style.left = Math.max(0,(vw-parseInt(winEl.style.width))/2) + 'px';
+    winEl.style.top  = Math.max(0,(vh-parseInt(winEl.style.height))/2) + 'px';
+  }
+
+  wrap.innerHTML = `<div class="game-player">
+    <div class="game-player-bar">
+      <div class="game-player-back" onclick="backToGames('${winId}')">← Back</div>
+      <span style="font-size:1.1rem">${game.icon}</span>
+      <div class="game-player-title">${game.name}</div>
+      <div class="game-player-src">Source: ${game.src}</div>
+    </div>
+    <div class="game-iframe-wrap">
+      <div class="game-loading" id="gl-${winId}">
+        <div class="game-loading-icon">${game.icon}</div>
+        <div class="game-loading-text">Loading ${game.name}...</div>
+      </div>
+      <iframe class="game-iframe" id="gif-${winId}"
+        src="/proxy?url=${encodeURIComponent(game.url)}"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        onload="document.getElementById('gl-${winId}')?.remove()">
+      </iframe>
+    </div>
+  </div>`;
+}
+
+function backToGames(winId) {
+  const wrap = document.getElementById('gw-'+winId);
+  if (!wrap) return;
+  wrap.innerHTML = `<div class="games-wrap" id="gw-${winId}">
+    <div class="games-topbar">
+      <div class="games-title">🎮 GAME VAULT</div>
+      <input class="games-search" id="g-search-${winId}" placeholder="Search games..." oninput="filterGames('${winId}')">
+      <div class="games-cats">
+        ${GAME_CATS.map(c=>`<div class="g-cat${c===activeGameCat?' active':''}" id="gcat-${c.replace(/[^a-z]/gi,'')}-${winId}" onclick="setGameCat('${winId}','${c}')">${c}</div>`).join('')}
+      </div>
+    </div>
+    <div class="games-content"><div class="games-grid-wrap"><div class="games-grid" id="games-grid-${winId}"></div></div></div>
+  </div>`;
+  // re-wrap the div id
+  document.getElementById('gw-'+winId).id = 'gw-'+winId;
+  renderGames(winId);
 }
 
 // ═══════════════════════════════════════════════════════════
