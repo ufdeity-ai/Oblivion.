@@ -84,6 +84,47 @@ html,body{
   transition:opacity 0.2s,transform 0.2s,box-shadow 0.2s;
   transform-origin:top center;
 }
+/* ── Oblivion Browser — fully glassy window ── */
+.window[data-app="browser"]{
+  background:linear-gradient(160deg,
+    color-mix(in srgb,var(--core) 10%,rgba(0,0,0,0.08)) 0%,
+    color-mix(in srgb,var(--core) 5%,rgba(0,0,0,0.14)) 100%);
+  border-color:color-mix(in srgb,var(--flare) 30%,rgba(255,255,255,0.07));
+  border-top-color:color-mix(in srgb,var(--flare) 45%,rgba(255,255,255,0.14));
+  backdrop-filter:blur(40px) saturate(2.2) brightness(1.05);
+  -webkit-backdrop-filter:blur(40px) saturate(2.2) brightness(1.05);
+  box-shadow:
+    0 32px 80px rgba(0,0,0,0.45),
+    0 8px 32px rgba(0,0,0,0.3),
+    0 0 0 1px color-mix(in srgb,var(--flare) 15%,transparent),
+    0 1px 0 color-mix(in srgb,var(--flare) 20%,rgba(255,255,255,0.1)) inset,
+    0 0 60px color-mix(in srgb,var(--core) 8%,transparent) inset;
+}
+.window[data-app="browser"].focused{
+  box-shadow:
+    0 40px 100px rgba(0,0,0,0.5),
+    0 8px 32px rgba(0,0,0,0.3),
+    0 0 0 1px color-mix(in srgb,var(--flare) 30%,transparent),
+    0 1px 0 color-mix(in srgb,var(--flare) 25%,rgba(255,255,255,0.12)) inset,
+    0 0 80px color-mix(in srgb,var(--core) 12%,transparent) inset;
+}
+.window[data-app="browser"] .win-titlebar{
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--core) 18%,rgba(0,0,0,0.08)) 0%,
+    color-mix(in srgb,var(--core) 8%,rgba(0,0,0,0.18)) 100%);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid color-mix(in srgb,var(--flare) 22%,rgba(255,255,255,0.05));
+}
+.window[data-app="browser"] .win-title{
+  color:var(--flare);
+  text-shadow:0 0 12px color-mix(in srgb,var(--flare) 50%,transparent);
+}
+.window[data-app="browser"] .win-app-icon{
+  filter:drop-shadow(0 0 6px color-mix(in srgb,var(--flare) 70%,transparent));
+}
+.window[data-app="browser"] .win-body{
+  background:transparent;
+}
 .window.minimizing{opacity:0;transform:scale(0.85) translateY(40px)}
 .window.maximized{border-radius:0!important;border:none!important}
 .window.focused{box-shadow:0 40px 100px rgba(0,0,0,0.8),0 8px 32px rgba(0,0,0,0.5),0 0 0 1px var(--glass-border),0 1px 0 rgba(255,255,255,0.08) inset}
@@ -283,66 +324,157 @@ html,body{
 /* ── APP STYLES ──────────────────────────────────────────── */
 
 /* Browser */
-.browser-wrap{display:flex;flex-direction:column;height:100%}
+.browser-wrap{display:flex;flex-direction:column;height:100%;background:transparent}
+
+/* ── Glassy browser chrome — lets desktop particles bleed through ── */
 .browser-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;
-  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.3) 100%);
-  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--core) 8%,rgba(0,0,0,0.12)) 0%,
+    color-mix(in srgb,var(--core) 4%,rgba(0,0,0,0.18)) 100%);
+  backdrop-filter:blur(20px) saturate(1.8);
+  -webkit-backdrop-filter:blur(20px) saturate(1.8);
+  border-bottom:1px solid color-mix(in srgb,var(--flare) 18%,rgba(255,255,255,0.04));
+  box-shadow:0 1px 0 color-mix(in srgb,var(--flare) 8%,transparent) inset;
+  flex-shrink:0}
+
+/* Nav buttons — theme-tinted glass pills */
 .b-nav-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;
-  background:var(--glass);border:1px solid rgba(255,255,255,0.07);border-radius:8px;
-  cursor:pointer;font-size:0.8rem;color:var(--flare);opacity:0.5;transition:all 0.15s}
-.b-nav-btn:hover{opacity:1;border-color:var(--flare);box-shadow:0 0 10px color-mix(in srgb,var(--flare) 40%,transparent)}
+  background:color-mix(in srgb,var(--core) 12%,rgba(255,255,255,0.04));
+  border:1px solid color-mix(in srgb,var(--flare) 22%,rgba(255,255,255,0.06));
+  border-radius:8px;cursor:pointer;font-size:0.8rem;color:var(--flare);
+  opacity:0.7;transition:all 0.15s;
+  backdrop-filter:blur(8px)}
+.b-nav-btn:hover{opacity:1;
+  background:color-mix(in srgb,var(--core) 25%,transparent);
+  border-color:var(--flare);
+  box-shadow:0 0 12px color-mix(in srgb,var(--flare) 45%,transparent),
+             0 0 24px color-mix(in srgb,var(--core) 30%,transparent)}
+
+/* Address bar — glassy with theme accent ring */
 .b-addr-wrap{flex:1;display:flex;align-items:center;
-  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.4) 100%);
-  border:1px solid rgba(255,255,255,0.08);border-radius:20px;
-  padding:0 14px;height:30px;gap:8px;
-  backdrop-filter:blur(12px);transition:all 0.2s;
-  box-shadow:0 1px 0 rgba(255,255,255,0.05) inset}
-.b-addr-wrap:focus-within{border-color:var(--flare);box-shadow:0 0 0 2px color-mix(in srgb,var(--core) 20%,transparent),0 1px 0 rgba(255,255,255,0.05) inset}
-.b-lock{font-size:0.65rem;color:var(--speed);flex-shrink:0}
-.b-addr{flex:1;background:none;border:none;outline:none;font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:0.78rem;color:var(--white);caret-color:var(--flare)}
-.b-addr::placeholder{color:rgba(255,255,255,0.25)}
-.b-go{padding:4px 14px;background:linear-gradient(135deg,var(--core),var(--flare));
-  border:none;border-top:1px solid rgba(255,255,255,0.18);border-radius:12px;
+  background:color-mix(in srgb,var(--core) 6%,rgba(0,0,0,0.25));
+  border:1px solid color-mix(in srgb,var(--flare) 20%,rgba(255,255,255,0.06));
+  border-top:1px solid color-mix(in srgb,var(--flare) 28%,rgba(255,255,255,0.1));
+  border-radius:20px;padding:0 14px;height:30px;gap:8px;
+  backdrop-filter:blur(16px) saturate(1.6);
+  -webkit-backdrop-filter:blur(16px) saturate(1.6);
+  transition:all 0.2s;
+  box-shadow:0 1px 0 color-mix(in srgb,var(--flare) 10%,rgba(255,255,255,0.05)) inset,
+             0 2px 12px rgba(0,0,0,0.2)}
+.b-addr-wrap:focus-within{
+  border-color:color-mix(in srgb,var(--flare) 55%,transparent);
+  border-top-color:color-mix(in srgb,var(--flare) 70%,transparent);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--core) 25%,transparent),
+             0 0 20px color-mix(in srgb,var(--flare) 20%,transparent),
+             0 1px 0 color-mix(in srgb,var(--flare) 15%,rgba(255,255,255,0.1)) inset}
+.b-lock{font-size:0.65rem;color:var(--speed);flex-shrink:0;
+  filter:drop-shadow(0 0 4px color-mix(in srgb,var(--speed) 60%,transparent))}
+.b-addr{flex:1;background:none;border:none;outline:none;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;
+  color:var(--white);caret-color:var(--flare)}
+.b-addr::placeholder{color:color-mix(in srgb,var(--flare) 30%,rgba(255,255,255,0.2))}
+
+/* GO button — strong theme gradient */
+.b-go{padding:4px 16px;
+  background:linear-gradient(135deg,var(--core),var(--flare));
+  border:none;border-top:1px solid rgba(255,255,255,0.2);border-radius:14px;
   font-family:'Orbitron',monospace;font-size:0.55rem;font-weight:700;letter-spacing:0.12em;
   color:white;cursor:pointer;transition:all 0.2s;flex-shrink:0;
-  box-shadow:0 0 12px color-mix(in srgb,var(--core) 50%,transparent)}
-.b-go:hover{transform:translateY(-1px);box-shadow:0 0 24px color-mix(in srgb,var(--core) 80%,transparent)}
+  box-shadow:0 0 16px color-mix(in srgb,var(--core) 55%,transparent),
+             0 2px 8px rgba(0,0,0,0.3)}
+.b-go:hover{transform:translateY(-1px) scale(1.04);
+  box-shadow:0 0 28px color-mix(in srgb,var(--flare) 80%,transparent),
+             0 4px 12px rgba(0,0,0,0.3)}
+
+/* Tab bar — transparent with theme tint */
 .b-tabs{display:flex;align-items:flex-end;padding:4px 10px 0;gap:2px;flex-shrink:0;
-  background:rgba(0,0,0,0.2);overflow-x:auto}
+  background:color-mix(in srgb,var(--core) 5%,rgba(0,0,0,0.08));
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  overflow-x:auto;
+  border-bottom:1px solid color-mix(in srgb,var(--flare) 15%,rgba(255,255,255,0.04))}
+.b-tabs::-webkit-scrollbar{height:2px}
+.b-tabs::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--flare) 40%,transparent);border-radius:1px}
+
+/* Individual tabs */
 .b-tab{display:flex;align-items:center;gap:6px;padding:5px 12px;
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+  background:color-mix(in srgb,var(--core) 8%,rgba(255,255,255,0.03));
+  border:1px solid color-mix(in srgb,var(--flare) 12%,rgba(255,255,255,0.05));
   border-bottom:none;border-radius:8px 8px 0 0;cursor:pointer;
-  font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.45);
-  white-space:nowrap;max-width:160px;user-select:none;transition:all 0.15s}
-.b-tab.active{background:color-mix(in srgb,var(--core) 20%,transparent);
-  border-color:color-mix(in srgb,var(--flare) 30%,transparent);color:var(--flare)}
-.b-tab-x{font-size:0.55rem;opacity:0.5;transition:opacity 0.1s;border-radius:50%;padding:1px 3px}
-.b-tab-x:hover{opacity:1;background:rgba(255,255,255,0.1)}
-.b-plus{padding:4px 8px;font-size:0.9rem;color:rgba(255,255,255,0.35);cursor:pointer;transition:color 0.15s}
-.b-plus:hover{color:var(--flare)}
-.b-viewport{flex:1;position:relative;background:#000}
+  font-size:0.7rem;font-weight:600;
+  color:color-mix(in srgb,var(--flare) 45%,rgba(255,255,255,0.35));
+  white-space:nowrap;max-width:160px;user-select:none;transition:all 0.15s;
+  backdrop-filter:blur(8px)}
+.b-tab:hover{
+  background:color-mix(in srgb,var(--core) 18%,rgba(255,255,255,0.06));
+  color:color-mix(in srgb,var(--flare) 70%,white)}
+.b-tab.active{
+  background:color-mix(in srgb,var(--core) 28%,rgba(0,0,0,0.1));
+  border-color:color-mix(in srgb,var(--flare) 40%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--core) 28%,rgba(0,0,0,0.1));
+  color:var(--flare);
+  box-shadow:0 0 16px color-mix(in srgb,var(--flare) 15%,transparent) inset}
+.b-tab-x{font-size:0.55rem;opacity:0.45;transition:all 0.1s;border-radius:50%;padding:1px 3px}
+.b-tab-x:hover{opacity:1;background:color-mix(in srgb,var(--danger) 20%,rgba(255,255,255,0.08));color:var(--danger)}
+.b-plus{padding:4px 10px;font-size:0.95rem;
+  color:color-mix(in srgb,var(--flare) 50%,rgba(255,255,255,0.3));
+  cursor:pointer;transition:all 0.15s}
+.b-plus:hover{color:var(--flare);text-shadow:0 0 10px color-mix(in srgb,var(--flare) 70%,transparent)}
+
+/* Viewport — fully transparent so desktop shows through when no page loaded */
+.b-viewport{flex:1;position:relative;background:transparent;isolation:auto}
 .b-iframe{width:100%;height:100%;border:none;background:#fff}
+
+/* New Tab home page — transparent, particles show through */
 .b-home{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:16px;padding:20px}
+  justify-content:center;gap:16px;padding:20px;
+  background:transparent}
 .b-home-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2rem,5vw,4rem);
-  background:linear-gradient(135deg,rgba(255,255,255,0.9) 0%,var(--flare) 40%,var(--pink) 70%,var(--speed) 100%);
+  background:linear-gradient(135deg,rgba(255,255,255,0.95) 0%,var(--flare) 40%,var(--pink) 70%,var(--speed) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 30px var(--flare));letter-spacing:0.08em;text-align:center}
+  filter:drop-shadow(0 0 40px var(--flare)) drop-shadow(0 0 80px color-mix(in srgb,var(--core) 50%,transparent));
+  letter-spacing:0.08em;text-align:center;animation:logoPulse 4s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 30px var(--flare)) drop-shadow(0 0 60px color-mix(in srgb,var(--core) 40%,transparent))}
+  50%{filter:drop-shadow(0 0 50px var(--flare)) drop-shadow(0 0 100px color-mix(in srgb,var(--flare) 60%,transparent))}}
+
+/* Search bar — glassy with theme tint */
 .b-search-row{display:flex;gap:8px;width:100%;max-width:500px}
-.b-search{flex:1;padding:10px 18px;background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);border-radius:24px;
+.b-search{flex:1;padding:10px 20px;
+  background:color-mix(in srgb,var(--core) 8%,rgba(0,0,0,0.25));
+  border:1px solid color-mix(in srgb,var(--flare) 25%,rgba(255,255,255,0.07));
+  border-top:1px solid color-mix(in srgb,var(--flare) 35%,rgba(255,255,255,0.12));
+  border-radius:28px;
+  backdrop-filter:blur(20px) saturate(1.5);
   font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--white);
-  outline:none;transition:all 0.2s;caret-color:var(--flare)}
-.b-search:focus{border-color:var(--flare);box-shadow:0 0 0 3px color-mix(in srgb,var(--core) 20%,transparent)}
-.b-search::placeholder{color:rgba(255,255,255,0.2)}
+  outline:none;transition:all 0.25s;caret-color:var(--flare);
+  box-shadow:0 4px 20px rgba(0,0,0,0.2),
+             0 1px 0 color-mix(in srgb,var(--flare) 12%,rgba(255,255,255,0.06)) inset}
+.b-search:focus{
+  border-color:color-mix(in srgb,var(--flare) 60%,transparent);
+  border-top-color:color-mix(in srgb,var(--flare) 75%,transparent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--core) 20%,transparent),
+             0 0 30px color-mix(in srgb,var(--flare) 20%,transparent),
+             0 4px 20px rgba(0,0,0,0.2)}
+.b-search::placeholder{color:color-mix(in srgb,var(--flare) 25%,rgba(255,255,255,0.15))}
+
+/* Quick launch tiles */
 .b-ql{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:500px}
-.b-ql-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;
-  cursor:pointer;transition:all 0.18s;font-size:0.9rem}
-.b-ql-item:hover{background:color-mix(in srgb,var(--core) 14%,transparent);
-  border-color:color-mix(in srgb,var(--flare) 30%,transparent);transform:translateY(-2px)}
-.b-ql-label{font-size:0.6rem;color:rgba(255,255,255,0.4);font-weight:600}
+.b-ql-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;
+  background:color-mix(in srgb,var(--core) 10%,rgba(0,0,0,0.2));
+  border:1px solid color-mix(in srgb,var(--flare) 16%,rgba(255,255,255,0.05));
+  border-top:1px solid color-mix(in srgb,var(--flare) 24%,rgba(255,255,255,0.08));
+  border-radius:14px;cursor:pointer;transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  font-size:0.9rem;backdrop-filter:blur(12px);
+  box-shadow:0 2px 12px rgba(0,0,0,0.15)}
+.b-ql-item:hover{
+  background:color-mix(in srgb,var(--core) 22%,rgba(0,0,0,0.15));
+  border-color:color-mix(in srgb,var(--flare) 45%,transparent);
+  transform:translateY(-3px) scale(1.04);
+  box-shadow:0 8px 24px rgba(0,0,0,0.25),
+             0 0 16px color-mix(in srgb,var(--flare) 18%,transparent)}
+.b-ql-label{font-size:0.6rem;
+  color:color-mix(in srgb,var(--flare) 55%,rgba(255,255,255,0.35));
+  font-weight:600;letter-spacing:0.04em}
 
 /* Terminal */
 .terminal-wrap{display:flex;flex-direction:column;height:100%;background:rgba(0,0,0,0.85)}
@@ -1057,6 +1189,7 @@ function openApp(appId) {
 
   const el = document.createElement('div');
   el.className = 'window';
+  el.dataset.app = appId;
   el.id = id;
   el.style.cssText = `left:${left}px;top:${top}px;width:${dw}px;height:${dh}px;z-index:${++zTop};pointer-events:all`;
 
@@ -1991,7 +2124,7 @@ function saveAriaKey(id) {
   }
   localStorage.setItem('aria-api-key', key);
   document.getElementById('ai-key-banner-'+id).style.display = 'none';
-  addAiMsg(id, 'assistant', '✦ API key saved! I'm ready to help. What's on your mind?');
+  addAiMsg(id, "assistant", "✦ API key saved! Ready to help. What's on your mind?");
 }
 
 function aiResize(el) {
