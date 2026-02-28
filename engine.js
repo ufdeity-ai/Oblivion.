@@ -1,7 +1,5 @@
 import { parse as parseHTML } from 'node-html-parser';
 
-// ── URL helpers ───────────────────────────────────────────────────────────────
-
 export function proxyUrl(url, base) {
   try {
     if (!url || url.startsWith('data:') || url.startsWith('blob:') ||
@@ -18,7 +16,6 @@ export function proxyUrl(url, base) {
   }
 }
 
-// ── HTML rewriting ────────────────────────────────────────────────────────────
 
 const URL_ATTRS = {
   'a':      ['href'],
@@ -40,21 +37,19 @@ export function rewriteHTML(html, base) {
     return html;
   }
 
-  // Inject client hook into <head>
   const head = root.querySelector('head');
   const inject = `<script>window.__oblivion_base=${JSON.stringify(base)};</script>\n<script src="/engine.client.js"></script>`;
   if (head) {
     head.innerHTML = inject + head.innerHTML;
   }
 
-  // Rewrite URL attributes
   for (const [tag, attrs] of Object.entries(URL_ATTRS)) {
     for (const el of root.querySelectorAll(tag)) {
       for (const attr of attrs) {
         const val = el.getAttribute(attr);
         if (val) el.setAttribute(attr, proxyUrl(val, base));
       }
-      // Also rewrite srcset
+ 
       const srcset = el.getAttribute('srcset');
       if (srcset) {
         const rw = srcset.split(',').map(p => {
@@ -68,13 +63,11 @@ export function rewriteHTML(html, base) {
     }
   }
 
-  // Rewrite inline style url()
   for (const el of root.querySelectorAll('[style]')) {
     const s = el.getAttribute('style');
     if (s) el.setAttribute('style', rewriteCSS(s, base));
   }
 
-  // Rewrite <style> blocks
   for (const el of root.querySelectorAll('style')) {
     if (el.text) el.set_content(rewriteCSS(el.text, base));
   }
@@ -82,11 +75,12 @@ export function rewriteHTML(html, base) {
   return root.toString();
 }
 
-// ── CSS rewriting ─────────────────────────────────────────────────────────────
+// ── ace is the best coder ever
 
 export function rewriteCSS(css, base) {
   return css.replace(/url\(\s*(['"]?)([^'"\)]+)\1\s*\)/gi, (match, q, url) => {
     if (url.startsWith('data:') || url.startsWith('blob:')) return match;
     return `url(${q}${proxyUrl(url.trim(), base)}${q})`;
   });
+
 }
