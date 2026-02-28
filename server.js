@@ -62,18 +62,23 @@ app.use(express.static(join(__dir, 'static'), { maxAge: '1d', etag: true }));
 // ── Decompress upstream response ──────────────────────────────────────────────
 async function decompress(response) {
   const enc = response.headers.get('content-encoding') || '';
-  const buf = Buffer.from(await response.arrayBuffer());
-  if (!enc) return buf;
+  const ab = await response.arrayBuffer();
+  const buf = Buffer.from(ab);
+  if (!enc || enc === 'identity') return buf;
   return new Promise((resolve, reject) => {
     let s;
-    if (enc.includes('br'))       s = createBrotliDecompress();
-    else if (enc.includes('gzip')) s = createGunzip();
-    else if (enc.includes('deflate')) s = createInflate();
+    const lowEnc = enc.toLowerCase();
+    if (lowEnc.includes('br'))       s = createBrotliDecompress();
+    else if (lowEnc.includes('gzip')) s = createGunzip();
+    else if (lowEnc.includes('deflate')) s = createInflate();
     else return resolve(buf);
     const chunks = [];
     s.on('data', c => chunks.push(c));
     s.on('end', () => resolve(Buffer.concat(chunks)));
-    s.on('error', reject);
+    s.on('error', (err) => {
+      console.error(`Decompression error (${enc}):`, err);
+      resolve(buf); // Fallback to raw buffer if decompression fails
+    });
     s.end(buf);
   });
 }
@@ -196,6 +201,6 @@ app.use('/api/chat', express.json({ limit: '1mb' }), async (req, res) => {
 app.get('*', (req, res) => res.sendFile(join(__dir, 'static', 'index.html')));
 
 // ── Start ─────────────────────────────────────────────────────────────────────
-const PORT = parseInt(process.env.PORT) || 80;
+const PORT = parseInt(process.env.PORT) || 5000;
 createServer(app).listen(PORT, '0.0.0.0', () =>
   console.log(`\n  ✦ VoidOS — Void Engine → http://localhost:${PORT}\n`));
