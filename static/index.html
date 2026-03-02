@@ -62,11 +62,12 @@ html,body{
 
 /* ── DESKTOP ─────────────────────────────────────────────── */
 #desktop{position:fixed;inset:0;bottom:var(--bar-h);z-index:10;overflow:hidden}
-.desktop-icons{position:absolute;top:20px;left:20px;display:flex;flex-direction:column;gap:6px;z-index:11}
-.d-icon{width:80px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:var(--r-md);cursor:pointer;transition:background 0.15s;position:relative}
+.desktop-icons{position:absolute;inset:0;z-index:11;pointer-events:none}
+.d-icon{width:82px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:var(--r-md);cursor:pointer;transition:background 0.15s;position:absolute;pointer-events:all;user-select:none}
 .d-icon:hover{background:rgba(255,255,255,0.07)}
 .d-icon:active{background:rgba(255,255,255,0.12)}
 .d-icon.selected{background:rgba(255,255,255,0.1)}
+.d-icon.dragging{opacity:0.8;z-index:999;transition:none!important;background:rgba(255,255,255,0.1);box-shadow:0 12px 40px rgba(0,0,0,0.6)}
 .d-icon-img{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:linear-gradient(160deg,rgba(255,255,255,0.1) 0%,rgba(0,0,0,0.3) 100%);border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 20px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.08) inset;transition:transform 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s}
 .d-icon:hover .d-icon-img{transform:scale(1.1);box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 24px color-mix(in srgb,var(--flare) 40%,transparent),0 1px 0 rgba(255,255,255,0.12) inset}
 .d-icon-label{font-size:0.68rem;font-weight:500;color:var(--white);text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 12px rgba(0,0,0,0.6);text-align:center;letter-spacing:0.02em;line-height:1.2}
@@ -110,11 +111,10 @@ html,body{
 /* ── TASKBAR ─────────────────────────────────────────────── */
 #taskbar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);z-index:1000;
   display:flex;align-items:center;gap:0;
-  background:linear-gradient(180deg,rgba(0,0,0,0.45) 0%,rgba(0,0,0,0.75) 100%);
-  backdrop-filter:blur(40px) saturate(1.6);
-  -webkit-backdrop-filter:blur(40px) saturate(1.6);
-  border-top:1px solid rgba(255,255,255,0.07);
-  box-shadow:0 -1px 0 rgba(255,255,255,0.04) inset,0 -8px 32px rgba(0,0,0,0.3);
+  background:linear-gradient(180deg,rgba(0,0,0,0.06) 0%,rgba(0,0,0,0.15) 100%);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border-top:1px solid rgba(255,255,255,0.05);
   padding:0 12px}
 
 .tb-left{display:flex;align-items:center;gap:6px;flex-shrink:0}
@@ -247,22 +247,7 @@ html,body{
   padding:2px 6px;border-radius:6px;transition:all 0.15s;flex-shrink:0}
 .notif-close:hover{background:rgba(255,255,255,0.1);color:white}
 
-/* ── BOOT SCREEN ─────────────────────────────────────────── */
-#boot{position:fixed;inset:0;z-index:9999;background:#000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
-  transition:opacity 0.6s ease}
-#boot.hidden{opacity:0;pointer-events:none}
-.boot-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:3.5rem;letter-spacing:0.25em;
-  background:linear-gradient(135deg,#fff 0%,#a855f7 40%,#e879f9 70%,#00f5c4 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  animation:bootGlow 2s ease-in-out infinite;
-  filter:drop-shadow(0 0 40px #7c3aed)}
-@keyframes bootGlow{0%,100%{filter:drop-shadow(0 0 30px #7c3aed)}50%{filter:drop-shadow(0 0 60px #a855f7) drop-shadow(0 0 120px #e879f9)}}
-.boot-sub{font-size:0.75rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace}
-.boot-bar-wrap{width:240px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
-.boot-bar{height:100%;width:0;background:linear-gradient(90deg,#5b12d4,#a855f7,#00f5c4);border-radius:2px;
-  box-shadow:0 0 12px #a855f7;transition:width 0.4s cubic-bezier(0.4,0,0.2,1)}
-.boot-status{font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.25);font-family:'DM Mono',monospace;min-width:240px;text-align:center}
+
 
 /* ── CONTEXT MENU ────────────────────────────────────────── */
 #ctx-menu{position:fixed;min-width:180px;
@@ -456,6 +441,305 @@ body.t-rainbow .window.focused{animation:rbBorder 6s linear infinite}
 body.t-rainbow .blob-1{animation:blob1 22s ease-in-out infinite,rbBlobColor1 6s linear infinite}
 body.t-rainbow .blob-2{animation:blob2 18s ease-in-out infinite,rbBlobColor2 6s linear infinite}
 body.t-rainbow .blob-3{animation:blob3 26s ease-in-out infinite,rbBlobColor3 6s linear infinite}
+
+/* ── AI APP ─────────────────────────────────────────────── */
+.ai-wrap{display:flex;flex-direction:column;height:100%}
+.ai-header{padding:14px 18px 10px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.2) 100%)}
+.ai-header-top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.ai-avatar{width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--core),var(--speed));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  box-shadow:0 0 16px color-mix(in srgb,var(--speed) 50%,transparent),0 1px 0 rgba(255,255,255,0.15) inset;
+  flex-shrink:0}
+.ai-name{font-weight:700;font-size:0.9rem;color:var(--white)}
+.ai-model{font-size:0.62rem;color:color-mix(in srgb,var(--speed) 60%,transparent);letter-spacing:0.08em}
+.ai-status{display:flex;align-items:center;gap:6px;font-size:0.65rem;color:rgba(255,255,255,0.35)}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--speed);box-shadow:0 0 6px var(--speed);animation:dpulse 2s ease-in-out infinite}
+@keyframes dpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+.ai-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ai-messages::-webkit-scrollbar{width:5px}
+.ai-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.ai-msg{max-width:82%;display:flex;flex-direction:column;gap:4px}
+.ai-msg.user{align-self:flex-end;align-items:flex-end}
+.ai-msg.assistant{align-self:flex-start;align-items:flex-start}
+.ai-bubble{padding:10px 14px;border-radius:16px;font-size:0.82rem;line-height:1.6;
+  border:1px solid transparent;white-space:pre-wrap;word-break:break-word}
+.ai-msg.user .ai-bubble{
+  background:linear-gradient(135deg,var(--core),var(--flare));
+  border-color:rgba(255,255,255,0.1);color:white;border-radius:16px 16px 4px 16px;
+  box-shadow:0 4px 16px color-mix(in srgb,var(--core) 40%,transparent)}
+.ai-msg.assistant .ai-bubble{
+  background:linear-gradient(160deg,rgba(255,255,255,0.06) 0%,rgba(0,0,0,0.3) 100%);
+  border-color:rgba(255,255,255,0.08);color:var(--white);border-radius:16px 16px 16px 4px;
+  border-top:1px solid rgba(255,255,255,0.1)}
+.ai-meta{font-size:0.6rem;color:rgba(255,255,255,0.25);padding:0 4px}
+.ai-typing{display:flex;gap:5px;align-items:center;padding:10px 14px;
+  background:linear-gradient(160deg,rgba(255,255,255,0.06) 0%,rgba(0,0,0,0.3) 100%);
+  border:1px solid rgba(255,255,255,0.08);border-top:1px solid rgba(255,255,255,0.1);
+  border-radius:16px 16px 16px 4px;width:fit-content;max-width:80px}
+.ai-typing span{width:7px;height:7px;border-radius:50%;background:var(--flare);display:block}
+.ai-typing span:nth-child(1){animation:typBounce 1.2s ease-in-out infinite 0s}
+.ai-typing span:nth-child(2){animation:typBounce 1.2s ease-in-out infinite 0.2s}
+.ai-typing span:nth-child(3){animation:typBounce 1.2s ease-in-out infinite 0.4s}
+@keyframes typBounce{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-6px);opacity:1}}
+.ai-input-area{padding:10px 12px;border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:rgba(0,0,0,0.2)}
+.ai-input-row{display:flex;gap:8px;align-items:flex-end}
+.ai-textarea{flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.3) 100%);
+  border:1px solid rgba(255,255,255,0.09);border-top:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.82rem;color:var(--white);outline:none;resize:none;
+  min-height:40px;max-height:120px;overflow-y:auto;
+  caret-color:var(--flare);transition:border-color 0.2s;line-height:1.5}
+.ai-textarea:focus{border-color:color-mix(in srgb,var(--flare) 50%,transparent)}
+.ai-textarea::placeholder{color:rgba(255,255,255,0.2)}
+.ai-send{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--core),var(--flare));
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+  transition:all 0.2s;flex-shrink:0;
+  box-shadow:0 0 16px color-mix(in srgb,var(--core) 50%,transparent)}
+.ai-send:hover{transform:scale(1.1);box-shadow:0 0 24px color-mix(in srgb,var(--core) 80%,transparent)}
+.ai-send:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.ai-suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.ai-sug{padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04);font-size:0.68rem;color:rgba(255,255,255,0.5);
+  cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.ai-sug:hover{background:color-mix(in srgb,var(--core) 15%,transparent);
+  border-color:color-mix(in srgb,var(--flare) 30%,transparent);color:var(--white)}
+.ai-clear-btn{padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04);font-size:0.65rem;color:rgba(255,255,255,0.35);
+  cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.ai-clear-btn:hover{background:rgba(244,63,94,0.1);border-color:rgba(244,63,94,0.3);color:var(--danger)}
+
+/* ── CALCULATOR ─────────────────────────────────────────── */
+.calc-wrap{display:flex;flex-direction:column;height:100%;background:rgba(0,0,0,0.3)}
+.calc-display{padding:16px 20px;text-align:right;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.calc-expr{font-size:0.75rem;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;min-height:20px}
+.calc-val{font-family:'DM Mono',monospace;font-size:2.2rem;font-weight:300;color:var(--white);
+  letter-spacing:-0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.calc-grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.04)}
+.calc-btn{display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:1rem;font-weight:500;
+  background:rgba(0,0,0,0.4);border:none;color:var(--white);
+  transition:background 0.1s,transform 0.05s;user-select:none}
+.calc-btn:hover{background:rgba(255,255,255,0.07)}
+.calc-btn:active{background:rgba(255,255,255,0.12);transform:scale(0.96)}
+.calc-btn.op{color:var(--flare);background:rgba(168,85,247,0.08)}
+.calc-btn.op:hover{background:rgba(168,85,247,0.15)}
+.calc-btn.fn{color:var(--speed);font-size:0.8rem;background:rgba(0,245,196,0.05)}
+.calc-btn.fn:hover{background:rgba(0,245,196,0.1)}
+.calc-btn.eq{background:linear-gradient(135deg,var(--core),var(--flare));color:white;font-size:1.2rem}
+.calc-btn.eq:hover{background:linear-gradient(135deg,var(--flare),var(--pink))}
+
+/* ── PAINT ──────────────────────────────────────────────── */
+.paint-wrap{display:flex;flex-direction:column;height:100%}
+.paint-toolbar{display:flex;align-items:center;gap:6px;padding:8px 12px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.25) 100%);flex-wrap:wrap}
+.pt-btn{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:0.85rem;background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);transition:all 0.15s;user-select:none}
+.pt-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.15)}
+.pt-btn.active{background:color-mix(in srgb,var(--core) 25%,transparent);border-color:var(--flare)}
+.pt-sep{width:1px;height:22px;background:rgba(255,255,255,0.07)}
+.pt-colors{display:flex;gap:4px;align-items:center}
+.pt-color{width:22px;height:22px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:transform 0.15s,border-color 0.15s}
+.pt-color:hover{transform:scale(1.2)}
+.pt-color.active{border-color:white;transform:scale(1.15)}
+.pt-size{width:60px;-webkit-appearance:none;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.12);outline:none;cursor:pointer}
+.pt-size::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;
+  border-radius:50%;background:var(--flare);cursor:pointer}
+.paint-canvas-wrap{flex:1;overflow:hidden;background:#111;position:relative;cursor:crosshair}
+.paint-canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* ── MUSIC ──────────────────────────────────────────────── */
+.music-wrap{display:flex;flex-direction:column;height:100%;align-items:center;padding:20px;gap:16px;overflow-y:auto}
+.music-wrap::-webkit-scrollbar{width:5px}
+.music-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.music-art{width:180px;height:180px;border-radius:20px;
+  background:linear-gradient(135deg,var(--core),var(--flare),var(--pink));
+  display:flex;align-items:center;justify-content:center;font-size:4rem;
+  box-shadow:0 16px 48px rgba(0,0,0,0.5),0 0 60px color-mix(in srgb,var(--core) 40%,transparent);
+  position:relative;overflow:hidden;flex-shrink:0}
+.music-art::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.15),transparent 60%)}
+.music-art.playing{animation:albumSpin 8s linear infinite}
+@keyframes albumSpin{from{box-shadow:0 16px 48px rgba(0,0,0,0.5),0 0 60px color-mix(in srgb,var(--core) 40%,transparent)}
+  50%{box-shadow:0 16px 48px rgba(0,0,0,0.5),0 0 80px color-mix(in srgb,var(--flare) 60%,transparent)}
+  to{box-shadow:0 16px 48px rgba(0,0,0,0.5),0 0 60px color-mix(in srgb,var(--core) 40%,transparent)}}
+.music-info{text-align:center;width:100%}
+.music-title{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:4px}
+.music-artist{font-size:0.78rem;color:rgba(255,255,255,0.4)}
+.music-progress-wrap{width:100%;display:flex;flex-direction:column;gap:4px}
+.music-progress{width:100%;-webkit-appearance:none;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.1);outline:none;cursor:pointer;transition:height 0.1s}
+.music-progress:hover{height:6px}
+.music-progress::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;
+  border-radius:50%;background:var(--flare);cursor:pointer;
+  box-shadow:0 0 8px color-mix(in srgb,var(--flare) 60%,transparent)}
+.music-times{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.3)}
+.music-controls{display:flex;align-items:center;gap:12px;justify-content:center}
+.mc-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;transition:all 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)}
+.mc-btn:hover{background:rgba(255,255,255,0.1);transform:scale(1.1)}
+.mc-btn.play{width:52px;height:52px;font-size:1.3rem;
+  background:linear-gradient(135deg,var(--core),var(--flare));border:none;
+  box-shadow:0 0 24px color-mix(in srgb,var(--core) 60%,transparent)}
+.mc-btn.play:hover{transform:scale(1.12);box-shadow:0 0 36px color-mix(in srgb,var(--flare) 80%,transparent)}
+.music-playlist{width:100%;display:flex;flex-direction:column;gap:4px}
+.pl-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  cursor:pointer;transition:all 0.15s;border:1px solid transparent}
+.pl-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.07)}
+.pl-item.active{background:color-mix(in srgb,var(--core) 15%,transparent);border-color:color-mix(in srgb,var(--flare) 25%,transparent)}
+.pl-num{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.25);width:18px;text-align:right;flex-shrink:0}
+.pl-info{flex:1;min-width:0}
+.pl-title{font-size:0.78rem;font-weight:600;color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pl-artist{font-size:0.65rem;color:rgba(255,255,255,0.35)}
+.pl-dur{font-family:'DM Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.25);flex-shrink:0}
+.music-visualizer{display:flex;align-items:flex-end;gap:3px;height:40px;width:100%;justify-content:center}
+.vis-bar{width:4px;border-radius:2px;background:var(--flare);opacity:0.7;transition:height 0.1s ease}
+
+/* ── WEATHER ─────────────────────────────────────────────── */
+.weather-wrap{display:flex;flex-direction:column;height:100%;overflow-y:auto;padding:0}
+.weather-wrap::-webkit-scrollbar{width:5px}
+.weather-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.w-hero{padding:28px 24px;text-align:center;position:relative;flex-shrink:0;
+  background:linear-gradient(180deg,rgba(56,189,248,0.12) 0%,transparent 100%)}
+.w-location{font-size:0.72rem;letter-spacing:0.18em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:4px}
+.w-icon-big{font-size:5rem;margin:8px 0;filter:drop-shadow(0 0 24px rgba(56,189,248,0.5))}
+.w-temp{font-family:'Orbitron',monospace;font-weight:900;font-size:3.5rem;
+  background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.02em}
+.w-desc{font-size:0.85rem;color:rgba(255,255,255,0.5);margin-top:4px;letter-spacing:0.06em}
+.w-stats{display:flex;justify-content:center;gap:24px;margin-top:16px;padding-top:16px;
+  border-top:1px solid rgba(255,255,255,0.07)}
+.w-stat{text-align:center}
+.w-stat-val{font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--white);font-weight:500}
+.w-stat-lbl{font-size:0.6rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+.w-forecast{padding:16px 16px 20px;display:flex;flex-direction:column;gap:8px}
+.w-day{display:flex;align-items:center;gap:12px;padding:10px 14px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px}
+.w-day-name{font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.7);width:50px;flex-shrink:0}
+.w-day-icon{font-size:1.2rem;width:28px;text-align:center}
+.w-day-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.w-day-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,#38bdf8,#fb923c)}
+.w-day-temps{font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.6);white-space:nowrap;flex-shrink:0}
+.w-search{display:flex;gap:8px;padding:12px 16px 4px;flex-shrink:0}
+.w-search-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);
+  border-radius:10px;padding:8px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;
+  color:var(--white);outline:none;caret-color:var(--flare)}
+.w-search-input::placeholder{color:rgba(255,255,255,0.2)}
+.w-search-btn{padding:8px 16px;border-radius:10px;background:linear-gradient(135deg,#0284c7,#38bdf8);
+  border:none;color:white;font-size:0.75rem;cursor:pointer;font-weight:600;transition:all 0.2s}
+.w-search-btn:hover{transform:translateY(-1px)}
+
+/* ── CALENDAR ─────────────────────────────────────────────── */
+.cal-wrap{display:flex;flex-direction:column;height:100%}
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.cal-month{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;
+  background:linear-gradient(135deg,var(--flare),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.08em}
+.cal-nav{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  font-size:0.85rem;color:rgba(255,255,255,0.6);transition:all 0.15s}
+.cal-nav:hover{background:rgba(255,255,255,0.1);color:var(--white)}
+.cal-grid{flex:1;padding:12px 16px;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;
+  font-size:0.62rem;letter-spacing:0.1em;color:rgba(255,255,255,0.3);
+  text-transform:uppercase;margin-bottom:4px;padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,0.06)}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;flex:1}
+.cal-day{display:flex;align-items:center;justify-content:center;border-radius:8px;
+  font-size:0.78rem;cursor:pointer;position:relative;transition:all 0.15s;
+  aspect-ratio:1;background:transparent;border:1px solid transparent}
+.cal-day:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.08)}
+.cal-day.today{background:color-mix(in srgb,var(--core) 25%,transparent);
+  border-color:color-mix(in srgb,var(--flare) 40%,transparent);
+  color:var(--flare);font-weight:700}
+.cal-day.other-month{color:rgba(255,255,255,0.2)}
+.cal-day.has-event::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--speed)}
+.cal-events{padding:8px 16px 12px;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.cal-event-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);margin-bottom:6px;font-weight:600}
+.cal-event-item{display:flex;align-items:center;gap:8px;padding:7px 10px;
+  background:color-mix(in srgb,var(--core) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--flare) 20%,transparent);
+  border-radius:8px;font-size:0.72rem;color:rgba(255,255,255,0.7)}
+.cal-event-dot{width:6px;height:6px;border-radius:50%;background:var(--speed);flex-shrink:0}
+
+/* ── GAMES APP ─────────────────────────────────────────────── */
+.games-wrap{display:flex;flex-direction:column;height:100%}
+.games-topbar{display:flex;align-items:center;gap:10px;padding:12px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,rgba(0,0,0,0.25) 100%)}
+.games-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;
+  background:linear-gradient(135deg,var(--danger),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.1em}
+.games-search{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:6px 14px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.78rem;color:var(--white);outline:none;caret-color:var(--flare);max-width:260px}
+.games-search::placeholder{color:rgba(255,255,255,0.2)}
+.games-cats{display:flex;gap:6px;overflow-x:auto;flex-shrink:0}
+.games-cats::-webkit-scrollbar{display:none}
+.g-cat{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:600;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.5);transition:all 0.15s;white-space:nowrap}
+.g-cat:hover{background:rgba(255,255,255,0.08);color:white}
+.g-cat.active{background:linear-gradient(135deg,var(--danger),var(--pink));
+  border-color:transparent;color:white}
+.games-content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.games-grid-wrap{flex:1;overflow-y:auto;padding:14px}
+.games-grid-wrap::-webkit-scrollbar{width:5px}
+.games-grid-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.game-card{border-radius:14px;overflow:hidden;cursor:pointer;
+  background:linear-gradient(160deg,rgba(255,255,255,0.05) 0%,rgba(0,0,0,0.3) 100%);
+  border:1px solid rgba(255,255,255,0.07);border-top:1px solid rgba(255,255,255,0.1);
+  transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.game-card:hover{transform:translateY(-4px) scale(1.02);border-color:color-mix(in srgb,var(--flare) 35%,transparent);
+  box-shadow:0 12px 36px rgba(0,0,0,0.5),0 0 20px color-mix(in srgb,var(--flare) 20%,transparent)}
+.game-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem;
+  position:relative;overflow:hidden}
+.game-thumb::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.6) 100%)}
+.game-info{padding:10px 12px 12px}
+.game-name{font-size:0.8rem;font-weight:700;color:var(--white);margin-bottom:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-meta{display:flex;align-items:center;justify-content:space-between}
+.game-genre{font-size:0.6rem;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-transform:uppercase}
+.game-rating{font-size:0.65rem;color:#fbbf24}
+.game-play-btn{width:100%;padding:6px;border:none;border-radius:0 0 14px 14px;
+  background:linear-gradient(135deg,var(--danger),var(--pink));
+  color:white;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;cursor:pointer;
+  font-family:'Orbitron',monospace;transition:all 0.2s;display:none}
+.game-card:hover .game-play-btn{display:block}
+.game-card:hover .game-info{padding-bottom:0}
+
+/* Game player view */
+.game-player{display:flex;flex-direction:column;height:100%}
+.game-player-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;
+  background:rgba(0,0,0,0.3)}
+.game-player-back{padding:5px 12px;border-radius:8px;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);font-size:0.72rem;color:rgba(255,255,255,0.6);
+  cursor:pointer;transition:all 0.15s}
+.game-player-back:hover{background:rgba(255,255,255,0.1);color:white}
+.game-player-title{font-size:0.82rem;font-weight:700;color:var(--white)}
+.game-player-src{font-size:0.62rem;color:rgba(255,255,255,0.3);margin-left:auto;font-family:'DM Mono',monospace}
+.game-iframe-wrap{flex:1;position:relative;background:#000}
+.game-iframe{width:100%;height:100%;border:none}
+.game-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:12px;background:#000}
+.game-loading-icon{font-size:3rem;animation:gameLoad 1s ease-in-out infinite}
+@keyframes gameLoad{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.game-loading-text{font-size:0.75rem;letter-spacing:0.15em;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace}
+
 </style>
 </head>
 <body class="t-normal">
@@ -553,13 +837,7 @@ body.t-rainbow .blob-3{animation:blob3 26s ease-in-out infinite,rbBlobColor3 6s 
   <div class="ctx-item danger" onclick="confirmShutdown()">⏻ Shut Down</div>
 </div>
 
-<!-- Boot screen -->
-<div id="boot">
-  <div class="boot-logo">VOID OS</div>
-  <div class="boot-sub">Powered by Void Engine</div>
-  <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
-  <div class="boot-status" id="boot-status">Initializing kernel...</div>
-</div>
+
 
 <script>
 // ═══════════════════════════════════════════════════════════
@@ -571,15 +849,15 @@ const THEME_HUES = {
   crimson:[0,10,350], rainbow:[0,120,240]
 };
 const THEMES = Object.keys(THEME_HUES);
-let currentTheme = localStorage.getItem('void-theme') || 'normal';
+let currentTheme = 'normal';
+try { currentTheme = localStorage.getItem('void-theme') || 'normal'; } catch(e) {}
 
 function setTheme(id) {
   THEMES.forEach(t => document.body.classList.remove('t-'+t));
   document.body.classList.add('t-'+id);
   currentTheme = id;
-  localStorage.setItem('void-theme', id);
+  try { localStorage.setItem('void-theme', id); } catch(e) {}
   updateParticleHues();
-  // update settings UI
   document.querySelectorAll('.theme-swatch').forEach(s => {
     s.classList.toggle('active', s.dataset.theme === id);
   });
@@ -637,7 +915,6 @@ document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 
 function drawFrame() {
   ctx2.clearRect(0,0,W,H);
-  // Orbs
   for (const o of orbs) {
     o.x+=o.vx; o.y+=o.vy; o.tw+=o.tws;
     if(o.rainbowDrift) o.hue=(o.hue+o.rainbowDrift)%360;
@@ -650,7 +927,6 @@ function drawFrame() {
     ctx2.beginPath(); ctx2.arc(o.x,o.y,o.r*pulse*2,0,Math.PI*2);
     ctx2.fillStyle=g; ctx2.fill();
   }
-  // Particles
   for (const p of ptcls) {
     p.x+=p.vx; p.y+=p.vy; p.tw+=p.tws;
     if(p.rainbowDrift) p.hue=(p.hue+p.rainbowDrift)%360;
@@ -663,7 +939,6 @@ function drawFrame() {
     ctx2.fillStyle=`hsla(${p.hue},100%,75%,${p.a*tw})`;
     ctx2.fill();
   }
-  // Connection lines from mouse
   for (const p of ptcls) {
     const dx=p.x-mx,dy=p.y-my,d=Math.sqrt(dx*dx+dy*dy);
     if(d<140){
@@ -674,7 +949,6 @@ function drawFrame() {
       ctx2.strokeStyle=g; ctx2.lineWidth=0.6; ctx2.stroke();
     }
   }
-  // Streaks
   for (let i=0;i<streaks.length;i++) {
     const s=streaks[i];
     s.x+=Math.cos(s.angle)*s.speed; s.y+=Math.sin(s.angle)*s.speed; s.life++;
@@ -710,19 +984,32 @@ const APPS = {
     defaultSize:[600,480], minSize:[400,300], pinned:false },
   clock:   { name:'Clock',    icon:'🕐', color:'#00e5ff',
     defaultSize:[320,340], minSize:[260,280], pinned:false },
+  ai:      { name:'ARIA AI',  icon:'🤖', color:'#00f5c4',
+    defaultSize:[700,540], minSize:[420,340], pinned:true },
+  calc:    { name:'Calculator',icon:'🔢', color:'#febc2e',
+    defaultSize:[320,480], minSize:[280,420], pinned:false },
+  paint:   { name:'Paint',    icon:'🎨', color:'#e879f9',
+    defaultSize:[720,520], minSize:[420,320], pinned:false },
+  music:   { name:'Music',    icon:'🎵', color:'#ff9a00',
+    defaultSize:[380,500], minSize:[300,380], pinned:false },
+  weather: { name:'Weather',  icon:'🌤️', color:'#38bdf8',
+    defaultSize:[460,520], minSize:[340,400], pinned:false },
+  calendar:{ name:'Calendar', icon:'📅', color:'#4ade80',
+    defaultSize:[500,460], minSize:[360,340], pinned:false },
+  games:   { name:'Games',    icon:'🎮', color:'#f43f5e',
+    defaultSize:[860,580], minSize:[600,420], pinned:true },
 };
 
 // ═══════════════════════════════════════════════════════════
 //  WINDOW MANAGER
 // ═══════════════════════════════════════════════════════════
-const wins = {}; // id -> {el, app, state:'normal'|'minimized'|'maximized', savedRect}
+const wins = {};
 let zTop = 200;
 let focusedId = null;
 
 function genId() { return 'w' + Date.now() + Math.random().toString(36).slice(2,6); }
 
 function openApp(appId) {
-  // If already open, bring to front / restore
   const existing = Object.entries(wins).find(([,w]) => w.appId === appId);
   if (existing) {
     const [id, w] = existing;
@@ -767,7 +1054,6 @@ function openApp(appId) {
   initDrag(el, el.querySelector('[data-draggable]'));
   el.addEventListener('mousedown', () => focusWindow(id));
 
-  // Animate in
   el.style.opacity = '0';
   el.style.transform = 'scale(0.92) translateY(12px)';
   requestAnimationFrame(() => {
@@ -789,13 +1075,19 @@ function buildAppContent(appId, id) {
     case 'notes': return buildNotes(id);
     case 'settings': return buildSettings(id);
     case 'clock': return buildClock(id);
+    case 'ai': return buildAI(id);
+    case 'calc': return buildCalc(id);
+    case 'paint': return buildPaint(id);
+    case 'music': return buildMusic(id);
+    case 'weather': return buildWeather(id);
+    case 'calendar': return buildCalendar(id);
+    case 'games': return buildGames(id);
     default: return '<div style="padding:20px;color:rgba(255,255,255,0.4)">Coming soon</div>';
   }
 }
 
 function focusWindow(id) {
   if (!wins[id]) return;
-  // Unfocus all
   Object.entries(wins).forEach(([wid, w]) => {
     w.el.classList.toggle('focused', wid === id);
   });
@@ -851,7 +1143,6 @@ function toggleMaximize(id) {
   const w = wins[id];
   const el = w.el;
   if (w.state === 'maximized') {
-    // restore
     const r = w.savedRect;
     el.style.left = r.left+'px'; el.style.top = r.top+'px';
     el.style.width = r.width+'px'; el.style.height = r.height+'px';
@@ -870,7 +1161,6 @@ function toggleMaximize(id) {
   }
 }
 
-// Drag
 function initDrag(winEl, handle) {
   let dragging = false, ox, oy;
   handle.addEventListener('mousedown', e => {
@@ -894,7 +1184,6 @@ function initDrag(winEl, handle) {
   });
 }
 
-// Resize
 function startResize(e, id) {
   e.preventDefault(); e.stopPropagation();
   const el = wins[id].el;
@@ -915,11 +1204,9 @@ function startResize(e, id) {
   document.addEventListener('mouseup', onUp);
 }
 
-// Taskbar
 function updateTaskbar() {
   const mid = document.getElementById('tb-mid');
   mid.innerHTML = '';
-  // Pinned apps
   Object.entries(APPS).filter(([,a]) => a.pinned).forEach(([appId, app]) => {
     const openWin = Object.entries(wins).find(([,w]) => w.appId === appId);
     const btn = document.createElement('div');
@@ -934,7 +1221,6 @@ function updateTaskbar() {
     };
     mid.appendChild(btn);
   });
-  // Non-pinned open windows
   Object.entries(wins).forEach(([wid, w]) => {
     if (APPS[w.appId]?.pinned) return;
     const app = APPS[w.appId];
@@ -954,7 +1240,7 @@ function updateTaskbar() {
 //  APP BUILDERS
 // ═══════════════════════════════════════════════════════════
 let tabCounter = 0;
-const browserTabs = {}; // winId -> [{id,title,url,home}]
+const browserTabs = {};
 
 function buildBrowser(winId) {
   browserTabs[winId] = [{id:'t0',title:'New Tab',url:'',home:true}];
@@ -1013,7 +1299,8 @@ function bGo(winId) {
   if (/^https?:\/\//i.test(raw)) url = raw;
   else if (/^[\w-]+\.[a-z]{2,}/.test(raw)) url = 'https://'+raw;
   else {
-    const engine = localStorage.getItem('void-engine') || 'google';
+    let engine = 'google';
+    try { engine = localStorage.getItem('void-engine') || 'google'; } catch(e) {}
     const engines = {google:'https://www.google.com/search?q=',brave:'https://search.brave.com/search?q=',startpage:'https://www.startpage.com/search?q='};
     url = (engines[engine]||engines.google) + encodeURIComponent(raw);
   }
@@ -1023,13 +1310,11 @@ function bGo(winId) {
   iframe.style.display = 'block';
   iframe.src = '/proxy?url=' + encodeURIComponent(url);
   document.getElementById('baddr-'+winId).value = url;
-  // update tab title
-  setActiveTabTitle(winId, new URL(url).hostname.replace('www.',''));
-  // update window title
-  const w = Object.values(wins).find(w => w.appId === 'browser');
-  if (w) {
-    w.el.querySelector('.win-title').textContent = 'Oblivion — ' + new URL(url).hostname.replace('www.','');
-  }
+  try {
+    setActiveTabTitle(winId, new URL(url).hostname.replace('www.',''));
+    const w = Object.values(wins).find(w => w.appId === 'browser');
+    if (w) w.el.querySelector('.win-title').textContent = 'Oblivion — ' + new URL(url).hostname.replace('www.','');
+  } catch(e) {}
 }
 
 function setActiveTabTitle(winId, title) {
@@ -1039,9 +1324,9 @@ function setActiveTabTitle(winId, title) {
 
 function bNav(winId, dir) {
   const iframe = document.getElementById('biframe-'+winId);
-  if (dir==='back') iframe.contentWindow?.history.back();
-  else if (dir==='fwd') iframe.contentWindow?.history.forward();
-  else if (dir==='refresh') iframe.contentWindow?.location.reload();
+  if (dir==='back') try { iframe.contentWindow?.history.back(); } catch(e) {}
+  else if (dir==='fwd') try { iframe.contentWindow?.history.forward(); } catch(e) {}
+  else if (dir==='refresh') try { iframe.contentWindow?.location.reload(); } catch(e) {}
 }
 
 function newBTab(winId) {
@@ -1061,7 +1346,6 @@ function newBTab(winId) {
 function switchBTab(winId, tabId) {
   document.querySelectorAll(`#btabs-${winId} .b-tab`).forEach(t => t.classList.remove('active'));
   document.getElementById('tab-'+tabId+'-'+winId)?.classList.add('active');
-  // For now show home on tab switch (full tab state management would be elaborate)
   document.getElementById('biframe-'+winId).style.display = 'none';
   document.getElementById('bhome-'+winId).style.display = 'flex';
   document.getElementById('baddr-'+winId).value = '';
@@ -1077,12 +1361,10 @@ function closeBTab(e, winId, tabId) {
   switchBTab(winId, tabs[Math.max(0,i-1)].id);
 }
 
-// Listen for proxy navigation messages
 window.addEventListener('message', e => {
   if (e.data?.type === 'oblivion-navigate' || e.data?.type === 'oblivion-url') {
     const url = e.data.url;
     if (!url) return;
-    // Find which browser window's iframe sent this
     Object.entries(wins).forEach(([wid, w]) => {
       if (w.appId !== 'browser') return;
       const iframe = document.getElementById('biframe-'+wid);
@@ -1091,7 +1373,7 @@ window.addEventListener('message', e => {
         iframe.src = '/proxy?url=' + encodeURIComponent(url);
       }
       document.getElementById('baddr-'+wid).value = url;
-      setActiveTabTitle(wid, new URL(url).hostname.replace('www.',''));
+      try { setActiveTabTitle(wid, new URL(url).hostname.replace('www.','')); } catch(e) {}
     });
   }
 });
@@ -1145,7 +1427,7 @@ Memory: 16384MB / 32768MB
   'cat config.json': () => `{\n  "theme": "${currentTheme}",\n  "version": "1.0.0",\n  "engine": "void"\n}`,
 };
 
-const termHistory = {}; // winId -> string[]
+const termHistory = {};
 const termHistIdx = {};
 
 function termKey(e, id) {
@@ -1228,7 +1510,8 @@ function openFolder(winId, folder) {
 
 // Notes
 function buildNotes(id) {
-  const saved = localStorage.getItem('void-notes') || '';
+  let saved = '';
+  try { saved = localStorage.getItem('void-notes') || ''; } catch(e) {}
   return `<div class="notes-wrap">
     <div class="notes-toolbar">
       <button class="note-btn" onclick="document.execCommand('bold')"><b>B</b></button>
@@ -1242,12 +1525,12 @@ function buildNotes(id) {
   </div>`;
 }
 function saveNote(id) {
-  localStorage.setItem('void-notes', document.getElementById('notes-ed-'+id).value);
+  try { localStorage.setItem('void-notes', document.getElementById('notes-ed-'+id).value); } catch(e) {}
   showNotif('Notes', '💾 Saved successfully!');
 }
 function clearNote(id) {
   document.getElementById('notes-ed-'+id).value = '';
-  localStorage.removeItem('void-notes');
+  try { localStorage.removeItem('void-notes'); } catch(e) {}
 }
 
 // Settings
@@ -1256,7 +1539,7 @@ function buildSettings(id) {
     normal:{bg:'#5b12d4',label:'Normal'},dark:{bg:'#222',label:'Dark'},
     sky:{bg:'#0284c7',label:'Sky'},ember:{bg:'#ea580c',label:'Ember'},
     rose:{bg:'#be185d',label:'Rose'},forest:{bg:'#16a34a',label:'Forest'},
-    crimson:{bg:'#dc2626',label:'Crimson'},rainbow:{bg:'linear-gradient(135deg,#ff6ec7,#7b61ff,#00ff88)',label:'Rainbow'}
+    crimson:{bg:'#dc2626',label:'Crimson'},rainbow:{bg:'linear-gradient(135deg,#ff6ec7,#7b61ff)',label:'Rainbow'}
   };
   return `<div class="settings-wrap">
     <div class="settings-nav">
@@ -1311,7 +1594,7 @@ function buildSettings(id) {
           <div class="s-card" style="cursor:pointer;margin-bottom:8px" onclick="setEngine('${key}','${id}')">
             <div class="s-row">
               <div class="s-label">${ico} ${name}</div>
-              <span id="eng-check-${key}-${id}" style="color:var(--speed)">${localStorage.getItem('void-engine')===key||(!localStorage.getItem('void-engine')&&key==='google')?'✓':''}</span>
+              <span id="eng-check-${key}-${id}" style="color:var(--speed)">${(()=>{try{return localStorage.getItem('void-engine')===key||(!localStorage.getItem('void-engine')&&key==='google')?'✓':''}catch(e){return key==='google'?'✓':''}})()}</span>
             </div>
           </div>`).join('')}
         </div>
@@ -1341,7 +1624,7 @@ function showSPanel(winId, panel) {
 }
 
 function setEngine(key, winId) {
-  localStorage.setItem('void-engine', key);
+  try { localStorage.setItem('void-engine', key); } catch(e) {}
   ['google','brave','startpage'].forEach(k => {
     const el = document.getElementById('eng-check-'+k+'-'+winId);
     if (el) el.textContent = k===key?'✓':'';
@@ -1379,9 +1662,13 @@ function initAppLogic(appId, id) {
   if (appId === 'files') openFolder(id, 'Desktop');
   if (appId === 'terminal') setTimeout(() => document.getElementById('term-in-'+id)?.focus(), 100);
   if (appId === 'clock') updateClockHands(id);
+  if (appId === 'paint') setTimeout(() => initPaint(id), 60);
+  if (appId === 'weather') setTimeout(() => renderWeather(id, 'New York'), 0);
+  if (appId === 'calendar') setTimeout(() => renderCalendar(id), 0);
+  if (appId === 'ai') setTimeout(() => { initAriaKey(id); document.getElementById('ai-input-'+id)?.focus(); }, 100);
+  if (appId === 'games') setTimeout(() => renderGames(id), 0);
 }
 
-// Clock hands update
 function updateClockHands(winId) {
   const el = document.getElementById('aclock-'+winId);
   if (!el) return;
@@ -1413,11 +1700,61 @@ function updateClockHands(winId) {
 function buildDesktopIcons() {
   const cont = document.getElementById('desktop-icons');
   cont.innerHTML = '';
+  let savedPos = {};
+  try { savedPos = JSON.parse(localStorage.getItem('void-icon-pos') || '{}'); } catch(e) {}
+  const COLS = 2, ICON_W = 90, ICON_H = 96, PAD = 16;
+  let idx = 0;
+
   Object.entries(APPS).forEach(([appId, app]) => {
     const el = document.createElement('div');
     el.className = 'd-icon';
-    el.ondblclick = () => openApp(appId);
+    el.dataset.app = appId;
     el.innerHTML = `<div class="d-icon-img">${app.icon}</div><div class="d-icon-label">${app.name}</div>`;
+
+    const col = idx % COLS;
+    const row = Math.floor(idx / COLS);
+    const defX = PAD + col * ICON_W;
+    const defY = PAD + row * ICON_H;
+    const pos = savedPos[appId] || {x: defX, y: defY};
+    el.style.left = pos.x + 'px';
+    el.style.top  = pos.y + 'px';
+    idx++;
+
+    let dragging = false, ox = 0, oy = 0, moved = false;
+    el.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      e.stopPropagation();
+      dragging = true; moved = false;
+      ox = e.clientX - el.offsetLeft;
+      oy = e.clientY - el.offsetTop;
+      el.classList.add('dragging');
+      el.style.zIndex = 999;
+    });
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      moved = true;
+      const bh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));
+      const nx = Math.max(0, Math.min(window.innerWidth - 82, e.clientX - ox));
+      const ny = Math.max(0, Math.min(window.innerHeight - bh - 96, e.clientY - oy));
+      el.style.left = nx + 'px';
+      el.style.top  = ny + 'px';
+    });
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      el.classList.remove('dragging');
+      el.style.zIndex = '';
+      try {
+        const allPos = JSON.parse(localStorage.getItem('void-icon-pos') || '{}');
+        allPos[appId] = {x: parseInt(el.style.left), y: parseInt(el.style.top)};
+        localStorage.setItem('void-icon-pos', JSON.stringify(allPos));
+      } catch(e) {}
+    });
+
+    el.addEventListener('dblclick', e => {
+      if (!moved) openApp(appId);
+    });
+
     cont.appendChild(el);
   });
 }
@@ -1474,7 +1811,6 @@ document.addEventListener('click', e => {
   }
 });
 
-// Right-click context menu on desktop
 document.getElementById('desktop').addEventListener('contextmenu', e => {
   e.preventDefault();
   const ctx = document.getElementById('ctx-menu');
@@ -1483,7 +1819,6 @@ document.getElementById('desktop').addEventListener('contextmenu', e => {
   ctx.classList.add('open');
 });
 
-// Start menu grid
 function buildStartMenuGrid() {
   const grid = document.getElementById('sm-grid');
   grid.innerHTML = Object.entries(APPS).map(([appId, app]) =>
@@ -1493,3 +1828,747 @@ function buildStartMenuGrid() {
     </div>`
   ).join('');
 }
+
+function showNotif(title, msg, icon='✦') {
+  const el = document.createElement('div');
+  el.className = 'notif';
+  el.style.zIndex = 9999;
+  el.innerHTML = `<div class="notif-icon">${icon}</div><div style="flex:1"><div class="notif-title">${title}</div><div class="notif-msg">${msg}</div></div><div class="notif-close" onclick="this.parentElement.remove()">✕</div>`;
+  document.body.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    el.style.opacity = '0'; el.style.transform = 'translateX(60px)';
+    setTimeout(() => el.remove(), 300);
+  }, 4000);
+}
+
+function updateTaskbarClock() {
+  const now = new Date();
+  document.getElementById('clock-time').textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('clock-date').textContent = now.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+setInterval(updateTaskbarClock, 1000);
+updateTaskbarClock();
+
+function confirmShutdown() {
+  if (confirm('Shut down VoidOS?')) {
+    document.body.style.transition = 'opacity 1s ease';
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+      document.body.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#000;font-family:'Orbitron',monospace;color:rgba(255,255,255,0.2);letter-spacing:0.3em;font-size:0.8rem">SYSTEM OFFLINE</div>`;
+    }, 1000);
+  }
+}
+
+document.getElementById('bright-slider')?.addEventListener('input', e => {
+  document.body.style.filter = `brightness(${e.target.value/100})`;
+});
+
+// ═══════════════════════════════════════════════════════════
+//  AI APP — ARIA
+// ═══════════════════════════════════════════════════════════
+const aiHistory = {};
+
+function buildAI(id) {
+  aiHistory[id] = [];
+  return `<div class="ai-wrap" id="ai-wrap-${id}">
+    <div class="ai-header">
+      <div class="ai-header-top">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <div class="ai-name">ARIA</div>
+          <div class="ai-model">Powered by Claude · claude-sonnet-4-20250514</div>
+        </div>
+        <button class="ai-clear-btn" style="margin-left:auto" onclick="clearAI('${id}')">Clear</button>
+      </div>
+      <div class="ai-status"><div class="ai-dot"></div>Online · VoidOS AI Assistant</div>
+    </div>
+    <div id="ai-key-banner-${id}" style="display:none;padding:8px 14px;background:rgba(244,63,94,0.08);border-bottom:1px solid rgba(244,63,94,0.2);flex-shrink:0">
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.6);margin-bottom:6px">🔑 Enter your Anthropic API key to use ARIA. <a href="https://console.anthropic.com/keys" target="_blank" style="color:var(--flare)">Get one free →</a></div>
+      <div style="display:flex;gap:8px">
+        <input id="ai-key-input-${id}" type="password" placeholder="sk-ant-..." 
+          style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 12px;font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--white);outline:none;caret-color:var(--flare)"
+          onkeydown="if(event.key==='Enter')saveAriaKey('${id}')">
+        <button onclick="saveAriaKey('${id}')" style="padding:6px 14px;background:linear-gradient(135deg,var(--core),var(--flare));border:none;border-radius:8px;color:white;font-size:0.72rem;cursor:pointer;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif">Save</button>
+      </div>
+    </div>
+    <div class="ai-messages" id="ai-msgs-${id}">
+      <div class="ai-msg assistant">
+        <div class="ai-bubble">Hey! I'm ARIA, your VoidOS AI assistant. I'm powered by Claude and ready to help you with anything — coding, writing, analysis, questions, or just a chat. What's on your mind? ✦</div>
+        <div class="ai-meta">ARIA · just now</div>
+      </div>
+    </div>
+    <div class="ai-input-area">
+      <div class="ai-suggestions" id="ai-sugs-${id}">
+        <div class="ai-sug" onclick="aiSuggest('${id}','Write me a VoidOS theme concept')">💡 Theme idea</div>
+        <div class="ai-sug" onclick="aiSuggest('${id}','Explain quantum computing simply')">⚛️ Quantum computing</div>
+        <div class="ai-sug" onclick="aiSuggest('${id}','Write a short poem about the void')">🌌 Void poem</div>
+        <div class="ai-sug" onclick="aiSuggest('${id}','Help me debug JavaScript code')">🐛 Debug JS</div>
+      </div>
+      <div class="ai-input-row">
+        <textarea class="ai-textarea" id="ai-input-${id}" placeholder="Message ARIA..." rows="1"
+          onkeydown="aiKeydown(event,'${id}')" oninput="aiResize(this)"></textarea>
+        <button class="ai-send" id="ai-send-${id}" onclick="aiSend('${id}')">➤</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function saveAriaKey(id) {
+  const key = document.getElementById('ai-key-input-'+id)?.value.trim();
+  if (!key || !key.startsWith('sk-ant-')) {
+    alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
+    return;
+  }
+  try { localStorage.setItem('aria-api-key', key); } catch(e) {}
+  document.getElementById('ai-key-banner-'+id).style.display = 'none';
+  addAiMsg(id, 'assistant', '✦ API key saved! I\'m ready to help. What\'s on your mind?');
+}
+
+function aiResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(120, el.scrollHeight) + 'px';
+}
+
+function aiKeydown(e, id) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aiSend(id); }
+}
+
+function aiSuggest(id, text) {
+  document.getElementById('ai-input-'+id).value = text;
+  aiSend(id);
+}
+
+function clearAI(id) {
+  aiHistory[id] = [];
+  const msgs = document.getElementById('ai-msgs-'+id);
+  msgs.innerHTML = `<div class="ai-msg assistant"><div class="ai-bubble">Chat cleared. I'm still here — what would you like to explore? ✦</div><div class="ai-meta">ARIA · just now</div></div>`;
+  document.getElementById('ai-sugs-'+id).style.display = 'flex';
+}
+
+function initAriaKey(id) {
+  let localKey = null;
+  try { localKey = localStorage.getItem('aria-api-key'); } catch(e) {}
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: [], system: 'ping', _ping: true }),
+  }).then(r => r.json()).then(data => {
+    if (data.error === 'no_key' && !localKey) {
+      document.getElementById('ai-key-banner-'+id).style.display = '';
+    }
+  }).catch(() => {
+    if (!localKey) document.getElementById('ai-key-banner-'+id).style.display = '';
+  });
+}
+
+function addAiMsg(id, role, text) {
+  const msgs = document.getElementById('ai-msgs-'+id);
+  if (!msgs) return;
+  const t = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  msgs.innerHTML += `<div class="ai-msg ${role}"><div class="ai-bubble">${escHtml(text)}</div><div class="ai-meta">${role==='user'?'You':'ARIA'} · ${t}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function aiSend(id) {
+  const input = document.getElementById('ai-input-'+id);
+  const text = input.value.trim();
+  if (!text) return;
+
+  const sendBtn = document.getElementById('ai-send-'+id);
+  const msgs = document.getElementById('ai-msgs-'+id);
+
+  msgs.innerHTML += `<div class="ai-msg user"><div class="ai-bubble">${escHtml(text)}</div><div class="ai-meta">You · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div></div>`;
+  input.value = '';
+  input.style.height = 'auto';
+  sendBtn.disabled = true;
+  document.getElementById('ai-sugs-'+id).style.display = 'none';
+
+  const typingId = 'typing-'+Date.now();
+  msgs.innerHTML += `<div class="ai-msg assistant" id="${typingId}"><div class="ai-typing"><span></span><span></span><span></span></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  aiHistory[id].push({ role:'user', content: text });
+
+  try {
+    let localKey = null;
+    try { localKey = localStorage.getItem('aria-api-key'); } catch(e) {}
+    const headers = { 'Content-Type': 'application/json' };
+    if (localKey) headers['x-aria-key'] = localKey;
+
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        system: 'You are ARIA, a sleek and intelligent AI assistant built into VoidOS — a futuristic desktop operating system with a dark void aesthetic. You are helpful, smart, and have a slightly futuristic personality. Be concise but thorough. Use the ✦ symbol occasionally. The OS has apps: Oblivion Browser, Terminal, Files, Notes, Settings, Clock, Calculator, Paint, Music, Weather, Calendar, Games.',
+        messages: aiHistory[id],
+      }),
+    });
+
+    const data = await res.json();
+    document.getElementById(typingId)?.remove();
+
+    if (data.error === 'no_key') {
+      document.getElementById('ai-key-banner-'+id).style.display = '';
+      msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:rgba(255,200,0,0.9)">🔑 No API key configured. Please enter your Anthropic API key above to use ARIA.</div></div>`;
+      aiHistory[id].pop();
+      sendBtn.disabled = false;
+      msgs.scrollTop = msgs.scrollHeight;
+      return;
+    }
+
+    if (data.error) {
+      msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(data.message || 'Unknown error')}</div></div>`;
+      aiHistory[id].pop();
+      sendBtn.disabled = false;
+      msgs.scrollTop = msgs.scrollHeight;
+      return;
+    }
+
+    const reply = data.content?.[0]?.text;
+    if (!reply) throw new Error('Empty response from API');
+
+    aiHistory[id].push({ role:'assistant', content: reply });
+    const t = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble">${escHtml(reply)}</div><div class="ai-meta">ARIA · ${t}</div></div>`;
+
+  } catch (err) {
+    document.getElementById(typingId)?.remove();
+    aiHistory[id].pop();
+    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(err.message)}</div></div>`;
+  }
+
+  sendBtn.disabled = false;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CALCULATOR
+// ═══════════════════════════════════════════════════════════
+const calcState = {};
+
+function buildCalc(id) {
+  calcState[id] = {val:'0', expr:'', op:null, prev:null, fresh:false};
+  return `<div class="calc-wrap">
+    <div class="calc-display">
+      <div class="calc-expr" id="cexpr-${id}"></div>
+      <div class="calc-val" id="cval-${id}">0</div>
+    </div>
+    <div class="calc-grid">
+      ${[
+        ['AC','fn','±','fn','%','fn','÷','op'],
+        ['7','','8','','9','','×','op'],
+        ['4','','5','','6','','−','op'],
+        ['1','','2','','3','','+','op'],
+        ['0','wide','','','·','','=','eq'],
+      ].map(row => {
+        let html = '';
+        for (let i=0;i<row.length;i+=2) {
+          const label = row[i], cls = row[i+1];
+          if (label==='' && i>0) continue;
+          html += `<div class="calc-btn ${cls==='wide'?'':''}${cls}" 
+            style="${cls==='wide'?'grid-column:span 2;':''}"
+            onclick="calcPress('${id}','${label}')">${label}</div>`;
+        }
+        return html;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function calcPress(id, key) {
+  const s = calcState[id];
+  const display = () => {
+    document.getElementById('cval-'+id).textContent = s.val;
+    document.getElementById('cexpr-'+id).textContent = s.expr;
+  };
+  if (key === 'AC') { s.val='0'; s.expr=''; s.op=null; s.prev=null; s.fresh=false; }
+  else if (key === '±') { s.val = s.val.startsWith('-') ? s.val.slice(1) : '-'+s.val; }
+  else if (key === '%') { s.val = String(parseFloat(s.val)/100); }
+  else if (['+','−','×','÷'].includes(key)) {
+    s.prev = parseFloat(s.val); s.op = key; s.expr = s.val + ' ' + key; s.fresh = true;
+  }
+  else if (key === '=') {
+    if (s.op && s.prev !== null) {
+      const a=s.prev, b=parseFloat(s.val);
+      let r;
+      if (s.op==='+') r=a+b; else if(s.op==='−') r=a-b;
+      else if(s.op==='×') r=a*b; else if(s.op==='÷') r=b===0?'Error':a/b;
+      s.expr = s.expr + ' ' + s.val + ' =';
+      s.val = String(parseFloat(r.toFixed(10)));
+      s.op=null; s.prev=null; s.fresh=true;
+    }
+  }
+  else if (key === '·') { if (!s.val.includes('.')) s.val += '.'; }
+  else {
+    if (s.fresh || s.val==='0') s.val = key;
+    else s.val += key;
+    s.fresh = false;
+  }
+  display();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PAINT
+// ═══════════════════════════════════════════════════════════
+const paintState = {};
+
+function buildPaint(id) {
+  const colors = ['#f0e8ff','#a855f7','#e879f9','#00f5c4','#38bdf8','#fb923c','#4ade80','#f43f5e','#fff','#000'];
+  return `<div class="paint-wrap">
+    <div class="paint-toolbar">
+      <div class="pt-btn active" id="pt-pen-${id}" onclick="setPaintTool('${id}','pen')" title="Pen">✏️</div>
+      <div class="pt-btn" id="pt-brush-${id}" onclick="setPaintTool('${id}','brush')" title="Brush">🖌️</div>
+      <div class="pt-btn" id="pt-eraser-${id}" onclick="setPaintTool('${id}','eraser')" title="Eraser">🧹</div>
+      <div class="pt-sep"></div>
+      <div class="pt-colors">
+        ${colors.map((c,i)=>`<div class="pt-color${i===0?' active':''}" style="background:${c}" 
+          onclick="setPaintColor('${id}','${c}',this)" title="${c}"></div>`).join('')}
+      </div>
+      <div class="pt-sep"></div>
+      <span style="font-size:0.65rem;color:rgba(255,255,255,0.35)">Size</span>
+      <input type="range" class="pt-size" id="pt-size-${id}" min="1" max="40" value="6">
+      <div class="pt-sep"></div>
+      <div class="pt-btn" onclick="paintClear('${id}')" title="Clear">🗑️</div>
+      <div class="pt-btn" onclick="paintDownload('${id}')" title="Save">💾</div>
+    </div>
+    <div class="paint-canvas-wrap" id="paint-wrap-${id}">
+      <canvas class="paint-canvas" id="paint-canvas-${id}"></canvas>
+    </div>
+  </div>`;
+}
+
+function initPaint(id) {
+  const canvas = document.getElementById('paint-canvas-'+id);
+  const wrap = document.getElementById('paint-wrap-'+id);
+  canvas.width = wrap.offsetWidth;
+  canvas.height = wrap.offsetHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#0a0012';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  paintState[id] = { drawing:false, tool:'pen', color:'#f0e8ff', ctx, canvas };
+
+  const getPos = e => {
+    const r = canvas.getBoundingClientRect();
+    const touch = e.touches?.[0] || e;
+    return [touch.clientX - r.left, touch.clientY - r.top];
+  };
+  canvas.addEventListener('mousedown', e => {
+    const s = paintState[id];
+    s.drawing = true;
+    const [x,y] = getPos(e);
+    ctx.beginPath(); ctx.moveTo(x,y);
+  });
+  canvas.addEventListener('mousemove', e => {
+    const s = paintState[id];
+    if (!s.drawing) return;
+    const sz = parseInt(document.getElementById('pt-size-'+id).value);
+    const [x,y] = getPos(e);
+    if (s.tool === 'eraser') {
+      ctx.clearRect(x-sz/2, y-sz/2, sz, sz);
+      return;
+    }
+    ctx.lineWidth = s.tool==='brush' ? sz*2 : sz;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = s.tool==='brush' ? s.color+'aa' : s.color;
+    ctx.globalAlpha = s.tool==='brush' ? 0.3 : 1;
+    ctx.lineTo(x,y); ctx.stroke(); ctx.moveTo(x,y);
+    ctx.globalAlpha = 1;
+  });
+  canvas.addEventListener('mouseup', () => { paintState[id].drawing = false; ctx.beginPath(); });
+  canvas.addEventListener('mouseleave', () => { paintState[id].drawing = false; });
+}
+
+function setPaintTool(id, tool) {
+  paintState[id].tool = tool;
+  ['pen','brush','eraser'].forEach(t => document.getElementById('pt-'+t+'-'+id)?.classList.toggle('active', t===tool));
+  document.getElementById('paint-canvas-'+id).style.cursor = tool==='eraser'?'cell':'crosshair';
+}
+function setPaintColor(id, color, el) {
+  if (paintState[id]) paintState[id].color = color;
+  document.querySelectorAll(`[id^="paint-wrap-${id}"] .pt-color`).forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+}
+function paintClear(id) {
+  const s = paintState[id];
+  s.ctx.fillStyle = '#0a0012';
+  s.ctx.fillRect(0,0,s.canvas.width,s.canvas.height);
+}
+function paintDownload(id) {
+  const link = document.createElement('a');
+  link.download = 'voidOS-paint.png';
+  link.href = paintState[id].canvas.toDataURL();
+  link.click();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  MUSIC PLAYER
+// ═══════════════════════════════════════════════════════════
+const PLAYLIST = [
+  {title:'Void Drift',artist:'Synthetic Dreams',dur:'3:42',icon:'🌌'},
+  {title:'Neon Pulse',artist:'Circuit Ghost',dur:'4:15',icon:'🔮'},
+  {title:'Quantum Static',artist:'Zero Kelvin',dur:'2:58',icon:'⚡'},
+  {title:'Dark Matter',artist:'Null Pointer',dur:'5:01',icon:'🌑'},
+  {title:'Signal Lost',artist:'404 Foundry',dur:'3:33',icon:'📡'},
+  {title:'Glitch Garden',artist:'Entropy Wave',dur:'4:44',icon:'🌿'},
+];
+const musicState = {};
+
+function buildMusic(id) {
+  musicState[id] = { playing:false, track:0, progress:0, interval:null };
+  return `<div class="music-wrap">
+    <div class="music-art" id="m-art-${id}">🎵</div>
+    <div class="music-info">
+      <div class="music-title" id="m-title-${id}">${PLAYLIST[0].title}</div>
+      <div class="music-artist" id="m-artist-${id}">${PLAYLIST[0].artist}</div>
+    </div>
+    <div class="music-visualizer" id="m-vis-${id}">
+      ${Array.from({length:24},(_,i)=>`<div class="vis-bar" id="vb-${i}-${id}" style="height:${Math.random()*30+4}px"></div>`).join('')}
+    </div>
+    <div class="music-progress-wrap">
+      <input type="range" class="music-progress" id="m-prog-${id}" min="0" max="100" value="0">
+      <div class="music-times"><span id="m-cur-${id}">0:00</span><span id="m-dur-${id}">${PLAYLIST[0].dur}</span></div>
+    </div>
+    <div class="music-controls">
+      <div class="mc-btn" onclick="musicShuffle('${id}')" title="Shuffle">🔀</div>
+      <div class="mc-btn" onclick="musicPrev('${id}')">⏮</div>
+      <div class="mc-btn play" id="m-play-${id}" onclick="musicToggle('${id}')">▶</div>
+      <div class="mc-btn" onclick="musicNext('${id}')">⏭</div>
+      <div class="mc-btn" onclick="musicRepeat('${id}')" title="Repeat">🔁</div>
+    </div>
+    <div class="music-playlist">
+      ${PLAYLIST.map((t,i)=>`<div class="pl-item${i===0?' active':''}" id="pl-${i}-${id}" onclick="musicGoto('${id}',${i})">
+        <div class="pl-num">${i+1}</div>
+        <div style="font-size:1.1rem">${t.icon}</div>
+        <div class="pl-info"><div class="pl-title">${t.title}</div><div class="pl-artist">${t.artist}</div></div>
+        <div class="pl-dur">${t.dur}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function musicToggle(id) {
+  const s = musicState[id];
+  s.playing = !s.playing;
+  document.getElementById('m-play-'+id).textContent = s.playing ? '⏸' : '▶';
+  document.getElementById('m-art-'+id).classList.toggle('playing', s.playing);
+  if (s.playing) {
+    s.interval = setInterval(() => {
+      s.progress = Math.min(100, s.progress + 0.3);
+      document.getElementById('m-prog-'+id).value = s.progress;
+      const secs = Math.floor(s.progress / 100 * 222);
+      document.getElementById('m-cur-'+id).textContent = Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');
+      for (let i=0;i<24;i++) {
+        const bar = document.getElementById('vb-'+i+'-'+id);
+        if (bar) bar.style.height = (Math.random()*32+4) + 'px';
+      }
+      if (s.progress >= 100) musicNext(id);
+    }, 150);
+  } else {
+    clearInterval(s.interval);
+    for (let i=0;i<24;i++) {
+      const bar = document.getElementById('vb-'+i+'-'+id);
+      if (bar) bar.style.height = '4px';
+    }
+  }
+}
+
+function musicGoto(id, idx) {
+  const s = musicState[id];
+  const wasPlaying = s.playing;
+  if (s.playing) { s.playing=false; clearInterval(s.interval); document.getElementById('m-art-'+id).classList.remove('playing'); }
+  s.track = idx; s.progress = 0;
+  document.getElementById('m-prog-'+id).value = 0;
+  document.getElementById('m-cur-'+id).textContent = '0:00';
+  document.getElementById('m-title-'+id).textContent = PLAYLIST[idx].title;
+  document.getElementById('m-artist-'+id).textContent = PLAYLIST[idx].artist;
+  document.getElementById('m-dur-'+id).textContent = PLAYLIST[idx].dur;
+  document.getElementById('m-art-'+id).textContent = PLAYLIST[idx].icon;
+  document.getElementById('m-play-'+id).textContent = '▶';
+  document.querySelectorAll(`[id^="pl-"][id$="-${id}"]`).forEach((el,i) => el.classList.toggle('active', i===idx));
+  if (wasPlaying) musicToggle(id);
+}
+function musicNext(id) { musicGoto(id, (musicState[id].track+1)%PLAYLIST.length); musicToggle(id); }
+function musicPrev(id) { musicGoto(id, (musicState[id].track-1+PLAYLIST.length)%PLAYLIST.length); }
+function musicShuffle(id) { musicGoto(id, Math.floor(Math.random()*PLAYLIST.length)); }
+function musicRepeat(id) { musicState[id].progress=0; }
+
+// ═══════════════════════════════════════════════════════════
+//  WEATHER APP
+// ═══════════════════════════════════════════════════════════
+const WEATHER_DATA = {
+  'New York':    {temp:72, desc:'Partly Cloudy',  icon:'⛅', humidity:65, wind:12, uv:6,
+    forecast:[{d:'Mon',i:'🌤️',lo:65,hi:74},{d:'Tue',i:'🌧️',lo:60,hi:68},{d:'Wed',i:'⛅',lo:63,hi:71},{d:'Thu',i:'☀️',lo:66,hi:78},{d:'Fri',i:'🌦️',lo:62,hi:70}]},
+  'London':      {temp:58, desc:'Overcast',       icon:'☁️', humidity:82, wind:18, uv:2,
+    forecast:[{d:'Mon',i:'🌧️',lo:52,hi:60},{d:'Tue',i:'☁️',lo:50,hi:58},{d:'Wed',i:'🌦️',lo:53,hi:61},{d:'Thu',i:'⛅',lo:55,hi:63},{d:'Fri',i:'☁️',lo:51,hi:59}]},
+  'Tokyo':       {temp:81, desc:'Sunny',          icon:'☀️', humidity:70, wind:8,  uv:9,
+    forecast:[{d:'Mon',i:'☀️',lo:74,hi:84},{d:'Tue',i:'⛅',lo:72,hi:81},{d:'Wed',i:'🌤️',lo:75,hi:83},{d:'Thu',i:'🌦️',lo:71,hi:79},{d:'Fri',i:'⛈️',lo:68,hi:76}]},
+  'Los Angeles': {temp:78, desc:'Clear Skies',    icon:'🌞', humidity:45, wind:6,  uv:10,
+    forecast:[{d:'Mon',i:'☀️',lo:65,hi:79},{d:'Tue',i:'🌤️',lo:64,hi:77},{d:'Wed',i:'☀️',lo:67,hi:82},{d:'Thu',i:'☀️',lo:68,hi:80},{d:'Fri',i:'⛅',lo:65,hi:76}]},
+  'Paris':       {temp:64, desc:'Light Rain',     icon:'🌧️', humidity:78, wind:14, uv:3,
+    forecast:[{d:'Mon',i:'🌧️',lo:58,hi:65},{d:'Tue',i:'🌦️',lo:60,hi:67},{d:'Wed',i:'⛅',lo:62,hi:70},{d:'Thu',i:'🌤️',lo:63,hi:71},{d:'Fri',i:'🌧️',lo:57,hi:64}]},
+};
+
+function buildWeather(id) {
+  return `<div class="weather-wrap">
+    <div class="w-search">
+      <input class="w-search-input" id="w-input-${id}" placeholder="Search city..." 
+        onkeydown="if(event.key==='Enter')weatherSearch('${id}')">
+      <button class="w-search-btn" onclick="weatherSearch('${id}')">Go</button>
+    </div>
+    <div id="w-body-${id}"></div>
+  </div>`;
+}
+
+function renderWeather(id, city) {
+  const d = WEATHER_DATA[city];
+  if (!d) {
+    document.getElementById('w-body-'+id).innerHTML = `<div style="padding:30px;text-align:center;color:rgba(255,255,255,0.3)">City not found. Try: ${Object.keys(WEATHER_DATA).join(', ')}</div>`;
+    return;
+  }
+  const minTemp = Math.min(...d.forecast.map(f=>f.lo));
+  const maxTemp = Math.max(...d.forecast.map(f=>f.hi));
+  document.getElementById('w-body-'+id).innerHTML = `
+    <div class="w-hero">
+      <div class="w-location">📍 ${city}</div>
+      <div class="w-icon-big">${d.icon}</div>
+      <div class="w-temp">${d.temp}°F</div>
+      <div class="w-desc">${d.desc}</div>
+      <div class="w-stats">
+        <div class="w-stat"><div class="w-stat-val">💧 ${d.humidity}%</div><div class="w-stat-lbl">Humidity</div></div>
+        <div class="w-stat"><div class="w-stat-val">💨 ${d.wind}mph</div><div class="w-stat-lbl">Wind</div></div>
+        <div class="w-stat"><div class="w-stat-val">☀️ ${d.uv}</div><div class="w-stat-lbl">UV Index</div></div>
+      </div>
+    </div>
+    <div class="w-forecast">
+      ${d.forecast.map(f => {
+        const pct = ((f.hi-minTemp)/(maxTemp-minTemp)*100).toFixed(0);
+        const loP = ((f.lo-minTemp)/(maxTemp-minTemp)*100).toFixed(0);
+        return `<div class="w-day">
+          <div class="w-day-name">${f.d}</div>
+          <div class="w-day-icon">${f.i}</div>
+          <div class="w-day-bar-wrap"><div class="w-day-bar" style="margin-left:${loP}%;width:${pct-loP}%"></div></div>
+          <div class="w-day-temps">${f.lo}° <span style="color:var(--flare)">${f.hi}°</span></div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function weatherSearch(id) {
+  const val = document.getElementById('w-input-'+id).value.trim();
+  if (!val) return;
+  const match = Object.keys(WEATHER_DATA).find(k => k.toLowerCase().includes(val.toLowerCase()));
+  renderWeather(id, match || val);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CALENDAR
+// ═══════════════════════════════════════════════════════════
+const calState = {};
+const CAL_EVENTS = {
+  [new Date().toDateString()]: 'Today',
+  [new Date(new Date().getTime()+86400000*3).toDateString()]: 'Meeting',
+  [new Date(new Date().getTime()+86400000*7).toDateString()]: 'Deadline',
+};
+
+function buildCalendar(id) {
+  const now = new Date();
+  calState[id] = { year: now.getFullYear(), month: now.getMonth() };
+  return `<div class="cal-wrap">
+    <div class="cal-header">
+      <div class="cal-nav" onclick="calNav('${id}',-1)">‹</div>
+      <div class="cal-month" id="cal-month-${id}"></div>
+      <div class="cal-nav" onclick="calNav('${id}',1)">›</div>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-weekdays">
+        ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div>${d}</div>`).join('')}
+      </div>
+      <div class="cal-days" id="cal-days-${id}"></div>
+    </div>
+    <div class="cal-events">
+      <div class="cal-event-label">Upcoming</div>
+      <div id="cal-events-${id}"></div>
+    </div>
+  </div>`;
+}
+
+function renderCalendar(id) {
+  const s = calState[id];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-'+id).textContent = months[s.month] + ' ' + s.year;
+  const first = new Date(s.year, s.month, 1).getDay();
+  const days = new Date(s.year, s.month+1, 0).getDate();
+  const prevDays = new Date(s.year, s.month, 0).getDate();
+  const today = new Date();
+  let html = '';
+  for (let i=0;i<first;i++) {
+    html += `<div class="cal-day other-month">${prevDays-first+i+1}</div>`;
+  }
+  for (let d=1;d<=days;d++) {
+    const date = new Date(s.year, s.month, d);
+    const isToday = date.toDateString() === today.toDateString();
+    const hasEv = CAL_EVENTS[date.toDateString()];
+    html += `<div class="cal-day${isToday?' today':''}${hasEv?' has-event':''}">${d}</div>`;
+  }
+  document.getElementById('cal-days-'+id).innerHTML = html;
+  const evs = Object.entries(CAL_EVENTS).filter(([d]) => new Date(d) >= today).slice(0,3);
+  document.getElementById('cal-events-'+id).innerHTML = evs.length
+    ? evs.map(([d,e])=>`<div class="cal-event-item"><div class="cal-event-dot"></div>${new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})} — ${e}</div>`).join('')
+    : '<div style="color:rgba(255,255,255,0.2);font-size:0.72rem">No upcoming events</div>';
+}
+
+function calNav(id, dir) {
+  const s = calState[id];
+  s.month += dir;
+  if (s.month > 11) { s.month=0; s.year++; }
+  if (s.month < 0)  { s.month=11; s.year--; }
+  renderCalendar(id);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GAMES APP
+// ═══════════════════════════════════════════════════════════
+const GAME_LIBRARY = [
+  {id:'2048',     name:'2048',          icon:'🔢', genre:'Puzzle',   rating:'★★★★★', color:'#ff9a00', url:'https://play2048.co/', src:'play2048.co'},
+  {id:'chess',    name:'Chess',         icon:'♟️', genre:'Strategy', rating:'★★★★☆', color:'#a855f7', url:'https://lichess.org/tv', src:'lichess.org'},
+  {id:'tetris',   name:'Jstris',        icon:'🟦', genre:'Puzzle',   rating:'★★★★★', color:'#38bdf8', url:'https://jstris.jezevec10.com/', src:'jstris.jezevec10.com'},
+  {id:'sudoku',   name:'Sudoku',        icon:'🔲', genre:'Puzzle',   rating:'★★★★☆', color:'#4ade80', url:'https://sudoku.com/', src:'sudoku.com'},
+  {id:'pacman',   name:'Pac-Man',       icon:'🟡', genre:'Arcade',   rating:'★★★★★', color:'#fde68a', url:'https://freepacman.org/', src:'freepacman.org'},
+  {id:'snake',    name:'Snake',         icon:'🐍', genre:'Arcade',   rating:'★★★★☆', color:'#4ade80', url:'https://playsnake.org/', src:'playsnake.org'},
+  {id:'doom',     name:'DOOM (1993)',    icon:'👹', genre:'FPS',      rating:'★★★★★', color:'#f43f5e', url:'https://dos.zone/doom-1993/', src:'dos.zone'},
+  {id:'qbert',    name:'Q*bert',        icon:'🟠', genre:'Arcade',   rating:'★★★★☆', color:'#fb923c', url:'https://dos.zone/q-bert-1983/', src:'dos.zone'},
+  {id:'go',       name:'Go',            icon:'⚫', genre:'Strategy', rating:'★★★★☆', color:'#6b7280', url:'https://online-go.com/', src:'online-go.com'},
+  {id:'minesweep',name:'Minesweeper',   icon:'💣', genre:'Puzzle',   rating:'★★★★☆', color:'#a3e635', url:'https://minesweeperonline.com/', src:'minesweeperonline.com'},
+  {id:'solitaire',name:'Solitaire',     icon:'🃏', genre:'Card',     rating:'★★★★★', color:'#e879f9', url:'https://solitaired.com/', src:'solitaired.com'},
+  {id:'freecell', name:'FreeCell',      icon:'🂡', genre:'Card',     rating:'★★★★☆', color:'#60a5fa', url:'https://freecell.org/', src:'freecell.org'},
+  {id:'asteroids',name:'Asteroids',     icon:'🚀', genre:'Arcade',   rating:'★★★★☆', color:'#00e5ff', url:'https://www.freeasteroids.org/', src:'freeasteroids.org'},
+  {id:'pong',     name:'Pong',          icon:'🏓', genre:'Sports',   rating:'★★★☆☆', color:'#fff',    url:'https://www.ponggame.org/', src:'ponggame.org'},
+  {id:'mahjong',  name:'Mahjong',       icon:'🀄', genre:'Puzzle',   rating:'★★★★☆', color:'#f87171', url:'https://www.mahjong-solitaire.com/', src:'mahjong-solitaire.com'},
+  {id:'wordle',   name:'Wordle',        icon:'📝', genre:'Word',     rating:'★★★★★', color:'#a3e635', url:'https://wordleunlimited.org/', src:'wordleunlimited.org'},
+];
+
+const GAME_CATS = ['All','Arcade','Puzzle','Strategy','Card','Word','FPS','Sports'];
+let activeGameCat = 'All';
+
+function buildGames(id) {
+  return `<div class="games-wrap" id="gw-${id}">
+    <div class="games-topbar">
+      <div class="games-title">🎮 GAME VAULT</div>
+      <input class="games-search" id="g-search-${id}" placeholder="Search games..." 
+        oninput="filterGames('${id}')">
+      <div class="games-cats">
+        ${GAME_CATS.map(c=>`<div class="g-cat${c==='All'?' active':''}" id="gcat-${c.replace(/[^a-z]/gi,'')}-${id}" onclick="setGameCat('${id}','${c}')">${c}</div>`).join('')}
+      </div>
+    </div>
+    <div class="games-content">
+      <div class="games-grid-wrap">
+        <div class="games-grid" id="games-grid-${id}"></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGames(id) {
+  const search = document.getElementById('g-search-'+id)?.value.toLowerCase() || '';
+  const filtered = GAME_LIBRARY.filter(g => {
+    const catMatch = activeGameCat==='All' || g.genre===activeGameCat;
+    const searchMatch = !search || g.name.toLowerCase().includes(search) || g.genre.toLowerCase().includes(search);
+    return catMatch && searchMatch;
+  });
+  const grid = document.getElementById('games-grid-'+id);
+  if (!grid) return;
+  grid.innerHTML = filtered.map(g => `
+    <div class="game-card" onclick="launchGame('${id}','${g.id}')">
+      <div class="game-thumb" style="background:linear-gradient(135deg,${g.color}33,${g.color}11)">
+        <span style="position:relative;z-index:1">${g.icon}</span>
+      </div>
+      <div class="game-info">
+        <div class="game-name">${g.name}</div>
+        <div class="game-meta">
+          <div class="game-genre">${g.genre}</div>
+          <div class="game-rating">${g.rating}</div>
+        </div>
+      </div>
+      <div style="font-size:0.58rem;color:rgba(255,255,255,0.2);padding:0 12px 8px;font-family:'DM Mono',monospace">${g.src}</div>
+      <button class="game-play-btn" onclick="launchGame('${id}','${g.id}')">▶ PLAY NOW</button>
+    </div>`).join('');
+}
+
+function setGameCat(id, cat) {
+  activeGameCat = cat;
+  document.querySelectorAll(`[id^="gcat-"][id$="-${id}"]`).forEach(el => el.classList.remove('active'));
+  document.getElementById('gcat-'+cat.replace(/[^a-z]/gi,'')+'-'+id)?.classList.add('active');
+  renderGames(id);
+}
+
+function filterGames(id) { renderGames(id); }
+
+function launchGame(winId, gameId) {
+  const game = GAME_LIBRARY.find(g => g.id === gameId);
+  if (!game) return;
+  const wrap = document.getElementById('gw-'+winId);
+  if (!wrap) return;
+
+  const winEl = document.getElementById(winId);
+  if (winEl && wins[winId]?.state !== 'maximized') {
+    const vw = window.innerWidth, vh = window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));
+    winEl.style.width = Math.min(960, vw-40) + 'px';
+    winEl.style.height = Math.min(640, vh-40) + 'px';
+    winEl.style.left = Math.max(0,(vw-parseInt(winEl.style.width))/2) + 'px';
+    winEl.style.top  = Math.max(0,(vh-parseInt(winEl.style.height))/2) + 'px';
+  }
+
+  wrap.innerHTML = `<div class="game-player">
+    <div class="game-player-bar">
+      <div class="game-player-back" onclick="backToGames('${winId}')">← Back</div>
+      <span style="font-size:1.1rem">${game.icon}</span>
+      <div class="game-player-title">${game.name}</div>
+      <div class="game-player-src">Source: ${game.src}</div>
+    </div>
+    <div class="game-iframe-wrap">
+      <div class="game-loading" id="gl-${winId}">
+        <div class="game-loading-icon">${game.icon}</div>
+        <div class="game-loading-text">Loading ${game.name}...</div>
+      </div>
+      <iframe class="game-iframe" id="gif-${winId}"
+        src="/proxy?url=${encodeURIComponent(game.url)}"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        onload="document.getElementById('gl-${winId}')?.remove()">
+      </iframe>
+    </div>
+  </div>`;
+}
+
+function backToGames(winId) {
+  const wrap = document.getElementById('gw-'+winId);
+  if (!wrap) return;
+  wrap.outerHTML = `<div class="games-wrap" id="gw-${winId}">
+    <div class="games-topbar">
+      <div class="games-title">🎮 GAME VAULT</div>
+      <input class="games-search" id="g-search-${winId}" placeholder="Search games..." oninput="filterGames('${winId}')">
+      <div class="games-cats">
+        ${GAME_CATS.map(c=>`<div class="g-cat${c===activeGameCat?' active':''}" id="gcat-${c.replace(/[^a-z]/gi,'')}-${winId}" onclick="setGameCat('${winId}','${c}')">${c}</div>`).join('')}
+      </div>
+    </div>
+    <div class="games-content"><div class="games-grid-wrap"><div class="games-grid" id="games-grid-${winId}"></div></div></div>
+  </div>`;
+  setTimeout(() => renderGames(winId), 0);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+setTheme(currentTheme);
+buildDesktopIcons();
+buildStartMenuGrid();
+updateTaskbar();
+drawFrame();
+showNotif('VoidOS', '✦ Welcome to VoidOS 1.0', '🚀');
+</script>
+</body>
+</html>
