@@ -870,15 +870,15 @@ const THEME_HUES = {
   crimson:[0,10,350], rainbow:[0,120,240]
 };
 const THEMES = Object.keys(THEME_HUES);
-let currentTheme = localStorage.getItem('void-theme') || 'normal';
+let currentTheme = 'normal';
+try { currentTheme = localStorage.getItem('void-theme') || 'normal'; } catch(e) {}
 
 function setTheme(id) {
   THEMES.forEach(t => document.body.classList.remove('t-'+t));
   document.body.classList.add('t-'+id);
   currentTheme = id;
-  localStorage.setItem('void-theme', id);
+  try { localStorage.setItem('void-theme', id); } catch(e) {}
   updateParticleHues();
-  // update settings UI
   document.querySelectorAll('.theme-swatch').forEach(s => {
     s.classList.toggle('active', s.dataset.theme === id);
   });
@@ -936,7 +936,6 @@ document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
 
 function drawFrame() {
   ctx2.clearRect(0,0,W,H);
-  // Orbs
   for (const o of orbs) {
     o.x+=o.vx; o.y+=o.vy; o.tw+=o.tws;
     if(o.rainbowDrift) o.hue=(o.hue+o.rainbowDrift)%360;
@@ -949,7 +948,6 @@ function drawFrame() {
     ctx2.beginPath(); ctx2.arc(o.x,o.y,o.r*pulse*2,0,Math.PI*2);
     ctx2.fillStyle=g; ctx2.fill();
   }
-  // Particles
   for (const p of ptcls) {
     p.x+=p.vx; p.y+=p.vy; p.tw+=p.tws;
     if(p.rainbowDrift) p.hue=(p.hue+p.rainbowDrift)%360;
@@ -962,7 +960,6 @@ function drawFrame() {
     ctx2.fillStyle=`hsla(${p.hue},100%,75%,${p.a*tw})`;
     ctx2.fill();
   }
-  // Connection lines from mouse
   for (const p of ptcls) {
     const dx=p.x-mx,dy=p.y-my,d=Math.sqrt(dx*dx+dy*dy);
     if(d<140){
@@ -973,7 +970,6 @@ function drawFrame() {
       ctx2.strokeStyle=g; ctx2.lineWidth=0.6; ctx2.stroke();
     }
   }
-  // Streaks
   for (let i=0;i<streaks.length;i++) {
     const s=streaks[i];
     s.x+=Math.cos(s.angle)*s.speed; s.y+=Math.sin(s.angle)*s.speed; s.life++;
@@ -1028,14 +1024,13 @@ const APPS = {
 // ═══════════════════════════════════════════════════════════
 //  WINDOW MANAGER
 // ═══════════════════════════════════════════════════════════
-const wins = {}; // id -> {el, app, state:'normal'|'minimized'|'maximized', savedRect}
+const wins = {};
 let zTop = 200;
 let focusedId = null;
 
 function genId() { return 'w' + Date.now() + Math.random().toString(36).slice(2,6); }
 
 function openApp(appId) {
-  // If already open, bring to front / restore
   const existing = Object.entries(wins).find(([,w]) => w.appId === appId);
   if (existing) {
     const [id, w] = existing;
@@ -1080,7 +1075,6 @@ function openApp(appId) {
   initDrag(el, el.querySelector('[data-draggable]'));
   el.addEventListener('mousedown', () => focusWindow(id));
 
-  // Animate in
   el.style.opacity = '0';
   el.style.transform = 'scale(0.92) translateY(12px)';
   requestAnimationFrame(() => {
@@ -1115,7 +1109,6 @@ function buildAppContent(appId, id) {
 
 function focusWindow(id) {
   if (!wins[id]) return;
-  // Unfocus all
   Object.entries(wins).forEach(([wid, w]) => {
     w.el.classList.toggle('focused', wid === id);
   });
@@ -1171,7 +1164,6 @@ function toggleMaximize(id) {
   const w = wins[id];
   const el = w.el;
   if (w.state === 'maximized') {
-    // restore
     const r = w.savedRect;
     el.style.left = r.left+'px'; el.style.top = r.top+'px';
     el.style.width = r.width+'px'; el.style.height = r.height+'px';
@@ -1190,7 +1182,6 @@ function toggleMaximize(id) {
   }
 }
 
-// Drag
 function initDrag(winEl, handle) {
   let dragging = false, ox, oy;
   handle.addEventListener('mousedown', e => {
@@ -1214,7 +1205,6 @@ function initDrag(winEl, handle) {
   });
 }
 
-// Resize
 function startResize(e, id) {
   e.preventDefault(); e.stopPropagation();
   const el = wins[id].el;
@@ -1235,11 +1225,9 @@ function startResize(e, id) {
   document.addEventListener('mouseup', onUp);
 }
 
-// Taskbar
 function updateTaskbar() {
   const mid = document.getElementById('tb-mid');
   mid.innerHTML = '';
-  // Pinned apps
   Object.entries(APPS).filter(([,a]) => a.pinned).forEach(([appId, app]) => {
     const openWin = Object.entries(wins).find(([,w]) => w.appId === appId);
     const btn = document.createElement('div');
@@ -1254,7 +1242,6 @@ function updateTaskbar() {
     };
     mid.appendChild(btn);
   });
-  // Non-pinned open windows
   Object.entries(wins).forEach(([wid, w]) => {
     if (APPS[w.appId]?.pinned) return;
     const app = APPS[w.appId];
@@ -1274,7 +1261,7 @@ function updateTaskbar() {
 //  APP BUILDERS
 // ═══════════════════════════════════════════════════════════
 let tabCounter = 0;
-const browserTabs = {}; // winId -> [{id,title,url,home}]
+const browserTabs = {};
 
 function buildBrowser(winId) {
   browserTabs[winId] = [{id:'t0',title:'New Tab',url:'',home:true}];
@@ -1333,7 +1320,8 @@ function bGo(winId) {
   if (/^https?:\/\//i.test(raw)) url = raw;
   else if (/^[\w-]+\.[a-z]{2,}/.test(raw)) url = 'https://'+raw;
   else {
-    const engine = localStorage.getItem('void-engine') || 'google';
+    let engine = 'google';
+    try { engine = localStorage.getItem('void-engine') || 'google'; } catch(e) {}
     const engines = {google:'https://www.google.com/search?q=',brave:'https://search.brave.com/search?q=',startpage:'https://www.startpage.com/search?q='};
     url = (engines[engine]||engines.google) + encodeURIComponent(raw);
   }
@@ -1343,13 +1331,11 @@ function bGo(winId) {
   iframe.style.display = 'block';
   iframe.src = '/proxy?url=' + encodeURIComponent(url);
   document.getElementById('baddr-'+winId).value = url;
-  // update tab title
-  setActiveTabTitle(winId, new URL(url).hostname.replace('www.',''));
-  // update window title
-  const w = Object.values(wins).find(w => w.appId === 'browser');
-  if (w) {
-    w.el.querySelector('.win-title').textContent = 'Oblivion — ' + new URL(url).hostname.replace('www.','');
-  }
+  try {
+    setActiveTabTitle(winId, new URL(url).hostname.replace('www.',''));
+    const w = Object.values(wins).find(w => w.appId === 'browser');
+    if (w) w.el.querySelector('.win-title').textContent = 'Oblivion — ' + new URL(url).hostname.replace('www.','');
+  } catch(e) {}
 }
 
 function setActiveTabTitle(winId, title) {
@@ -1359,9 +1345,9 @@ function setActiveTabTitle(winId, title) {
 
 function bNav(winId, dir) {
   const iframe = document.getElementById('biframe-'+winId);
-  if (dir==='back') iframe.contentWindow?.history.back();
-  else if (dir==='fwd') iframe.contentWindow?.history.forward();
-  else if (dir==='refresh') iframe.contentWindow?.location.reload();
+  if (dir==='back') try { iframe.contentWindow?.history.back(); } catch(e) {}
+  else if (dir==='fwd') try { iframe.contentWindow?.history.forward(); } catch(e) {}
+  else if (dir==='refresh') try { iframe.contentWindow?.location.reload(); } catch(e) {}
 }
 
 function newBTab(winId) {
@@ -1381,7 +1367,6 @@ function newBTab(winId) {
 function switchBTab(winId, tabId) {
   document.querySelectorAll(`#btabs-${winId} .b-tab`).forEach(t => t.classList.remove('active'));
   document.getElementById('tab-'+tabId+'-'+winId)?.classList.add('active');
-  // For now show home on tab switch (full tab state management would be elaborate)
   document.getElementById('biframe-'+winId).style.display = 'none';
   document.getElementById('bhome-'+winId).style.display = 'flex';
   document.getElementById('baddr-'+winId).value = '';
@@ -1397,12 +1382,10 @@ function closeBTab(e, winId, tabId) {
   switchBTab(winId, tabs[Math.max(0,i-1)].id);
 }
 
-// Listen for proxy navigation messages
 window.addEventListener('message', e => {
   if (e.data?.type === 'oblivion-navigate' || e.data?.type === 'oblivion-url') {
     const url = e.data.url;
     if (!url) return;
-    // Find which browser window's iframe sent this
     Object.entries(wins).forEach(([wid, w]) => {
       if (w.appId !== 'browser') return;
       const iframe = document.getElementById('biframe-'+wid);
@@ -1411,7 +1394,7 @@ window.addEventListener('message', e => {
         iframe.src = '/proxy?url=' + encodeURIComponent(url);
       }
       document.getElementById('baddr-'+wid).value = url;
-      setActiveTabTitle(wid, new URL(url).hostname.replace('www.',''));
+      try { setActiveTabTitle(wid, new URL(url).hostname.replace('www.','')); } catch(e) {}
     });
   }
 });
@@ -1465,7 +1448,7 @@ Memory: 16384MB / 32768MB
   'cat config.json': () => `{\n  "theme": "${currentTheme}",\n  "version": "1.0.0",\n  "engine": "void"\n}`,
 };
 
-const termHistory = {}; // winId -> string[]
+const termHistory = {};
 const termHistIdx = {};
 
 function termKey(e, id) {
@@ -1548,7 +1531,8 @@ function openFolder(winId, folder) {
 
 // Notes
 function buildNotes(id) {
-  const saved = localStorage.getItem('void-notes') || '';
+  let saved = '';
+  try { saved = localStorage.getItem('void-notes') || ''; } catch(e) {}
   return `<div class="notes-wrap">
     <div class="notes-toolbar">
       <button class="note-btn" onclick="document.execCommand('bold')"><b>B</b></button>
@@ -1562,12 +1546,12 @@ function buildNotes(id) {
   </div>`;
 }
 function saveNote(id) {
-  localStorage.setItem('void-notes', document.getElementById('notes-ed-'+id).value);
+  try { localStorage.setItem('void-notes', document.getElementById('notes-ed-'+id).value); } catch(e) {}
   showNotif('Notes', '💾 Saved successfully!');
 }
 function clearNote(id) {
   document.getElementById('notes-ed-'+id).value = '';
-  localStorage.removeItem('void-notes');
+  try { localStorage.removeItem('void-notes'); } catch(e) {}
 }
 
 // Settings
@@ -1576,7 +1560,7 @@ function buildSettings(id) {
     normal:{bg:'#5b12d4',label:'Normal'},dark:{bg:'#222',label:'Dark'},
     sky:{bg:'#0284c7',label:'Sky'},ember:{bg:'#ea580c',label:'Ember'},
     rose:{bg:'#be185d',label:'Rose'},forest:{bg:'#16a34a',label:'Forest'},
-    crimson:{bg:'#dc2626',label:'Crimson'},rainbow:{bg:'linear-gradient(135deg,#ff6ec7,#7b61ff,#00ff88)',label:'Rainbow'}
+    crimson:{bg:'#dc2626',label:'Crimson'},rainbow:{bg:'linear-gradient(135deg,#ff6ec7,#7b61ff)',label:'Rainbow'}
   };
   return `<div class="settings-wrap">
     <div class="settings-nav">
@@ -1631,7 +1615,7 @@ function buildSettings(id) {
           <div class="s-card" style="cursor:pointer;margin-bottom:8px" onclick="setEngine('${key}','${id}')">
             <div class="s-row">
               <div class="s-label">${ico} ${name}</div>
-              <span id="eng-check-${key}-${id}" style="color:var(--speed)">${localStorage.getItem('void-engine')===key||(!localStorage.getItem('void-engine')&&key==='google')?'✓':''}</span>
+              <span id="eng-check-${key}-${id}" style="color:var(--speed)">${(()=>{try{return localStorage.getItem('void-engine')===key||(!localStorage.getItem('void-engine')&&key==='google')?'✓':''}catch(e){return key==='google'?'✓':''}})()}</span>
             </div>
           </div>`).join('')}
         </div>
@@ -1661,7 +1645,7 @@ function showSPanel(winId, panel) {
 }
 
 function setEngine(key, winId) {
-  localStorage.setItem('void-engine', key);
+  try { localStorage.setItem('void-engine', key); } catch(e) {}
   ['google','brave','startpage'].forEach(k => {
     const el = document.getElementById('eng-check-'+k+'-'+winId);
     if (el) el.textContent = k===key?'✓':'';
@@ -1706,7 +1690,6 @@ function initAppLogic(appId, id) {
   if (appId === 'games') setTimeout(() => renderGames(id), 0);
 }
 
-// Clock hands update
 function updateClockHands(winId) {
   const el = document.getElementById('aclock-'+winId);
   if (!el) return;
@@ -1738,7 +1721,8 @@ function updateClockHands(winId) {
 function buildDesktopIcons() {
   const cont = document.getElementById('desktop-icons');
   cont.innerHTML = '';
-  const saved = JSON.parse(localStorage.getItem('void-icon-pos') || '{}');
+  let savedPos = {};
+  try { savedPos = JSON.parse(localStorage.getItem('void-icon-pos') || '{}'); } catch(e) {}
   const COLS = 2, ICON_W = 90, ICON_H = 96, PAD = 16;
   let idx = 0;
 
@@ -1748,17 +1732,15 @@ function buildDesktopIcons() {
     el.dataset.app = appId;
     el.innerHTML = `<div class="d-icon-img">${app.icon}</div><div class="d-icon-label">${app.name}</div>`;
 
-    // Position: use saved or default grid
     const col = idx % COLS;
     const row = Math.floor(idx / COLS);
     const defX = PAD + col * ICON_W;
     const defY = PAD + row * ICON_H;
-    const pos = saved[appId] || {x: defX, y: defY};
+    const pos = savedPos[appId] || {x: defX, y: defY};
     el.style.left = pos.x + 'px';
     el.style.top  = pos.y + 'px';
     idx++;
 
-    // Drag logic
     let dragging = false, ox = 0, oy = 0, moved = false;
     el.addEventListener('mousedown', e => {
       if (e.button !== 0) return;
@@ -1783,13 +1765,13 @@ function buildDesktopIcons() {
       dragging = false;
       el.classList.remove('dragging');
       el.style.zIndex = '';
-      // Save position
-      const allPos = JSON.parse(localStorage.getItem('void-icon-pos') || '{}');
-      allPos[appId] = {x: parseInt(el.style.left), y: parseInt(el.style.top)};
-      localStorage.setItem('void-icon-pos', JSON.stringify(allPos));
+      try {
+        const allPos = JSON.parse(localStorage.getItem('void-icon-pos') || '{}');
+        allPos[appId] = {x: parseInt(el.style.left), y: parseInt(el.style.top)};
+        localStorage.setItem('void-icon-pos', JSON.stringify(allPos));
+      } catch(e) {}
     });
 
-    // Double click to open (only if not dragged)
     el.addEventListener('dblclick', e => {
       if (!moved) openApp(appId);
     });
@@ -1850,7 +1832,6 @@ document.addEventListener('click', e => {
   }
 });
 
-// Right-click context menu on desktop
 document.getElementById('desktop').addEventListener('contextmenu', e => {
   e.preventDefault();
   const ctx = document.getElementById('ctx-menu');
@@ -1859,7 +1840,6 @@ document.getElementById('desktop').addEventListener('contextmenu', e => {
   ctx.classList.add('open');
 });
 
-// Start menu grid
 function buildStartMenuGrid() {
   const grid = document.getElementById('sm-grid');
   grid.innerHTML = Object.entries(APPS).map(([appId, app]) =>
@@ -1870,7 +1850,6 @@ function buildStartMenuGrid() {
   ).join('');
 }
 
-// Notifications
 function showNotif(title, msg, icon='✦') {
   const el = document.createElement('div');
   el.className = 'notif';
@@ -1884,7 +1863,6 @@ function showNotif(title, msg, icon='✦') {
   }, 4000);
 }
 
-// Clock in taskbar
 function updateTaskbarClock() {
   const now = new Date();
   document.getElementById('clock-time').textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
@@ -1893,7 +1871,6 @@ function updateTaskbarClock() {
 setInterval(updateTaskbarClock, 1000);
 updateTaskbarClock();
 
-// Shutdown
 function confirmShutdown() {
   if (confirm('Shut down VoidOS?')) {
     document.body.style.transition = 'opacity 1s ease';
@@ -1904,39 +1881,46 @@ function confirmShutdown() {
   }
 }
 
-// Brightness slider
 document.getElementById('bright-slider')?.addEventListener('input', e => {
   document.body.style.filter = `brightness(${e.target.value/100})`;
 });
 
 // ═══════════════════════════════════════════════════════════
-//  BOOT SEQUENCE
+//  BOOT SEQUENCE — FIXED
 // ═══════════════════════════════════════════════════════════
 const bootMessages = [
   'Initializing kernel...','Loading Void Engine...','Mounting filesystem...',
   'Starting display server...','Loading desktop environment...','Launching VoidOS...'
 ];
 let bootStep = 0;
-const bootBar = document.getElementById('boot-bar');
-const bootStatus = document.getElementById('boot-status');
 
 function bootTick() {
-  if (bootStep >= bootMessages.length) {
-    document.getElementById('boot').classList.add('hidden');
-    setTimeout(() => { document.getElementById('boot').remove(); }, 600);
-    showNotif('VoidOS', '✦ Welcome to VoidOS 1.0', '🚀');
-    return;
+  try {
+    const bootBar = document.getElementById('boot-bar');
+    const bootStatus = document.getElementById('boot-status');
+    if (bootStep >= bootMessages.length) {
+      const bootEl = document.getElementById('boot');
+      if (bootEl) {
+        bootEl.classList.add('hidden');
+        setTimeout(() => bootEl.remove(), 600);
+      }
+      showNotif('VoidOS', '✦ Welcome to VoidOS 1.0', '🚀');
+      return;
+    }
+    if (bootStatus) bootStatus.textContent = bootMessages[bootStep];
+    if (bootBar) bootBar.style.width = ((bootStep + 1) / bootMessages.length * 100) + '%';
+    bootStep++;
+    setTimeout(bootTick, 400 + Math.random() * 300);
+  } catch(e) {
+    const bootEl = document.getElementById('boot');
+    if (bootEl) bootEl.remove();
   }
-  bootStatus.textContent = bootMessages[bootStep];
-  bootBar.style.width = ((bootStep+1)/bootMessages.length*100) + '%';
-  bootStep++;
-  setTimeout(bootTick, 400 + Math.random()*300);
 }
 
 // ═══════════════════════════════════════════════════════════
-//  AI APP — ARIA (Anthropic API)
+//  AI APP — ARIA
 // ═══════════════════════════════════════════════════════════
-const aiHistory = {}; // winId -> [{role,content}]
+const aiHistory = {};
 
 function buildAI(id) {
   aiHistory[id] = [];
@@ -1989,9 +1973,9 @@ function saveAriaKey(id) {
     alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
     return;
   }
-  localStorage.setItem('aria-api-key', key);
+  try { localStorage.setItem('aria-api-key', key); } catch(e) {}
   document.getElementById('ai-key-banner-'+id).style.display = 'none';
-  addAiMsg(id, 'assistant', '✦ API key saved! I'm ready to help. What's on your mind?');
+  addAiMsg(id, 'assistant', '✦ API key saved! I\'m ready to help. What\'s on your mind?');
 }
 
 function aiResize(el) {
@@ -2016,15 +2000,13 @@ function clearAI(id) {
 }
 
 function initAriaKey(id) {
-  // Check if server has a key set, or if user has one saved
-  const localKey = localStorage.getItem('aria-api-key');
-  // Ping server to see if it has a key configured
+  let localKey = null;
+  try { localKey = localStorage.getItem('aria-api-key'); } catch(e) {}
   fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages: [], system: 'ping', _ping: true }),
   }).then(r => r.json()).then(data => {
-    // If we get no_key error and no local key, show banner
     if (data.error === 'no_key' && !localKey) {
       document.getElementById('ai-key-banner-'+id).style.display = '';
     }
@@ -2049,14 +2031,12 @@ async function aiSend(id) {
   const sendBtn = document.getElementById('ai-send-'+id);
   const msgs = document.getElementById('ai-msgs-'+id);
 
-  // Add user message
   msgs.innerHTML += `<div class="ai-msg user"><div class="ai-bubble">${escHtml(text)}</div><div class="ai-meta">You · ${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div></div>`;
   input.value = '';
   input.style.height = 'auto';
   sendBtn.disabled = true;
   document.getElementById('ai-sugs-'+id).style.display = 'none';
 
-  // Typing indicator
   const typingId = 'typing-'+Date.now();
   msgs.innerHTML += `<div class="ai-msg assistant" id="${typingId}"><div class="ai-typing"><span></span><span></span><span></span></div></div>`;
   msgs.scrollTop = msgs.scrollHeight;
@@ -2064,7 +2044,8 @@ async function aiSend(id) {
   aiHistory[id].push({ role:'user', content: text });
 
   try {
-    const localKey = localStorage.getItem('aria-api-key');
+    let localKey = null;
+    try { localKey = localStorage.getItem('aria-api-key'); } catch(e) {}
     const headers = { 'Content-Type': 'application/json' };
     if (localKey) headers['x-aria-key'] = localKey;
 
@@ -2078,14 +2059,12 @@ async function aiSend(id) {
     });
 
     const data = await res.json();
-
     document.getElementById(typingId)?.remove();
 
     if (data.error === 'no_key') {
-      // Show the key banner
       document.getElementById('ai-key-banner-'+id).style.display = '';
       msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:rgba(255,200,0,0.9)">🔑 No API key configured. Please enter your Anthropic API key above to use ARIA.</div></div>`;
-      aiHistory[id].pop(); // remove the failed message
+      aiHistory[id].pop();
       sendBtn.disabled = false;
       msgs.scrollTop = msgs.scrollHeight;
       return;
@@ -2123,7 +2102,7 @@ function escHtml(str) {
 // ═══════════════════════════════════════════════════════════
 //  CALCULATOR
 // ═══════════════════════════════════════════════════════════
-const calcState = {}; // winId -> {val, expr, op, prev, fresh}
+const calcState = {};
 
 function buildCalc(id) {
   calcState[id] = {val:'0', expr:'', op:null, prev:null, fresh:false};
@@ -2189,7 +2168,7 @@ function calcPress(id, key) {
 // ═══════════════════════════════════════════════════════════
 //  PAINT
 // ═══════════════════════════════════════════════════════════
-const paintState = {}; // winId -> canvas state
+const paintState = {};
 
 function buildPaint(id) {
   const colors = ['#f0e8ff','#a855f7','#e879f9','#00f5c4','#38bdf8','#fb923c','#4ade80','#f43f5e','#fff','#000'];
@@ -2265,7 +2244,6 @@ function setPaintTool(id, tool) {
 function setPaintColor(id, color, el) {
   if (paintState[id]) paintState[id].color = color;
   document.querySelectorAll(`[id^="paint-wrap-${id}"] .pt-color`).forEach(e => e.classList.remove('active'));
-  // find using the paint toolbar
   el.classList.add('active');
 }
 function paintClear(id) {
@@ -2291,7 +2269,7 @@ const PLAYLIST = [
   {title:'Signal Lost',artist:'404 Foundry',dur:'3:33',icon:'📡'},
   {title:'Glitch Garden',artist:'Entropy Wave',dur:'4:44',icon:'🌿'},
 ];
-const musicState = {}; // winId -> {playing, track, interval, progress}
+const musicState = {};
 
 function buildMusic(id) {
   musicState[id] = { playing:false, track:0, progress:0, interval:null };
@@ -2337,7 +2315,6 @@ function musicToggle(id) {
       document.getElementById('m-prog-'+id).value = s.progress;
       const secs = Math.floor(s.progress / 100 * 222);
       document.getElementById('m-cur-'+id).textContent = Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');
-      // animate visualizer
       for (let i=0;i<24;i++) {
         const bar = document.getElementById('vb-'+i+'-'+id);
         if (bar) bar.style.height = (Math.random()*32+4) + 'px';
@@ -2388,7 +2365,6 @@ const WEATHER_DATA = {
   'Paris':       {temp:64, desc:'Light Rain',     icon:'🌧️', humidity:78, wind:14, uv:3,
     forecast:[{d:'Mon',i:'🌧️',lo:58,hi:65},{d:'Tue',i:'🌦️',lo:60,hi:67},{d:'Wed',i:'⛅',lo:62,hi:70},{d:'Thu',i:'🌤️',lo:63,hi:71},{d:'Fri',i:'🌧️',lo:57,hi:64}]},
 };
-let activeWeatherCity = 'New York';
 
 function buildWeather(id) {
   return `<div class="weather-wrap">
@@ -2445,7 +2421,7 @@ function weatherSearch(id) {
 // ═══════════════════════════════════════════════════════════
 //  CALENDAR
 // ═══════════════════════════════════════════════════════════
-const calState = {}; // winId -> {year, month}
+const calState = {};
 const CAL_EVENTS = {
   [new Date().toDateString()]: 'Today',
   [new Date(new Date().getTime()+86400000*3).toDateString()]: 'Meeting',
@@ -2493,7 +2469,6 @@ function renderCalendar(id) {
     html += `<div class="cal-day${isToday?' today':''}${hasEv?' has-event':''}">${d}</div>`;
   }
   document.getElementById('cal-days-'+id).innerHTML = html;
-  // Upcoming events
   const evs = Object.entries(CAL_EVENTS).filter(([d]) => new Date(d) >= today).slice(0,3);
   document.getElementById('cal-events-'+id).innerHTML = evs.length
     ? evs.map(([d,e])=>`<div class="cal-event-item"><div class="cal-event-dot"></div>${new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})} — ${e}</div>`).join('')
@@ -2508,56 +2483,32 @@ function calNav(id, dir) {
   renderCalendar(id);
 }
 
-
 // ═══════════════════════════════════════════════════════════
-//  GAMES APP — sourcing from OpenGameArt & free HTML5 game sites
+//  GAMES APP
 // ═══════════════════════════════════════════════════════════
 const GAME_LIBRARY = [
-  // Puzzle
-  {id:'2048',     name:'2048',          icon:'🔢', genre:'Puzzle',   rating:'★★★★★', color:'#ff9a00',
-   url:'https://play2048.co/', src:'play2048.co'},
-  {id:'chess',    name:'Chess',         icon:'♟️', genre:'Strategy', rating:'★★★★☆', color:'#a855f7',
-   url:'https://lichess.org/tv', src:'lichess.org'},
-  {id:'tetris',   name:'Jstris',        icon:'🟦', genre:'Puzzle',   rating:'★★★★★', color:'#38bdf8',
-   url:'https://jstris.jezevec10.com/', src:'jstris.jezevec10.com'},
-  {id:'sudoku',   name:'Sudoku',        icon:'🔲', genre:'Puzzle',   rating:'★★★★☆', color:'#4ade80',
-   url:'https://sudoku.com/', src:'sudoku.com'},
-  // Action
-  {id:'pacman',   name:'Pac-Man',       icon:'🟡', genre:'Arcade',   rating:'★★★★★', color:'#fde68a',
-   url:'https://freepacman.org/', src:'freepacman.org'},
-  {id:'snake',    name:'Snake',         icon:'🐍', genre:'Arcade',   rating:'★★★★☆', color:'#4ade80',
-   url:'https://playsnake.org/', src:'playsnake.org'},
-  {id:'doom',     name:'DOOM (1993)',    icon:'👹', genre:'FPS',      rating:'★★★★★', color:'#f43f5e',
-   url:'https://dos.zone/doom-1993/', src:'dos.zone'},
-  {id:'qbert',    name:'Q*bert',        icon:'🟠', genre:'Arcade',   rating:'★★★★☆', color:'#fb923c',
-   url:'https://dos.zone/q-bert-1983/', src:'dos.zone'},
-  // Strategy
-  {id:'go',       name:'Go',            icon:'⚫', genre:'Strategy', rating:'★★★★☆', color:'#6b7280',
-   url:'https://online-go.com/', src:'online-go.com'},
-  {id:'minesweep',name:'Minesweeper',   icon:'💣', genre:'Puzzle',   rating:'★★★★☆', color:'#a3e635',
-   url:'https://minesweeperonline.com/', src:'minesweeperonline.com'},
-  // Cards
-  {id:'solitaire',name:'Solitaire',     icon:'🃏', genre:'Card',     rating:'★★★★★', color:'#e879f9',
-   url:'https://solitaired.com/', src:'solitaired.com'},
-  {id:'freecell', name:'FreeCell',      icon:'🂡', genre:'Card',     rating:'★★★★☆', color:'#60a5fa',
-   url:'https://freecell.org/', src:'freecell.org'},
-  // Classics
-  {id:'asteroids',name:'Asteroids',     icon:'🚀', genre:'Arcade',   rating:'★★★★☆', color:'#00e5ff',
-   url:'https://www.freeasteroids.org/', src:'freeasteroids.org'},
-  {id:'pong',     name:'Pong',          icon:'🏓', genre:'Sports',   rating:'★★★☆☆', color:'#fff',
-   url:'https://www.ponggame.org/', src:'ponggame.org'},
-  {id:'mahjong',  name:'Mahjong',       icon:'🀄', genre:'Puzzle',   rating:'★★★★☆', color:'#f87171',
-   url:'https://www.mahjong-solitaire.com/', src:'mahjong-solitaire.com'},
-  {id:'wordle',   name:'Wordle',        icon:'📝', genre:'Word',     rating:'★★★★★', color:'#a3e635',
-   url:'https://wordleunlimited.org/', src:'wordleunlimited.org'},
+  {id:'2048',     name:'2048',          icon:'🔢', genre:'Puzzle',   rating:'★★★★★', color:'#ff9a00', url:'https://play2048.co/', src:'play2048.co'},
+  {id:'chess',    name:'Chess',         icon:'♟️', genre:'Strategy', rating:'★★★★☆', color:'#a855f7', url:'https://lichess.org/tv', src:'lichess.org'},
+  {id:'tetris',   name:'Jstris',        icon:'🟦', genre:'Puzzle',   rating:'★★★★★', color:'#38bdf8', url:'https://jstris.jezevec10.com/', src:'jstris.jezevec10.com'},
+  {id:'sudoku',   name:'Sudoku',        icon:'🔲', genre:'Puzzle',   rating:'★★★★☆', color:'#4ade80', url:'https://sudoku.com/', src:'sudoku.com'},
+  {id:'pacman',   name:'Pac-Man',       icon:'🟡', genre:'Arcade',   rating:'★★★★★', color:'#fde68a', url:'https://freepacman.org/', src:'freepacman.org'},
+  {id:'snake',    name:'Snake',         icon:'🐍', genre:'Arcade',   rating:'★★★★☆', color:'#4ade80', url:'https://playsnake.org/', src:'playsnake.org'},
+  {id:'doom',     name:'DOOM (1993)',    icon:'👹', genre:'FPS',      rating:'★★★★★', color:'#f43f5e', url:'https://dos.zone/doom-1993/', src:'dos.zone'},
+  {id:'qbert',    name:'Q*bert',        icon:'🟠', genre:'Arcade',   rating:'★★★★☆', color:'#fb923c', url:'https://dos.zone/q-bert-1983/', src:'dos.zone'},
+  {id:'go',       name:'Go',            icon:'⚫', genre:'Strategy', rating:'★★★★☆', color:'#6b7280', url:'https://online-go.com/', src:'online-go.com'},
+  {id:'minesweep',name:'Minesweeper',   icon:'💣', genre:'Puzzle',   rating:'★★★★☆', color:'#a3e635', url:'https://minesweeperonline.com/', src:'minesweeperonline.com'},
+  {id:'solitaire',name:'Solitaire',     icon:'🃏', genre:'Card',     rating:'★★★★★', color:'#e879f9', url:'https://solitaired.com/', src:'solitaired.com'},
+  {id:'freecell', name:'FreeCell',      icon:'🂡', genre:'Card',     rating:'★★★★☆', color:'#60a5fa', url:'https://freecell.org/', src:'freecell.org'},
+  {id:'asteroids',name:'Asteroids',     icon:'🚀', genre:'Arcade',   rating:'★★★★☆', color:'#00e5ff', url:'https://www.freeasteroids.org/', src:'freeasteroids.org'},
+  {id:'pong',     name:'Pong',          icon:'🏓', genre:'Sports',   rating:'★★★☆☆', color:'#fff',    url:'https://www.ponggame.org/', src:'ponggame.org'},
+  {id:'mahjong',  name:'Mahjong',       icon:'🀄', genre:'Puzzle',   rating:'★★★★☆', color:'#f87171', url:'https://www.mahjong-solitaire.com/', src:'mahjong-solitaire.com'},
+  {id:'wordle',   name:'Wordle',        icon:'📝', genre:'Word',     rating:'★★★★★', color:'#a3e635', url:'https://wordleunlimited.org/', src:'wordleunlimited.org'},
 ];
 
 const GAME_CATS = ['All','Arcade','Puzzle','Strategy','Card','Word','FPS','Sports'];
 let activeGameCat = 'All';
-let gameWinId = null;
 
 function buildGames(id) {
-  gameWinId = id;
   return `<div class="games-wrap" id="gw-${id}">
     <div class="games-topbar">
       <div class="games-title">🎮 GAME VAULT</div>
@@ -2616,7 +2567,6 @@ function launchGame(winId, gameId) {
   const wrap = document.getElementById('gw-'+winId);
   if (!wrap) return;
 
-  // Expand window for gaming
   const winEl = document.getElementById(winId);
   if (winEl && wins[winId]?.state !== 'maximized') {
     const vw = window.innerWidth, vh = window.innerHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--bar-h'));
@@ -2650,7 +2600,7 @@ function launchGame(winId, gameId) {
 function backToGames(winId) {
   const wrap = document.getElementById('gw-'+winId);
   if (!wrap) return;
-  wrap.innerHTML = `<div class="games-wrap" id="gw-${winId}">
+  wrap.outerHTML = `<div class="games-wrap" id="gw-${winId}">
     <div class="games-topbar">
       <div class="games-title">🎮 GAME VAULT</div>
       <input class="games-search" id="g-search-${winId}" placeholder="Search games..." oninput="filterGames('${winId}')">
@@ -2660,9 +2610,7 @@ function backToGames(winId) {
     </div>
     <div class="games-content"><div class="games-grid-wrap"><div class="games-grid" id="games-grid-${winId}"></div></div></div>
   </div>`;
-  // re-wrap the div id
-  document.getElementById('gw-'+winId).id = 'gw-'+winId;
-  renderGames(winId);
+  setTimeout(() => renderGames(winId), 0);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2673,7 +2621,7 @@ buildDesktopIcons();
 buildStartMenuGrid();
 updateTaskbar();
 drawFrame();
-setTimeout(bootTick, 300);
+window.addEventListener('load', () => setTimeout(bootTick, 300));
 </script>
 </body>
 </html>
