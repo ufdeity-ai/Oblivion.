@@ -1665,7 +1665,7 @@ function initAppLogic(appId, id) {
   if (appId === 'paint') setTimeout(() => initPaint(id), 60);
   if (appId === 'weather') setTimeout(() => renderWeather(id, 'New York'), 0);
   if (appId === 'calendar') setTimeout(() => renderCalendar(id), 0);
-  if (appId === 'ai') setTimeout(() => { initAriaKey(id); document.getElementById('ai-input-'+id)?.focus(); }, 100);
+  if (appId === 'ai') setTimeout(() => { document.getElementById('ai-input-'+id)?.focus(); }, 100);
   if (appId === 'games') setTimeout(() => renderGames(id), 0);
 }
 
@@ -1865,7 +1865,7 @@ document.getElementById('bright-slider')?.addEventListener('input', e => {
 });
 
 // ═══════════════════════════════════════════════════════════
-//  AI APP — ARIA
+//  AI APP — ARIA (Powered by Pollinations.AI — no API key)
 // ═══════════════════════════════════════════════════════════
 const aiHistory = {};
 
@@ -1877,24 +1877,15 @@ function buildAI(id) {
         <div class="ai-avatar">🤖</div>
         <div>
           <div class="ai-name">ARIA</div>
-          <div class="ai-model">Powered by Claude · claude-sonnet-4-20250514</div>
+          <div class="ai-model">Powered by Pollinations.AI · Free & No Key Required</div>
         </div>
         <button class="ai-clear-btn" style="margin-left:auto" onclick="clearAI('${id}')">Clear</button>
       </div>
       <div class="ai-status"><div class="ai-dot"></div>Online · VoidOS AI Assistant</div>
     </div>
-    <div id="ai-key-banner-${id}" style="display:none;padding:8px 14px;background:rgba(244,63,94,0.08);border-bottom:1px solid rgba(244,63,94,0.2);flex-shrink:0">
-      <div style="font-size:0.72rem;color:rgba(255,255,255,0.6);margin-bottom:6px">🔑 Enter your Anthropic API key to use ARIA. <a href="https://console.anthropic.com/keys" target="_blank" style="color:var(--flare)">Get one free →</a></div>
-      <div style="display:flex;gap:8px">
-        <input id="ai-key-input-${id}" type="password" placeholder="sk-ant-..." 
-          style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 12px;font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--white);outline:none;caret-color:var(--flare)"
-          onkeydown="if(event.key==='Enter')saveAriaKey('${id}')">
-        <button onclick="saveAriaKey('${id}')" style="padding:6px 14px;background:linear-gradient(135deg,var(--core),var(--flare));border:none;border-radius:8px;color:white;font-size:0.72rem;cursor:pointer;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif">Save</button>
-      </div>
-    </div>
     <div class="ai-messages" id="ai-msgs-${id}">
       <div class="ai-msg assistant">
-        <div class="ai-bubble">Hey! I'm ARIA, your VoidOS AI assistant. I'm powered by Claude and ready to help you with anything — coding, writing, analysis, questions, or just a chat. What's on your mind? ✦</div>
+        <div class="ai-bubble">Hey! I'm ARIA, your VoidOS AI assistant. I'm ready to help with anything — coding, writing, questions, or just a chat. No API key needed! ✦</div>
         <div class="ai-meta">ARIA · just now</div>
       </div>
     </div>
@@ -1914,17 +1905,6 @@ function buildAI(id) {
   </div>`;
 }
 
-function saveAriaKey(id) {
-  const key = document.getElementById('ai-key-input-'+id)?.value.trim();
-  if (!key || !key.startsWith('sk-ant-')) {
-    alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
-    return;
-  }
-  try { localStorage.setItem('aria-api-key', key); } catch(e) {}
-  document.getElementById('ai-key-banner-'+id).style.display = 'none';
-  addAiMsg(id, 'assistant', '✦ API key saved! I\'m ready to help. What\'s on your mind?');
-}
-
 function aiResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(120, el.scrollHeight) + 'px';
@@ -1942,24 +1922,8 @@ function aiSuggest(id, text) {
 function clearAI(id) {
   aiHistory[id] = [];
   const msgs = document.getElementById('ai-msgs-'+id);
-  msgs.innerHTML = `<div class="ai-msg assistant"><div class="ai-bubble">Chat cleared. I'm still here — what would you like to explore? ✦</div><div class="ai-meta">ARIA · just now</div></div>`;
+  msgs.innerHTML = `<div class="ai-msg assistant"><div class="ai-bubble">Chat cleared. Still here — what would you like to explore? ✦</div><div class="ai-meta">ARIA · just now</div></div>`;
   document.getElementById('ai-sugs-'+id).style.display = 'flex';
-}
-
-function initAriaKey(id) {
-  let localKey = null;
-  try { localKey = localStorage.getItem('aria-api-key'); } catch(e) {}
-  fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: [], system: 'ping', _ping: true }),
-  }).then(r => r.json()).then(data => {
-    if (data.error === 'no_key' && !localKey) {
-      document.getElementById('ai-key-banner-'+id).style.display = '';
-    }
-  }).catch(() => {
-    if (!localKey) document.getElementById('ai-key-banner-'+id).style.display = '';
-  });
 }
 
 function addAiMsg(id, role, text) {
@@ -1991,43 +1955,30 @@ async function aiSend(id) {
   aiHistory[id].push({ role:'user', content: text });
 
   try {
-    let localKey = null;
-    try { localKey = localStorage.getItem('aria-api-key'); } catch(e) {}
-    const headers = { 'Content-Type': 'application/json' };
-    if (localKey) headers['x-aria-key'] = localKey;
+    const systemPrompt = 'You are ARIA, a sleek and intelligent AI assistant built into VoidOS — a futuristic desktop operating system with a dark void aesthetic. You are helpful, smart, and have a slightly futuristic personality. Be concise but thorough. Use the ✦ symbol occasionally.';
 
-    const res = await fetch('/api/chat', {
+    const body = {
+      model: 'openai',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...aiHistory[id]
+      ],
+      seed: Math.floor(Math.random() * 9999),
+      private: true
+    };
+
+    const res = await fetch('https://text.pollinations.ai/', {
       method: 'POST',
-      headers,
-      body: JSON.stringify({
-        system: 'You are ARIA, a sleek and intelligent AI assistant built into VoidOS — a futuristic desktop operating system with a dark void aesthetic. You are helpful, smart, and have a slightly futuristic personality. Be concise but thorough. Use the ✦ symbol occasionally. The OS has apps: Oblivion Browser, Terminal, Files, Notes, Settings, Clock, Calculator, Paint, Music, Weather, Calendar, Games.',
-        messages: aiHistory[id],
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
     });
 
-    const data = await res.json();
+    if (!res.ok) throw new Error('Network error: ' + res.status);
+
+    const reply = await res.text();
+    if (!reply) throw new Error('Empty response');
+
     document.getElementById(typingId)?.remove();
-
-    if (data.error === 'no_key') {
-      document.getElementById('ai-key-banner-'+id).style.display = '';
-      msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:rgba(255,200,0,0.9)">🔑 No API key configured. Please enter your Anthropic API key above to use ARIA.</div></div>`;
-      aiHistory[id].pop();
-      sendBtn.disabled = false;
-      msgs.scrollTop = msgs.scrollHeight;
-      return;
-    }
-
-    if (data.error) {
-      msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(data.message || 'Unknown error')}</div></div>`;
-      aiHistory[id].pop();
-      sendBtn.disabled = false;
-      msgs.scrollTop = msgs.scrollHeight;
-      return;
-    }
-
-    const reply = data.content?.[0]?.text;
-    if (!reply) throw new Error('Empty response from API');
-
     aiHistory[id].push({ role:'assistant', content: reply });
     const t = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
     msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble">${escHtml(reply)}</div><div class="ai-meta">ARIA · ${t}</div></div>`;
@@ -2035,7 +1986,7 @@ async function aiSend(id) {
   } catch (err) {
     document.getElementById(typingId)?.remove();
     aiHistory[id].pop();
-    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(err.message)}</div></div>`;
+    msgs.innerHTML += `<div class="ai-msg assistant"><div class="ai-bubble" style="color:var(--danger)">⚠️ ${escHtml(err.message)} — Pollinations.AI may be temporarily unavailable, try again.</div></div>`;
   }
 
   sendBtn.disabled = false;
